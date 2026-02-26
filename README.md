@@ -20,7 +20,7 @@ Personal portfolio website showcasing projects and AI-powered features.
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS 4
 - **Animations:** Framer Motion
-- **AI Integration:** Anthropic SDK (Claude Sonnet 4.5)
+- **AI Integration:** Claude Code CLI (local installation)
 - **Code Highlighting:** Shiki
 - **Deployment:** VPS (Nginx + PM2) + GitHub Actions
 
@@ -30,7 +30,7 @@ Personal portfolio website showcasing projects and AI-powered features.
 
 - Node.js 18+
 - npm or yarn
-- Anthropic API key (for AI Code Analyst feature)
+- Claude Code CLI installed and available in PATH (for AI Code Analyst feature)
 
 ### Installation
 
@@ -42,11 +42,9 @@ cd portfolio
 # Install dependencies
 npm install
 
-# Create .env.local file
-cp .env.example .env.local
-
-# Add your Anthropic API key to .env.local
-# ANTHROPIC_API_KEY=sk-ant-your-key-here
+# Ensure Claude Code is installed and in PATH
+# Installation: https://github.com/anthropics/claude-code
+# Test: claude --version
 
 # Run development server
 npm run dev
@@ -54,21 +52,37 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-## Environment Variables
+## Requirements
 
-Create a `.env.local` file:
+### Claude Code CLI
+
+The AI Code Analyst feature requires Claude Code to be installed and available in your system PATH.
+
+**Installation:**
+```bash
+# Linux/macOS (via curl)
+curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | sh
+
+# Or download from GitHub releases
+# https://github.com/anthropics/claude-code/releases
+```
+
+**Verify installation:**
+```bash
+claude --version
+# Should output: 2.1.42 (Claude Code) or higher
+```
+
+### Environment Variables
+
+Optional `.env.local` file:
 
 ```bash
-# Required for AI Code Analyst feature
-ANTHROPIC_API_KEY=sk-ant-your-api-key-here
-
 # Next.js Configuration
 NODE_ENV=development
 PORT=3000
 HOSTNAME=localhost
 ```
-
-Get your Anthropic API key from: https://console.anthropic.com/
 
 ## Scripts
 
