@@ -1,5 +1,97 @@
 @import "tailwindcss";
 
+@theme {
+  /* Tailwind V4 Theme Configuration */
+
+  /* Yellow palette */
+  --color-yellow-100: #fef9c2;
+  --color-yellow-400: #fac800;
+  --color-yellow-700: #a36100;
+  --color-yellow-900: #733e0a;
+
+  /* Green palette */
+  --color-green-100: #dcfce7;
+  --color-green-400: #05df72;
+  --color-green-700: #008138;
+  --color-green-900: #0d542b;
+
+  /* Blue palette */
+  --color-blue-100: #dbeafe;
+  --color-blue-400: #54a2ff;
+  --color-blue-700: #1447e6;
+  --color-blue-900: #1c398e;
+
+  /* White */
+  --color-white: #ffffff;
+
+  /* Spacing */
+  --spacing: 0.25rem;
+
+  /* Container */
+  --container-7xl: 80rem;
+
+  /* Text sizes */
+  --text-xs: 0.75rem;
+  --text-xs--line-height: calc(1 / 0.75);
+  --text-sm: 0.875rem;
+  --text-sm--line-height: calc(1.25 / 0.875);
+  --text-lg: 1.125rem;
+  --text-lg--line-height: calc(1.75 / 1.125);
+  --text-xl: 1.25rem;
+  --text-xl--line-height: calc(1.75 / 1.25);
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: calc(2.25 / 1.875);
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: calc(2.5 / 2.25);
+  --text-5xl: 3rem;
+  --text-5xl--line-height: 1;
+  --text-6xl: 3.75rem;
+  --text-6xl--line-height: 1;
+
+  /* Font weights */
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Tracking */
+  --tracking-wider: 0.05em;
+
+  /* Leading */
+  --leading-tight: 1.25;
+
+  /* Radius */
+  --radius-lg: 0.5rem;
+  --radius-2xl: 1rem;
+
+  /* Easing */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Blur */
+  --blur-sm: 8px;
+
+  /* Transitions */
+  --default-transition-duration: 0.15s;
+  --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Font families */
+  --default-font-family: var(--font-geist-sans);
+  --default-mono-font-family: var(--font-geist-mono);
+
+  /* Project theme colors */
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
 :root {
   /* Light mode - warm eye-friendly palette */
   --background: #FBF8F3;
@@ -28,21 +120,6 @@
   /* Code colors */
   --code-bg: #2D2519;
   --code-border: #4A3F2F;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-surface: var(--surface);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-border: var(--border);
-  --color-muted: var(--muted);
-  --color-code-bg: var(--code-bg);
-  --color-code-border: var(--code-border);
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 * {
