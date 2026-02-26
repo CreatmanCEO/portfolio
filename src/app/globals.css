@@ -1,26 +1,104 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light mode - warm eye-friendly palette */
+  --background: #FBF8F3;
+  --surface: #FFFFFF;
+  --foreground: #2C2416;
+  --accent: #D97706;
+  --accent-hover: #B45309;
+  --border: #E7DFD6;
+  --muted: #78716C;
+
+  /* Code colors */
+  --code-bg: #FEF3E8;
+  --code-border: #F3E5D3;
+}
+
+[data-theme="dark"] {
+  /* Dark mode - reduced blue light */
+  --background: #1A1410;
+  --surface: #262017;
+  --foreground: #F5F0E8;
+  --accent: #FBBF24;
+  --accent-hover: #F59E0B;
+  --border: #3D3428;
+  --muted: #A8A29E;
+
+  /* Code colors */
+  --code-bg: #2D2519;
+  --code-border: #4A3F2F;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-code-bg: var(--code-bg);
+  --color-code-border: var(--code-border);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Smooth transitions */
+a, button {
+  transition: all 300ms ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* Code blocks */
+pre {
+  background: var(--code-bg) !important;
+  border: 1px solid var(--code-border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+code {
+  font-family: var(--font-mono), 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Selection */
+::selection {
+  background: var(--accent);
+  color: white;
 }
