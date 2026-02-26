@@ -13,8 +13,9 @@ services:
     volumes:
       # Mount Claude Code CLI (read-only)
       - /usr/local/bin/claude:/usr/local/bin/claude:ro
-      # Mount Claude config if exists
-      - ${HOME}/.config/claude:/home/nextjs/.config/claude:ro
+      # Mount workbot's Claude config (read-only)
+      - /home/workbot/.claude:/home/nextjs/.claude:ro
+      - /home/workbot/.claude.json:/home/nextjs/.claude.json:ro
     environment:
       - NODE_ENV=production
       - PORT=3000
