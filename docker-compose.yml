@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # Next.js Portfolio Application
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: creatman-portfolio
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount Claude Code CLI (read-only)
+      - /usr/local/bin/claude:/usr/local/bin/claude:ro
+      # Mount Claude config if exists
+      - ${HOME}/.config/claude:/home/nextjs/.config/claude:ro
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+    networks:
+      - portfolio-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: creatman-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    depends_on:
+      - portfolio
+    networks:
+      - portfolio-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  portfolio-network:
+    driver: bridge
