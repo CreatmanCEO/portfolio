@@ -1,3 +1,5 @@
+"use client";
+
 import CodeAnalyst from "@/components/CodeAnalyst";
 
 export default function AIAnalystPage() {
