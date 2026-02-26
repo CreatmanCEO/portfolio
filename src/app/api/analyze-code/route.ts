@@ -26,7 +26,7 @@ ${code}
       async start(controller) {
         try {
           // Spawn claude process
-          const claude = spawn("claude", ["--no-markdown"], {
+          const claude = spawn("claude", ["--print"], {
             stdio: ["pipe", "pipe", "pipe"],
           });
 
