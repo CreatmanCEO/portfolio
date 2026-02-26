@@ -99,27 +99,31 @@
   --foreground: #2C2416;
   --accent: #D97706;
   --accent-hover: #B45309;
-  --border: #E7DFD6;
+  --border: #D4C4B0;
   --muted: #78716C;
 
   /* Code colors */
   --code-bg: #FEF3E8;
   --code-border: #F3E5D3;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 [data-theme="dark"] {
-  /* Dark mode - reduced blue light */
-  --background: #1A1410;
-  --surface: #262017;
+  /* Dark mode - improved contrast for visibility */
+  --background: #0F0D0B;
+  --surface: #1F1B16;
   --foreground: #F5F0E8;
   --accent: #FBBF24;
   --accent-hover: #F59E0B;
-  --border: #3D3428;
-  --muted: #A8A29E;
+  --border: #3D342B;
+  --muted: #9C8D7E;
 
   /* Code colors */
-  --code-bg: #2D2519;
-  --code-border: #4A3F2F;
+  --code-bg: #1A1612;
+  --code-border: #3D342B;
 }
 
 * {

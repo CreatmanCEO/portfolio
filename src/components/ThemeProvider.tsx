@@ -17,16 +17,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
-    // Get theme from localStorage or system preference
+    // Get theme from localStorage, default to light
     const savedTheme = localStorage.getItem('theme') as ThemeMode | null;
     if (savedTheme) {
       setTheme(savedTheme);
       document.documentElement.setAttribute('data-theme', savedTheme);
     } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const defaultTheme = prefersDark ? 'dark' : 'light';
-      setTheme(defaultTheme);
-      document.documentElement.setAttribute('data-theme', defaultTheme);
+      // Always default to light theme for first visit
+      setTheme('light');
+      document.documentElement.setAttribute('data-theme', 'light');
     }
   }, []);
 
