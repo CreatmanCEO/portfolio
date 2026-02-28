@@ -37,9 +37,9 @@ export default function Hero() {
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24 md:py-40">
+    <section className="mx-auto max-w-6xl px-6 pt-16 pb-24 md:pt-24 md:pb-32">
       {/* Minimalist Hero - Left Aligned */}
-      <div className="mb-40 md:mb-48">
+      <div className="mb-24 md:mb-32">
         <div className="mb-6 text-sm font-medium uppercase tracking-widest text-muted">
           Full-Stack Developer & Automation Engineer
         </div>
@@ -69,11 +69,11 @@ export default function Hero() {
       </div>
 
       {/* Featured Projects Grid */}
-      <div className="mb-12 md:mb-24">
+      <div className="mb-16 md:mb-24">
         <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted md:mb-12">
           Featured Projects
         </h2>
-        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8">
           {featuredProjects.map((project) => (
             <ProjectCard key={project.title} {...project} />
           ))}

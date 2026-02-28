@@ -5,7 +5,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border bg-surface">
-      <div className="mx-auto max-w-6xl px-6 py-12">
+      <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           {/* Social Links */}
           <div className="flex gap-6">
