@@ -50,8 +50,8 @@ ${code}
     console.log("[API /analyze-code] Starting Gemini AI analysis...");
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Use stable model name without version suffix
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    // Use gemini-flash-latest - stable alias for latest Flash model (currently Gemini 2.5)
+    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({
