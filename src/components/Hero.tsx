@@ -39,13 +39,13 @@ export default function Hero() {
     <section className="mx-auto max-w-6xl px-6 pt-16 pb-24 md:pt-24 md:pb-32">
       {/* Minimalist Hero - Left Aligned */}
       <div className="mb-24 md:mb-32">
-        <div className="mb-8 text-sm font-medium uppercase tracking-widest text-muted">
+        <div className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
           {t("hero.label")}
         </div>
-        <h1 className="mb-8 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
+        <h1 className="mb-10 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
           {t("hero.headline")}
         </h1>
-        <p className="mb-10 text-lg leading-relaxed text-muted md:text-xl">
+        <p className="mb-12 text-lg leading-relaxed text-muted md:text-xl">
           {t("hero.description")}
         </p>
         <div className="flex flex-wrap gap-4">
