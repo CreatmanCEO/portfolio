@@ -126,10 +126,15 @@
   --code-border: #3D342B;
 }
 
-* {
-  margin: 0;
-  padding: 0;
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+}
+
+/* Reset only for specific elements, not everything */
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
+  margin: 0;
 }
 
 body {
