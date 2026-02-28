@@ -18,6 +18,7 @@ interface Repository {
 
 export default function AIAnalyst() {
   const [selectedFile, setSelectedFile] = useState("");
+  const [fileContent, setFileContent] = useState(""); // Store loaded file content
   const [analysis, setAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState("en");
@@ -58,10 +59,22 @@ export default function AIAnalyst() {
 
     if (type === "file") {
       setSelectedFile(path);
+      // Content will be loaded by CodeEditor and passed via onContentChange
+      // Analysis will be triggered automatically when content loads
+    } else {
+      // For directories, analyze immediately
+      await analyzeCode(path, type);
     }
+  };
 
-    // Analyze the selected file or directory
-    await analyzeCode(path, type);
+  const handleContentChange = async (content: string) => {
+    console.log("[AIAnalyst] Content changed, length:", content.length);
+    setFileContent(content);
+
+    // Auto-analyze when file content loads
+    if (content && selectedFile) {
+      await analyzeCode(content, "file");
+    }
   };
 
   const handleAnalyzeSelection = async (code: string) => {
@@ -83,33 +96,17 @@ export default function AIAnalyst() {
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
-    console.log("[AIAnalyst] Starting analysis:", { type, codePath: code, language });
+    console.log("[AIAnalyst] Starting analysis:", { type, codeLength: code.length, language });
     setLoading(true);
     setAnalysis("");
 
     try {
       let promptCode = code;
 
-      // If it's a file or directory path, load the content
-      if (type === "file") {
-        console.log("[AIAnalyst] Loading file content:", code);
-        const fileUrl = `/api/read-file?path=${encodeURIComponent(code)}`;
-        console.log("[AIAnalyst] Fetching:", fileUrl);
-
-        const response = await fetch(fileUrl);
-        console.log("[AIAnalyst] File response status:", response.status);
-
-        if (response.ok) {
-          promptCode = await response.text();
-          console.log("[AIAnalyst] File content loaded, length:", promptCode.length);
-        } else {
-          const errorText = await response.text();
-          console.error("[AIAnalyst] File load failed:", errorText);
-          setAnalysis(`Error: Unable to load file content. ${response.status}: ${errorText}`);
-          setLoading(false);
-          return;
-        }
-      } else if (type === "directory") {
+      // For files, code is already the content (passed from CodeEditor)
+      // For selections, code is the selected text
+      // For directories, create a prompt
+      if (type === "directory") {
         // For directories, just analyze the structure
         promptCode = `Directory: ${code}\nPlease provide insights about this directory structure and its purpose in the project.`;
         console.log("[AIAnalyst] Directory analysis prompt created");
@@ -181,7 +178,12 @@ export default function AIAnalyst() {
 
         {/* Code Editor */}
         <div className="flex-1 overflow-hidden border-b border-border">
-          <CodeEditor filePath={selectedFile} onAnalyzeSelection={handleAnalyzeSelection} />
+          <CodeEditor
+            filePath={selectedFile}
+            onAnalyzeSelection={handleAnalyzeSelection}
+            onContentChange={handleContentChange}
+            repository={currentRepo}
+          />
         </div>
 
         {/* Analysis Panel */}
@@ -220,7 +222,12 @@ export default function AIAnalyst() {
 
         {/* Center Panel: Code Editor (40%) */}
         <Panel defaultSize={40} minSize={20} maxSize={60}>
-          <CodeEditor filePath={selectedFile} onAnalyzeSelection={handleAnalyzeSelection} />
+          <CodeEditor
+            filePath={selectedFile}
+            onAnalyzeSelection={handleAnalyzeSelection}
+            onContentChange={handleContentChange}
+            repository={currentRepo}
+          />
         </Panel>
 
         <Separator className="w-1 bg-border transition-colors hover:bg-accent" />

@@ -6,9 +6,11 @@ import { useState, useEffect } from "react";
 interface CodeEditorProps {
   filePath: string;
   onAnalyzeSelection: (code: string) => void;
+  onContentChange?: (content: string) => void;
+  repository?: { name: string; owner: string; branch: string };
 }
 
-export default function CodeEditor({ filePath, onAnalyzeSelection }: CodeEditorProps) {
+export default function CodeEditor({ filePath, onAnalyzeSelection, onContentChange, repository }: CodeEditorProps) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("typescript");
   const [selectedCode, setSelectedCode] = useState("");
@@ -35,15 +37,24 @@ export default function CodeEditor({ filePath, onAnalyzeSelection }: CodeEditorP
     // Load file content
     const loadFile = async () => {
       try {
-        const response = await fetch(`/api/read-file?path=${encodeURIComponent(filePath)}`);
+        // Build URL with GitHub params if repository is selected
+        let fileUrl = `/api/read-file?path=${encodeURIComponent(filePath)}`;
+        if (repository) {
+          fileUrl += `&owner=${encodeURIComponent(repository.owner)}&repo=${encodeURIComponent(repository.name)}&branch=${encodeURIComponent(repository.branch)}`;
+        }
+
+        const response = await fetch(fileUrl);
         if (response.ok) {
           const content = await response.text();
           setCode(content);
+          onContentChange?.(content); // Notify parent of content change
         } else {
-          setCode(`// File not found: ${filePath}\n// This is a demo view of the portfolio structure.`);
+          const errorMsg = `// File not found: ${filePath}\n// Server returned: ${response.status}`;
+          setCode(errorMsg);
+          onContentChange?.('');
         }
       } catch (error) {
-        setCode(`// Error loading file: ${filePath}`);
+        setCode(`// Error loading file: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     };
 
@@ -64,7 +75,7 @@ export default function CodeEditor({ filePath, onAnalyzeSelection }: CodeEditorP
       };
       setLanguage(langMap[ext || ""] || "plaintext");
     }
-  }, [filePath]);
+  }, [filePath, repository]);
 
   const handleEditorChange = (value: string | undefined) => {
     if (value !== undefined) {
