@@ -183,3 +183,36 @@ code {
   background: var(--accent);
   color: white;
 }
+
+/* AI Analyst Page Styles */
+[data-group] {
+  height: 100%;
+  overflow: hidden;
+}
+
+[data-separator] {
+  background: var(--border);
+  cursor: col-resize;
+  transition: background-color 200ms ease;
+}
+
+[data-separator]:hover {
+  background: var(--accent);
+}
+
+[data-separator][data-orientation="vertical"] {
+  cursor: row-resize;
+}
+
+/* Monaco Editor theme integration */
+.monaco-editor {
+  --vscode-editor-background: var(--surface);
+  --vscode-editor-foreground: var(--foreground);
+}
+
+/* Mobile responsive for AI Analyst */
+@media (max-width: 1024px) {
+  details[open] summary {
+    border-bottom: 1px solid var(--border);
+  }
+}

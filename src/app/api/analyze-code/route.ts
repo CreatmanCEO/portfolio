@@ -3,13 +3,25 @@ import { spawn } from "child_process";
 
 export async function POST(request: NextRequest) {
   try {
-    const { code } = await request.json();
+    const { code, language = "en" } = await request.json();
 
     if (!code || typeof code !== "string") {
       return new Response("Invalid code input", { status: 400 });
     }
 
-    const prompt = `Analyze the following code and provide:
+    const languageInstructions: { [key: string]: string } = {
+      en: "Please respond in English.",
+      es: "Por favor responde en Español.",
+      ru: "Пожалуйста, отвечай на Русском языке.",
+      he: "אנא השב בעברית.",
+      ja: "日本語で返答してください。",
+    };
+
+    const languageInstruction = languageInstructions[language] || languageInstructions.en;
+
+    const prompt = `${languageInstruction}
+
+Analyze the following code and provide:
 1. What it does (brief summary)
 2. Code quality assessment
 3. Potential issues or bugs

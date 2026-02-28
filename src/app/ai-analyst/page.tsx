@@ -1,11 +1,11 @@
 "use client";
 
-import CodeAnalyst from "@/components/CodeAnalyst";
+import AIAnalyst from "@/components/AIAnalyst";
 
 export default function AIAnalystPage() {
   return (
-    <main>
-      <CodeAnalyst />
+    <main className="h-screen overflow-hidden">
+      <AIAnalyst />
     </main>
   );
 }
