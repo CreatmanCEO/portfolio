@@ -4,13 +4,13 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-20 md:py-32">
+    <section className="mx-auto max-w-6xl px-6 py-24 md:py-40">
       {/* Minimalist Hero - Left Aligned */}
-      <div className="mb-32">
-        <div className="mb-4 text-sm font-medium uppercase tracking-widest text-muted">
+      <div className="mb-40 md:mb-48">
+        <div className="mb-6 text-sm font-medium uppercase tracking-widest text-muted">
           Full-Stack Developer & Automation Engineer
         </div>
-        <h1 className="mb-8 text-6xl font-black leading-[1.1] tracking-tight md:text-7xl lg:text-8xl">
+        <h1 className="mb-10 text-6xl font-black leading-[1.1] tracking-tight md:text-7xl lg:text-8xl">
           Building the future
           <br />
           with{" "}
@@ -18,7 +18,7 @@ export default function Hero() {
             intelligent automation
           </span>
         </h1>
-        <p className="mb-12 max-w-2xl text-xl leading-relaxed text-muted md:text-2xl">
+        <p className="mb-14 max-w-2xl text-xl leading-relaxed text-muted md:text-2xl">
           Crafting production-ready solutions with Python, TypeScript, and AI.
           Shipped 7+ projects, 15+ automation bots, 100+ hours saved monthly.
         </p>
@@ -42,11 +42,11 @@ export default function Hero() {
       </div>
 
       {/* Featured Work Preview - Simple Grid */}
-      <div className="mb-32">
-        <h2 className="mb-12 text-sm font-medium uppercase tracking-widest text-muted">
+      <div className="mb-40 md:mb-48">
+        <h2 className="mb-16 text-sm font-medium uppercase tracking-widest text-muted">
           Featured Projects
         </h2>
-        <div className="grid gap-12 md:grid-cols-2">
+        <div className="grid gap-16 md:grid-cols-2">
           <ProjectCard
             title="AviaWallet"
             description="iOS app for tracking aviation miles and bonuses"
@@ -61,11 +61,11 @@ export default function Hero() {
       </div>
 
       {/* Tech Stack - Minimal List */}
-      <div>
-        <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted">
+      <div className="pb-20">
+        <h2 className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
           Tech Stack
         </h2>
-        <div className="flex flex-wrap gap-x-6 gap-y-3 text-lg font-medium">
+        <div className="flex flex-wrap gap-x-8 gap-y-4 text-lg font-medium">
           {[
             "Python",
             "TypeScript",
