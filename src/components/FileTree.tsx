@@ -11,14 +11,47 @@ interface FileNode {
 
 interface FileTreeProps {
   onFileSelect: (path: string, type: "file" | "directory") => void;
+  repository?: { name: string; owner: string; branch: string };
 }
 
-export default function FileTree({ onFileSelect }: FileTreeProps) {
+export default function FileTree({ onFileSelect, repository }: FileTreeProps) {
   const [tree, setTree] = useState<FileNode[]>([]);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    loadFileTree();
+  }, [repository]);
+
+  const loadFileTree = async () => {
+    if (repository) {
+      // Load from GitHub API
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `/api/github-tree?owner=${repository.owner}&repo=${repository.name}&branch=${repository.branch}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setTree(data);
+          setExpanded(new Set(["src"]));
+        } else {
+          console.error("Failed to load file tree from GitHub");
+          loadDefaultTree();
+        }
+      } catch (error) {
+        console.error("Error loading file tree:", error);
+        loadDefaultTree();
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      loadDefaultTree();
+    }
+  };
+
+  const loadDefaultTree = () => {
     // Build a simple file tree of the portfolio project
     const portfolioTree: FileNode[] = [
       {
@@ -108,7 +141,7 @@ export default function FileTree({ onFileSelect }: FileTreeProps) {
     setTree(portfolioTree);
     // Auto-expand src folder
     setExpanded(new Set(["src"]));
-  }, []);
+  };
 
   const toggleExpand = (path: string) => {
     const newExpanded = new Set(expanded);
@@ -165,10 +198,16 @@ export default function FileTree({ onFileSelect }: FileTreeProps) {
     <div className="h-full overflow-y-auto border-r border-border bg-background p-2">
       <div className="mb-4 px-2">
         <h3 className="text-xs font-bold uppercase tracking-wider text-muted">
-          Portfolio Explorer
+          {repository ? repository.name : "Portfolio Explorer"}
         </h3>
       </div>
-      <div>{tree.map((node) => renderNode(node))}</div>
+      {loading ? (
+        <div className="flex items-center justify-center p-4">
+          <div className="text-sm text-muted-foreground">Loading...</div>
+        </div>
+      ) : (
+        <div>{tree.map((node) => renderNode(node))}</div>
+      )}
     </div>
   );
 }

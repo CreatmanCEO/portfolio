@@ -5,6 +5,16 @@ import { Panel, Group, Separator } from "react-resizable-panels";
 import FileTree from "./FileTree";
 import CodeEditor from "./CodeEditor";
 import AnalysisPanel from "./AnalysisPanel";
+import ProjectSelector from "./ProjectSelector";
+
+interface Repository {
+  id: number;
+  name: string;
+  full_name: string;
+  description: string | null;
+  default_branch: string;
+  language: string | null;
+}
 
 export default function AIAnalyst() {
   const [selectedFile, setSelectedFile] = useState("");
@@ -13,6 +23,7 @@ export default function AIAnalyst() {
   const [language, setLanguage] = useState("en");
   const [isMobile, setIsMobile] = useState(false);
   const [treeCollapsed, setTreeCollapsed] = useState(true);
+  const [currentRepo, setCurrentRepo] = useState<{ name: string; owner: string; branch: string } | undefined>();
 
   useEffect(() => {
     // Check if mobile
@@ -57,6 +68,16 @@ export default function AIAnalyst() {
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
+  };
+
+  const handleProjectSelect = (repo: Repository) => {
+    setCurrentRepo({
+      name: repo.name,
+      owner: repo.full_name.split("/")[0],
+      branch: repo.default_branch,
+    });
+    setSelectedFile(""); // Clear selected file when switching projects
+    setAnalysis(""); // Clear analysis
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
@@ -111,14 +132,17 @@ export default function AIAnalyst() {
   if (isMobile) {
     // Mobile Layout: Vertical stack with collapsible tree
     return (
-      <div className="flex h-screen flex-col overflow-hidden">
+      <div className="flex h-screen flex-col overflow-hidden px-2 sm:px-4">
+        {/* Project Selector */}
+        <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
+
         {/* Collapsible File Tree */}
         <details open={!treeCollapsed} onToggle={(e) => setTreeCollapsed(!(e.target as HTMLDetailsElement).open)} className="border-b border-border">
           <summary className="cursor-pointer bg-surface px-4 py-3 font-medium hover:bg-accent/5">
             <span className="text-sm">📁 File Explorer</span>
           </summary>
           <div className="h-64 overflow-hidden">
-            <FileTree onFileSelect={handleFileSelect} />
+            <FileTree onFileSelect={handleFileSelect} repository={currentRepo} />
           </div>
         </details>
 
@@ -142,18 +166,22 @@ export default function AIAnalyst() {
   // Desktop Layout: 3-panel with resizable separators
   return (
     <div className="h-screen overflow-hidden">
-      <Group
-        orientation="horizontal"
-        onLayoutChanged={(layout) => {
-          const sizes = Object.values(layout);
-          savePanelSizes(sizes);
-        }}
-        className="h-full"
-      >
-        {/* Left Panel: File Tree (15%) */}
-        <Panel defaultSize={15} minSize={10} maxSize={30}>
-          <FileTree onFileSelect={handleFileSelect} />
-        </Panel>
+      {/* Project Selector */}
+      <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
+
+      <div className="h-[calc(100vh-64px)] px-4 md:px-6 lg:px-8">
+        <Group
+          orientation="horizontal"
+          onLayoutChanged={(layout) => {
+            const sizes = Object.values(layout);
+            savePanelSizes(sizes);
+          }}
+          className="h-full"
+        >
+          {/* Left Panel: File Tree (15%) */}
+          <Panel defaultSize={15} minSize={10} maxSize={30}>
+            <FileTree onFileSelect={handleFileSelect} repository={currentRepo} />
+          </Panel>
 
         <Separator className="w-1 bg-border transition-colors hover:bg-accent" />
 
@@ -172,7 +200,8 @@ export default function AIAnalyst() {
             onLanguageChange={handleLanguageChange}
           />
         </Panel>
-      </Group>
+        </Group>
+      </div>
     </div>
   );
 }
