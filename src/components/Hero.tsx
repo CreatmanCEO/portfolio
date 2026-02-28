@@ -1,8 +1,41 @@
 "use client";
 
 import Link from "next/link";
+import ProjectCard from "./ProjectCard";
+import TechStack from "./TechStack";
 
 export default function Hero() {
+  const featuredProjects = [
+    {
+      title: "ACCU",
+      description:
+        "Automated Claude Code agent updater. Monitors GitHub releases, auto-updates binary, notification system. Self-hosted on VPS.",
+      tech: ["Python", "GitHub API", "VPS", "Telegram"],
+      link: "https://github.com/CreatmanCEO/ACCU",
+    },
+    {
+      title: "AviaWallet",
+      description:
+        "iOS app for managing aviation wallet points. Built with Flutter, shipped to App Store. Features offline sync, push notifications, analytics.",
+      tech: ["Flutter", "Dart", "Firebase", "App Store"],
+      link: "https://apps.apple.com/app/aviawallet",
+    },
+    {
+      title: "GHOST",
+      description:
+        "AI assistant with invisible overlay for interviews, meetings, and coding. Multi-provider LLM support (Claude, GPT-4, Gemini), real-time voice transcription.",
+      tech: ["Electron", "React", "TypeScript", "Python", "Claude", "Deepgram"],
+      link: "https://github.com/CreatmanCEO/GHOST",
+    },
+    {
+      title: "Hebrew Translator Bot",
+      description:
+        "Telegram bot for document translation with OCR support. Handles images, PDFs, text. Translation memory for consistency.",
+      tech: ["Python", "Telegram Bot API", "OCR", "Translation API"],
+      link: "https://github.com/CreatmanCEO/HebrewTranslator",
+    },
+  ];
+
   return (
     <section className="mx-auto max-w-6xl px-6 py-24 md:py-40">
       {/* Minimalist Hero - Left Aligned */}
@@ -10,17 +43,11 @@ export default function Hero() {
         <div className="mb-6 text-sm font-medium uppercase tracking-widest text-muted">
           Full-Stack Developer & Automation Engineer
         </div>
-        <h1 className="mb-10 text-6xl font-black leading-[1.1] tracking-tight md:text-7xl lg:text-8xl">
-          Building the future
-          <br />
-          with{" "}
-          <span className="bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent">
-            intelligent automation
-          </span>
+        <h1 className="mb-6 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
+          Building intelligent automation systems
         </h1>
-        <p className="mb-14 max-w-2xl text-xl leading-relaxed text-muted md:text-2xl">
-          Crafting production-ready solutions with Python, TypeScript, and AI.
-          Shipped 7+ projects, 15+ automation bots, 100+ hours saved monthly.
+        <p className="mb-8 text-lg leading-relaxed text-muted md:text-xl">
+          7+ projects | App Store | 100+ hours saved
         </p>
         <div className="flex flex-wrap gap-4">
           <Link
@@ -41,74 +68,20 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Featured Work Preview - Simple Grid */}
-      <div className="mb-40 md:mb-48">
-        <h2 className="mb-16 text-sm font-medium uppercase tracking-widest text-muted">
+      {/* Featured Projects Grid */}
+      <div className="mb-12 md:mb-24">
+        <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted md:mb-12">
           Featured Projects
         </h2>
-        <div className="grid gap-16 md:grid-cols-2">
-          <ProjectCard
-            title="AviaWallet"
-            description="iOS app for tracking aviation miles and bonuses"
-            tag="App Store"
-          />
-          <ProjectCard
-            title="n8n Automation Suite"
-            description="15+ production workflows saving 100+ hours monthly"
-            tag="Automation"
-          />
-        </div>
-      </div>
-
-      {/* Tech Stack - Minimal List */}
-      <div className="pb-20">
-        <h2 className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
-          Tech Stack
-        </h2>
-        <div className="flex flex-wrap gap-x-8 gap-y-4 text-lg font-medium">
-          {[
-            "Python",
-            "TypeScript",
-            "Node.js",
-            "React",
-            "Next.js",
-            "Flutter",
-            "n8n",
-            "Claude AI",
-            "Docker",
-            "VPS/DevOps",
-          ].map((tech) => (
-            <span
-              key={tech}
-              className="text-foreground transition-colors hover:text-accent"
-            >
-              {tech}
-            </span>
+        <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.title} {...project} />
           ))}
         </div>
       </div>
-    </section>
-  );
-}
 
-function ProjectCard({
-  title,
-  description,
-  tag,
-}: {
-  title: string;
-  description: string;
-  tag: string;
-}) {
-  return (
-    <div className="group cursor-pointer border-l-4 border-foreground pl-6 transition-all hover:border-accent">
-      <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-accent">
-        {tag}
-      </div>
-      <h3 className="mb-3 text-2xl font-bold transition-colors group-hover:text-accent">
-        {title}
-      </h3>
-      <p className="text-muted">{description}</p>
-    </div>
+      {/* Tech Stack */}
+      <TechStack />
+    </section>
   );
 }
