@@ -33,13 +33,9 @@ export default function ProjectSelector({ onProjectSelect, currentProject }: Pro
     setError("");
 
     try {
-      console.log("[ProjectSelector] Fetching repositories from GitHub API...");
+      console.log("[ProjectSelector] Fetching repositories via API...");
 
-      const response = await fetch("https://api.github.com/users/CreatmanCEO/repos?sort=updated&per_page=20", {
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-        },
-      });
+      const response = await fetch("/api/github/repos");
 
       console.log("[ProjectSelector] Response status:", response.status);
       console.log("[ProjectSelector] Response headers:", {

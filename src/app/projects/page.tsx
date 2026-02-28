@@ -119,11 +119,11 @@ function ProjectCard({
   };
 
   return (
-    <div className="rounded-2xl border border-border bg-surface p-6 transition-all hover:border-accent">
+    <div className="rounded-2xl border border-border bg-surface p-8 transition-all hover:border-accent">
       {/* Header */}
-      <div className="mb-4 flex items-start justify-between">
+      <div className="mb-6 flex items-start justify-between">
         <div>
-          <h3 className="mb-2 text-xl font-bold">{project.title}</h3>
+          <h3 className="mb-3 text-xl font-bold">{project.title}</h3>
           <div className="flex gap-2">
             <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
               {t(getCategoryKey(project.category))}
@@ -131,10 +131,10 @@ function ProjectCard({
             <span
               className={`rounded-full px-3 py-1 text-xs font-medium ${
                 project.status === "Production"
-                  ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                   : project.status === "Beta"
-                    ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-                    : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
+                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
               }`}
             >
               {t(getStatusKey(project.status))}
@@ -144,10 +144,10 @@ function ProjectCard({
       </div>
 
       {/* Description */}
-      <p className="mb-4 text-sm text-muted">{project.description}</p>
+      <p className="mb-6 text-sm text-muted leading-relaxed">{project.description}</p>
 
       {/* Tech Stack */}
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="mb-6 flex flex-wrap gap-2">
         {project.tech.map((tech, i) => (
           <span
             key={i}
