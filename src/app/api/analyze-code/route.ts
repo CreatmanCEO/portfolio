@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { spawn } from "child_process";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +14,13 @@ export async function POST(request: NextRequest) {
     if (!code || typeof code !== "string") {
       console.error("[API /analyze-code] Invalid code input");
       return new Response("Invalid code input", { status: 400 });
+    }
+
+    // Check for API key
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("[API /analyze-code] GEMINI_API_KEY not configured");
+      return new Response("AI service not configured. Please set GEMINI_API_KEY.", { status: 503 });
     }
 
     const languageInstructions: { [key: string]: string } = {
@@ -40,51 +47,33 @@ Code:
 ${code}
 \`\`\``;
 
-    console.log("[API /analyze-code] Starting Claude CLI process...");
+    console.log("[API /analyze-code] Starting Gemini AI analysis...");
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          // Spawn claude process
-          console.log("[API /analyze-code] Spawning 'claude --print' command");
-          const claude = spawn("claude", ["--print"], {
-            stdio: ["pipe", "pipe", "pipe"],
-          });
+          console.log("[API /analyze-code] Sending prompt to Gemini");
+          const result = await model.generateContentStream(prompt);
 
-          // Send prompt to claude's stdin
-          console.log("[API /analyze-code] Sending prompt to Claude stdin");
-          claude.stdin.write(prompt);
-          claude.stdin.end();
+          let chunkCount = 0;
+          for await (const chunk of result.stream) {
+            chunkCount++;
+            const chunkText = chunk.text();
+            console.log("[API /analyze-code] Received chunk", chunkCount, "- length:", chunkText.length);
+            controller.enqueue(encoder.encode(chunkText));
+          }
 
-          // Stream stdout to client
-          claude.stdout.on("data", (chunk) => {
-            console.log("[API /analyze-code] Received chunk from Claude:", chunk.length, "bytes");
-            controller.enqueue(encoder.encode(chunk.toString()));
-          });
-
-          // Handle errors
-          claude.stderr.on("data", (data) => {
-            console.error("[API /analyze-code] Claude stderr:", data.toString());
-          });
-
-          // Close stream when claude exits
-          claude.on("close", (code) => {
-            console.log("[API /analyze-code] Claude process exited with code:", code);
-            if (code !== 0) {
-              console.error(`[API /analyze-code] Claude exited with non-zero code ${code}`);
-            }
-            controller.close();
-          });
-
-          // Handle process errors
-          claude.on("error", (error) => {
-            console.error("[API /analyze-code] Claude process error:", error);
-            controller.error(error);
-          });
+          console.log("[API /analyze-code] Gemini stream complete. Total chunks:", chunkCount);
+          controller.close();
         } catch (error) {
-          console.error("[API /analyze-code] Stream error:", error);
-          controller.error(error);
+          console.error("[API /analyze-code] Gemini stream error:", error);
+          const errorMessage = error instanceof Error ? error.message : "Unknown error";
+          controller.enqueue(encoder.encode(`Error: ${errorMessage}`));
+          controller.close();
         }
       },
     });
@@ -96,7 +85,8 @@ ${code}
       },
     });
   } catch (error) {
-    console.error("Analysis error:", error);
-    return new Response("Analysis failed", { status: 500 });
+    console.error("[API /analyze-code] Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    return new Response(`Analysis failed: ${errorMessage}`, { status: 500 });
   }
 }

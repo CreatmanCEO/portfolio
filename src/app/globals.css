@@ -132,10 +132,10 @@
   box-sizing: border-box;
 }
 
-/* Reset only default margins to avoid conflicts, but allow utility classes to work */
-h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
-  margin-block-start: 0;
-  margin-block-end: 0;
+/* Reset only non-text elements to avoid breaking Tailwind utilities */
+/* Do NOT reset h1-h6, p as it breaks Tailwind margin classes */
+figure, blockquote, dl, dd {
+  margin: 0;
 }
 
 body {

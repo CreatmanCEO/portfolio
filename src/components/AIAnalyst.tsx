@@ -183,6 +183,7 @@ export default function AIAnalyst() {
             onAnalyzeSelection={handleAnalyzeSelection}
             onContentChange={handleContentChange}
             repository={currentRepo}
+            hasRepository={!!currentRepo}
           />
         </div>
 
@@ -227,6 +228,7 @@ export default function AIAnalyst() {
             onAnalyzeSelection={handleAnalyzeSelection}
             onContentChange={handleContentChange}
             repository={currentRepo}
+            hasRepository={!!currentRepo}
           />
         </Panel>
 

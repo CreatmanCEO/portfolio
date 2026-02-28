@@ -8,9 +8,10 @@ interface CodeEditorProps {
   onAnalyzeSelection: (code: string) => void;
   onContentChange?: (content: string) => void;
   repository?: { name: string; owner: string; branch: string };
+  hasRepository: boolean;
 }
 
-export default function CodeEditor({ filePath, onAnalyzeSelection, onContentChange, repository }: CodeEditorProps) {
+export default function CodeEditor({ filePath, onAnalyzeSelection, onContentChange, repository, hasRepository }: CodeEditorProps) {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("typescript");
   const [selectedCode, setSelectedCode] = useState("");
@@ -127,8 +128,22 @@ export default function CodeEditor({ filePath, onAnalyzeSelection, onContentChan
             }}
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-muted">
-            <p className="text-sm">Select a file from the tree to view its contents</p>
+          <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-muted">
+            <p className="text-sm text-center">
+              {hasRepository
+                ? "Select a file from the tree to view its contents"
+                : "Please select a repository from the dropdown above"}
+            </p>
+            {!hasRepository && (
+              <div className="max-w-md rounded-lg border border-border bg-surface/50 p-4 text-xs">
+                <p className="mb-2 font-medium text-foreground">💡 Get Started:</p>
+                <ul className="space-y-1 text-left">
+                  <li>• Choose any GitHub repository</li>
+                  <li>• Browse files and view code</li>
+                  <li>• Get instant AI analysis</li>
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>
