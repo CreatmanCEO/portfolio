@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const projects = [
   {
@@ -66,13 +68,15 @@ const projects = [
 ];
 
 export default function ProjectsPage() {
+  const { t } = useLanguage();
+
   return (
     <main className="mx-auto max-w-7xl px-6 py-20">
       {/* Header */}
       <div className="mb-16 text-center">
-        <h1 className="mb-4 text-4xl font-bold md:text-5xl">Projects</h1>
+        <h1 className="mb-4 text-4xl font-bold md:text-5xl">{t("projects.page.title")}</h1>
         <p className="text-lg text-muted">
-          Production-ready applications and automation systems
+          {t("projects.page.subtitle")}
         </p>
       </div>
 
@@ -91,6 +95,29 @@ function ProjectCard({
 }: {
   project: (typeof projects)[0];
 }) {
+  const { t } = useLanguage();
+
+  const getCategoryKey = (category: string) => {
+    const categoryMap: { [key: string]: string } = {
+      "AI": "projects.category.ai",
+      "Mobile": "projects.category.mobile",
+      "DevOps": "projects.category.devops",
+      "Web": "projects.category.web",
+      "Automation": "projects.category.automation",
+      "Extension": "projects.category.extension",
+    };
+    return categoryMap[category] || category;
+  };
+
+  const getStatusKey = (status: string) => {
+    const statusMap: { [key: string]: string } = {
+      "Production": "projects.status.production",
+      "Beta": "projects.status.beta",
+      "In Development": "projects.status.inDevelopment",
+    };
+    return statusMap[status] || status;
+  };
+
   return (
     <div className="rounded-2xl border border-border bg-surface p-6 transition-all hover:border-accent">
       {/* Header */}
@@ -99,7 +126,7 @@ function ProjectCard({
           <h3 className="mb-2 text-xl font-bold">{project.title}</h3>
           <div className="flex gap-2">
             <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-              {project.category}
+              {t(getCategoryKey(project.category))}
             </span>
             <span
               className={`rounded-full px-3 py-1 text-xs font-medium ${
@@ -110,7 +137,7 @@ function ProjectCard({
                     : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400"
               }`}
             >
-              {project.status}
+              {t(getStatusKey(project.status))}
             </span>
           </div>
         </div>
@@ -140,7 +167,7 @@ function ProjectCard({
             rel="noopener noreferrer"
             className="text-sm font-medium text-accent hover:underline"
           >
-            GitHub →
+            {t("projects.link.github")} →
           </a>
         )}
         {project.link && (
@@ -150,7 +177,7 @@ function ProjectCard({
             rel="noopener noreferrer"
             className="text-sm font-medium text-accent hover:underline"
           >
-            Live Demo →
+            {t("projects.link.demo")} →
           </a>
         )}
       </div>

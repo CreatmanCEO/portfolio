@@ -52,6 +52,21 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Common
     "common.learnMore": "Learn More",
     "common.viewAll": "View All",
+
+    // Projects Page
+    "projects.page.title": "Projects",
+    "projects.page.subtitle": "Production-ready applications and automation systems",
+    "projects.status.production": "Production",
+    "projects.status.beta": "Beta",
+    "projects.status.inDevelopment": "In Development",
+    "projects.category.ai": "AI",
+    "projects.category.mobile": "Mobile",
+    "projects.category.devops": "DevOps",
+    "projects.category.web": "Web",
+    "projects.category.automation": "Automation",
+    "projects.category.extension": "Extension",
+    "projects.link.github": "GitHub",
+    "projects.link.demo": "Live Demo",
   },
   es: {
     // Navigation
@@ -89,6 +104,21 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Common
     "common.learnMore": "Más información",
     "common.viewAll": "Ver todo",
+
+    // Projects Page
+    "projects.page.title": "Proyectos",
+    "projects.page.subtitle": "Aplicaciones listas para producción y sistemas de automatización",
+    "projects.status.production": "Producción",
+    "projects.status.beta": "Beta",
+    "projects.status.inDevelopment": "En Desarrollo",
+    "projects.category.ai": "IA",
+    "projects.category.mobile": "Móvil",
+    "projects.category.devops": "DevOps",
+    "projects.category.web": "Web",
+    "projects.category.automation": "Automatización",
+    "projects.category.extension": "Extensión",
+    "projects.link.github": "GitHub",
+    "projects.link.demo": "Demo en Vivo",
   },
   ru: {
     // Navigation
@@ -126,6 +156,21 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Common
     "common.learnMore": "Подробнее",
     "common.viewAll": "Смотреть все",
+
+    // Projects Page
+    "projects.page.title": "Проекты",
+    "projects.page.subtitle": "Готовые к продакшену приложения и системы автоматизации",
+    "projects.status.production": "Продакшен",
+    "projects.status.beta": "Бета",
+    "projects.status.inDevelopment": "В Разработке",
+    "projects.category.ai": "ИИ",
+    "projects.category.mobile": "Мобильные",
+    "projects.category.devops": "DevOps",
+    "projects.category.web": "Веб",
+    "projects.category.automation": "Автоматизация",
+    "projects.category.extension": "Расширение",
+    "projects.link.github": "GitHub",
+    "projects.link.demo": "Живое Демо",
   },
   he: {
     // Navigation
@@ -163,6 +208,21 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Common
     "common.learnMore": "למד עוד",
     "common.viewAll": "צפה בהכל",
+
+    // Projects Page
+    "projects.page.title": "פרויקטים",
+    "projects.page.subtitle": "אפליקציות מוכנות לייצור ומערכות אוטומציה",
+    "projects.status.production": "ייצור",
+    "projects.status.beta": "בטא",
+    "projects.status.inDevelopment": "בפיתוח",
+    "projects.category.ai": "בינה מלאכותית",
+    "projects.category.mobile": "מובייל",
+    "projects.category.devops": "DevOps",
+    "projects.category.web": "אינטרנט",
+    "projects.category.automation": "אוטומציה",
+    "projects.category.extension": "תוסף",
+    "projects.link.github": "GitHub",
+    "projects.link.demo": "דמו חי",
   },
   jp: {
     // Navigation
@@ -200,6 +260,21 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Common
     "common.learnMore": "詳しく見る",
     "common.viewAll": "すべて見る",
+
+    // Projects Page
+    "projects.page.title": "プロジェクト",
+    "projects.page.subtitle": "本番環境対応アプリケーションと自動化システム",
+    "projects.status.production": "本番稼働中",
+    "projects.status.beta": "ベータ版",
+    "projects.status.inDevelopment": "開発中",
+    "projects.category.ai": "AI",
+    "projects.category.mobile": "モバイル",
+    "projects.category.devops": "DevOps",
+    "projects.category.web": "ウェブ",
+    "projects.category.automation": "自動化",
+    "projects.category.extension": "拡張機能",
+    "projects.link.github": "GitHub",
+    "projects.link.demo": "ライブデモ",
   },
 };
 

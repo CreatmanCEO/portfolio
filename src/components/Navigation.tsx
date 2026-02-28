@@ -19,11 +19,11 @@ export default function Navigation() {
   ];
 
   const languages = [
-    { code: "en" as const, display: "EN", label: "English" },
-    { code: "es" as const, display: "ES", label: "Español" },
-    { code: "ru" as const, display: "RU", label: "Русский" },
-    { code: "he" as const, display: "HE", label: "עברית" },
-    { code: "jp" as const, display: "JP", label: "日本語" },
+    { code: "en" as const, flag: "🇬🇧", display: "EN", label: "English" },
+    { code: "es" as const, flag: "🇪🇸", display: "ES", label: "Español" },
+    { code: "ru" as const, flag: "🇷🇺", display: "RU", label: "Русский" },
+    { code: "he" as const, flag: "🇮🇱", display: "HE", label: "עברית" },
+    { code: "jp" as const, flag: "🇯🇵", display: "JP", label: "日本語" },
   ];
 
   const currentLangDisplay = languages.find((l) => l.code === language)?.display || "EN";
@@ -113,7 +113,7 @@ export default function Navigation() {
                   className="flex items-center gap-1 text-sm font-medium transition-colors hover:text-accent"
                   aria-label="Select language"
                 >
-                  <span>🌐</span>
+                  <span>{languages.find((l) => l.code === language)?.flag || "🌐"}</span>
                   <span>{currentLangDisplay}</span>
                   <svg
                     className="h-4 w-4"
@@ -139,11 +139,12 @@ export default function Navigation() {
                           setLanguage(lang.code);
                           setLangDropdownOpen(false);
                         }}
-                        className={`block w-full px-4 py-2 text-left text-sm transition-colors hover:bg-accent/10 first:rounded-t-lg last:rounded-b-lg ${
+                        className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-accent/10 first:rounded-t-lg last:rounded-b-lg ${
                           language === lang.code ? "text-accent" : ""
                         }`}
                       >
-                        {lang.label}
+                        <span>{lang.flag}</span>
+                        <span>{lang.label}</span>
                       </button>
                     ))}
                   </div>
@@ -265,11 +266,12 @@ export default function Navigation() {
                     onClick={() => {
                       setLanguage(lang.code);
                     }}
-                    className={`text-left text-sm transition-colors hover:text-accent ${
+                    className={`flex items-center gap-2 text-left text-sm transition-colors hover:text-accent ${
                       language === lang.code ? "text-accent font-medium" : ""
                     }`}
                   >
-                    {lang.label}
+                    <span>{lang.flag}</span>
+                    <span>{lang.label}</span>
                   </button>
                 ))}
               </div>
