@@ -13,25 +13,25 @@ export default function Hero() {
       title: t("projects.accu.title"),
       description: t("projects.accu.description"),
       tech: ["Python", "GitHub API", "VPS", "Telegram"],
-      link: "https://github.com/CreatmanCEO/ACCU",
+      link: "https://github.com/CreatmanCEO/accu",
     },
     {
       title: t("projects.aviawallet.title"),
       description: t("projects.aviawallet.description"),
       tech: ["Flutter", "Dart", "Firebase", "App Store"],
-      link: "https://apps.apple.com/app/aviawallet",
+      link: "https://github.com/CreatmanCEO/crypto-wallet-mvp",
     },
     {
       title: t("projects.ghost.title"),
       description: t("projects.ghost.description"),
       tech: ["Electron", "React", "TypeScript", "Python", "Claude", "Deepgram"],
-      link: "https://github.com/CreatmanCEO/GHOST",
+      link: "https://github.com/CreatmanCEO/ghost-showcase",
     },
     {
       title: t("projects.translator.title"),
       description: t("projects.translator.description"),
       tech: ["Python", "Telegram Bot API", "OCR", "Translation API"],
-      link: "https://github.com/CreatmanCEO/HebrewTranslator",
+      link: "https://github.com/CreatmanCEO/hebrew_doc_translator",
     },
   ];
 

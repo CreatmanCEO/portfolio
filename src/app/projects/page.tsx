@@ -23,7 +23,7 @@ const projects = [
     description:
       "Automated Claude Code agent updater. Monitors GitHub releases, auto-updates binary, notification system. Self-hosted on VPS.",
     tech: ["Python", "GitHub API", "VPS", "Telegram"],
-    github: "https://github.com/CreatmanCEO/ACCU",
+    github: "https://github.com/CreatmanCEO/accu",
     status: "Production",
     category: "DevOps",
   },
