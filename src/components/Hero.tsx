@@ -36,9 +36,9 @@ export default function Hero() {
   ];
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pt-16 pb-24 md:pt-24 md:pb-32">
+    <section className="mx-auto max-w-6xl px-6 pt-16 pb-16 md:pt-20 md:pb-20">
       {/* Minimalist Hero - Left Aligned */}
-      <div className="mb-32 md:mb-40">
+      <div className="mb-20 md:mb-24">
         <div className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
           {t("hero.label")}
         </div>
@@ -68,7 +68,7 @@ export default function Hero() {
       </div>
 
       {/* Featured Projects Grid */}
-      <div className="mb-24 md:mb-32">
+      <div className="mb-16 md:mb-20">
         <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted md:mb-12">
           {t("hero.featuredProjects")}
         </h2>

@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     volumes:
       # Mount Claude Code CLI (read-only)
       - /usr/local/bin/claude:/usr/local/bin/claude:ro

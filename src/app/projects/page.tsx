@@ -71,9 +71,9 @@ export default function ProjectsPage() {
   const { t } = useLanguage();
 
   return (
-    <main className="mx-auto max-w-7xl px-6 py-20">
+    <main className="mx-auto max-w-7xl px-6 py-16">
       {/* Header */}
-      <div className="mb-20 text-center">
+      <div className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold md:text-5xl">{t("projects.page.title")}</h1>
         <p className="text-lg text-muted">
           {t("projects.page.subtitle")}
