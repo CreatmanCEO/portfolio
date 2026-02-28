@@ -131,10 +131,10 @@ function ProjectCard({
             <span
               className={`rounded-full px-3 py-1 text-xs font-medium ${
                 project.status === "Production"
-                  ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                  ? "bg-green-100 text-green-900 dark:bg-green-900/30 dark:text-green-400"
                   : project.status === "Beta"
-                    ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
-                    : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                    ? "bg-blue-100 text-blue-900 dark:bg-blue-900/30 dark:text-blue-400"
+                    : "bg-yellow-100 text-yellow-900 dark:bg-yellow-900/30 dark:text-yellow-400"
               }`}
             >
               {t(getStatusKey(project.status))}
