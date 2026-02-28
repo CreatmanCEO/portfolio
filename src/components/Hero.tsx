@@ -3,34 +3,33 @@
 import Link from "next/link";
 import ProjectCard from "./ProjectCard";
 import TechStack from "./TechStack";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
+
   const featuredProjects = [
     {
-      title: "ACCU",
-      description:
-        "Automated Claude Code agent updater. Monitors GitHub releases, auto-updates binary, notification system. Self-hosted on VPS.",
+      title: t("projects.accu.title"),
+      description: t("projects.accu.description"),
       tech: ["Python", "GitHub API", "VPS", "Telegram"],
       link: "https://github.com/CreatmanCEO/ACCU",
     },
     {
-      title: "AviaWallet",
-      description:
-        "iOS app for managing aviation wallet points. Built with Flutter, shipped to App Store. Features offline sync, push notifications, analytics.",
+      title: t("projects.aviawallet.title"),
+      description: t("projects.aviawallet.description"),
       tech: ["Flutter", "Dart", "Firebase", "App Store"],
       link: "https://apps.apple.com/app/aviawallet",
     },
     {
-      title: "GHOST",
-      description:
-        "AI assistant with invisible overlay for interviews, meetings, and coding. Multi-provider LLM support (Claude, GPT-4, Gemini), real-time voice transcription.",
+      title: t("projects.ghost.title"),
+      description: t("projects.ghost.description"),
       tech: ["Electron", "React", "TypeScript", "Python", "Claude", "Deepgram"],
       link: "https://github.com/CreatmanCEO/GHOST",
     },
     {
-      title: "Hebrew Translator Bot",
-      description:
-        "Telegram bot for document translation with OCR support. Handles images, PDFs, text. Translation memory for consistency.",
+      title: t("projects.translator.title"),
+      description: t("projects.translator.description"),
       tech: ["Python", "Telegram Bot API", "OCR", "Translation API"],
       link: "https://github.com/CreatmanCEO/HebrewTranslator",
     },
@@ -40,21 +39,21 @@ export default function Hero() {
     <section className="mx-auto max-w-6xl px-6 pt-16 pb-24 md:pt-24 md:pb-32">
       {/* Minimalist Hero - Left Aligned */}
       <div className="mb-24 md:mb-32">
-        <div className="mb-6 text-sm font-medium uppercase tracking-widest text-muted">
-          Full-Stack Developer & Automation Engineer
+        <div className="mb-8 text-sm font-medium uppercase tracking-widest text-muted">
+          {t("hero.label")}
         </div>
-        <h1 className="mb-6 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
-          Building intelligent automation systems
+        <h1 className="mb-8 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
+          {t("hero.headline")}
         </h1>
-        <p className="mb-8 text-lg leading-relaxed text-muted md:text-xl">
-          7+ projects | App Store | 100+ hours saved
+        <p className="mb-10 text-lg leading-relaxed text-muted md:text-xl">
+          {t("hero.description")}
         </p>
         <div className="flex flex-wrap gap-4">
           <Link
             href="/projects"
             className="group inline-flex items-center gap-2 bg-foreground px-8 py-4 text-lg font-semibold text-background transition-all hover:gap-3"
           >
-            View Projects
+            {t("hero.viewProjects")}
             <span className="transition-transform group-hover:translate-x-1">
               →
             </span>
@@ -63,7 +62,7 @@ export default function Hero() {
             href="/ai-analyst"
             className="inline-flex items-center gap-2 border-2 border-foreground px-8 py-4 text-lg font-semibold transition-all hover:bg-foreground hover:text-background"
           >
-            Try AI Analyst
+            {t("hero.tryAI")}
           </Link>
         </div>
       </div>
@@ -71,7 +70,7 @@ export default function Hero() {
       {/* Featured Projects Grid */}
       <div className="mb-16 md:mb-24">
         <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted md:mb-12">
-          Featured Projects
+          {t("hero.featuredProjects")}
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8">
           {featuredProjects.map((project) => (

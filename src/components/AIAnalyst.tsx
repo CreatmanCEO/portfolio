@@ -54,6 +54,8 @@ export default function AIAnalyst() {
   };
 
   const handleFileSelect = async (path: string, type: "file" | "directory") => {
+    console.log("[AIAnalyst] File selected:", { path, type });
+
     if (type === "file") {
       setSelectedFile(path);
     }
@@ -81,6 +83,7 @@ export default function AIAnalyst() {
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
+    console.log("[AIAnalyst] Starting analysis:", { type, codePath: code, language });
     setLoading(true);
     setAnalysis("");
 
@@ -89,43 +92,73 @@ export default function AIAnalyst() {
 
       // If it's a file or directory path, load the content
       if (type === "file") {
-        const response = await fetch(`/api/read-file?path=${encodeURIComponent(code)}`);
+        console.log("[AIAnalyst] Loading file content:", code);
+        const fileUrl = `/api/read-file?path=${encodeURIComponent(code)}`;
+        console.log("[AIAnalyst] Fetching:", fileUrl);
+
+        const response = await fetch(fileUrl);
+        console.log("[AIAnalyst] File response status:", response.status);
+
         if (response.ok) {
           promptCode = await response.text();
+          console.log("[AIAnalyst] File content loaded, length:", promptCode.length);
         } else {
-          setAnalysis("Error: Unable to load file content.");
+          const errorText = await response.text();
+          console.error("[AIAnalyst] File load failed:", errorText);
+          setAnalysis(`Error: Unable to load file content. ${response.status}: ${errorText}`);
           setLoading(false);
           return;
         }
       } else if (type === "directory") {
         // For directories, just analyze the structure
         promptCode = `Directory: ${code}\nPlease provide insights about this directory structure and its purpose in the project.`;
+        console.log("[AIAnalyst] Directory analysis prompt created");
       }
 
+      console.log("[AIAnalyst] Sending to analysis API...");
       const response = await fetch("/api/analyze-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: promptCode, language }),
       });
 
-      if (!response.ok) throw new Error("Analysis failed");
+      console.log("[AIAnalyst] Analysis response status:", response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("[AIAnalyst] Analysis failed:", errorText);
+        throw new Error(`Analysis failed: ${response.status} - ${errorText}`);
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
 
-      if (!reader) throw new Error("No response stream");
+      if (!reader) {
+        console.error("[AIAnalyst] No response stream available");
+        throw new Error("No response stream");
+      }
+
+      console.log("[AIAnalyst] Starting stream reading...");
+      let chunkCount = 0;
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {
+          console.log("[AIAnalyst] Stream complete. Total chunks:", chunkCount);
+          break;
+        }
 
+        chunkCount++;
         const chunk = decoder.decode(value, { stream: true });
         setAnalysis((prev) => prev + chunk);
       }
     } catch (error) {
-      setAnalysis("Error: Unable to analyze. Please try again.");
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error("[AIAnalyst] Analysis error:", error);
+      setAnalysis(`Error: Unable to analyze. ${errorMessage}`);
     } finally {
       setLoading(false);
+      console.log("[AIAnalyst] Analysis complete");
     }
   };
 

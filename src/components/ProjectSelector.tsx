@@ -33,23 +33,48 @@ export default function ProjectSelector({ onProjectSelect, currentProject }: Pro
     setError("");
 
     try {
-      const response = await fetch("https://api.github.com/users/CreatmanCEO/repos?sort=updated&per_page=20");
+      console.log("[ProjectSelector] Fetching repositories from GitHub API...");
+
+      const response = await fetch("https://api.github.com/users/CreatmanCEO/repos?sort=updated&per_page=20", {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json',
+        },
+      });
+
+      console.log("[ProjectSelector] Response status:", response.status);
+      console.log("[ProjectSelector] Response headers:", {
+        'x-ratelimit-remaining': response.headers.get('x-ratelimit-remaining'),
+        'x-ratelimit-limit': response.headers.get('x-ratelimit-limit'),
+        'x-ratelimit-reset': response.headers.get('x-ratelimit-reset'),
+      });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch repositories");
+        const errorText = await response.text();
+        console.error("[ProjectSelector] API Error:", errorText);
+        throw new Error(`GitHub API returned ${response.status}: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log("[ProjectSelector] Fetched repos count:", data.length);
+      console.log("[ProjectSelector] First 3 repos:", data.slice(0, 3).map((r: Repository) => r.name));
+
       setRepos(data);
 
       // Set current portfolio as default
       const portfolioRepo = data.find((repo: Repository) => repo.name === "portfolio");
       if (portfolioRepo) {
+        console.log("[ProjectSelector] Setting default repo:", portfolioRepo.name);
         setSelectedRepo(portfolioRepo);
+      } else {
+        console.log("[ProjectSelector] Portfolio repo not found, available repos:", data.map((r: Repository) => r.name));
       }
     } catch (err) {
-      setError("Failed to load repositories from GitHub");
-      console.error("Error fetching repos:", err);
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setError(`Failed to load repositories: ${errorMessage}`);
+      console.error("[ProjectSelector] Error fetching repos:", err);
+
+      // Fallback: provide manual repo entry
+      console.log("[ProjectSelector] Using fallback - empty repo list");
     } finally {
       setLoading(false);
     }

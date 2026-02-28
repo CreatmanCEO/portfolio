@@ -18,13 +18,13 @@ export default function ProjectCard({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-lg border border-border bg-surface p-6 transition-all duration-200 hover:border-accent"
+      className="group block rounded-lg border border-border bg-surface p-8 transition-all duration-200 hover:border-accent"
     >
-      <h3 className="mb-3 text-2xl font-bold transition-colors group-hover:text-accent">
+      <h3 className="mb-4 text-2xl font-bold transition-colors group-hover:text-accent">
         {title}
       </h3>
-      <p className="mb-4 text-muted">{description}</p>
-      <div className="flex flex-wrap gap-2">
+      <p className="mb-6 text-muted">{description}</p>
+      <div className="flex flex-wrap gap-3">
         {tech.map((item) => (
           <span
             key={item}

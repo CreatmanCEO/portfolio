@@ -1,4 +1,10 @@
+"use client";
+
+import { useLanguage } from "@/contexts/LanguageContext";
+
 export default function TechStack() {
+  const { t } = useLanguage();
+
   const technologies = [
     "Python",
     "TypeScript",
@@ -15,7 +21,7 @@ export default function TechStack() {
   return (
     <div className="pb-20">
       <h2 className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
-        Tech Stack
+        {t("tech.title")}
       </h2>
       <div className="flex flex-wrap gap-6 text-lg font-medium">
         {technologies.map((tech) => (

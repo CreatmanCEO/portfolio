@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -40,7 +44,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-sm text-muted">
-            © {currentYear} Creatman. All rights reserved.
+            © {currentYear} Creatman. {t("footer.copyright")}
           </p>
         </div>
       </div>
