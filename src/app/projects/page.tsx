@@ -4,10 +4,38 @@ import { useLanguage } from "@/contexts/LanguageContext";
 
 const projects = [
   {
+    title: "Creatman Life Hub",
+    description: "AI-powered life management system with goal visualization, natural language input, and intelligent activity classification. Track progress through plant growth metaphor.",
+    tech: ["Python", "FastAPI", "React", "TypeScript", "AI Classification", "Docker"],
+    link: "https://hub.creatman.ru",
+    github: null, // private
+    status: "Production",
+    category: "AI",
+  },
+  {
+    title: "VPN Infrastructure",
+    description: "Production VPN infrastructure with WebSocket transport and DPI bypass serving business clients. Custom protocol implementation with automated monitoring.",
+    tech: ["Python", "WebSocket", "Network Security", "Monitoring"],
+    link: null,
+    github: null, // private
+    status: "Production",
+    category: "DevOps",
+  },
+  {
+    title: "DATN",
+    description: "Multi-agent trading AI system with complex decision-making architecture. Concept phase exploring autonomous trading strategies with AI coordination.",
+    tech: ["Python", "Multi-Agent Systems", "AI", "Trading Algorithms"],
+    link: null,
+    github: null,
+    status: "In Development",
+    category: "AI",
+  },
+  {
     title: "GHOST",
     description:
       "AI assistant with invisible overlay for interviews, meetings, and coding. Multi-provider LLM support (Claude, GPT-4, Gemini), real-time voice transcription.",
     tech: ["Electron", "React", "TypeScript", "Python", "Claude", "Deepgram"],
+    link: null,
     github: "https://github.com/CreatmanCEO/ghost-showcase",
     status: "In Development",
     category: "AI",
@@ -17,6 +45,8 @@ const projects = [
     description:
       "Mobile app for managing aviation wallet points. Built with Flutter, shipped to App Store. Features offline sync, push notifications, analytics.",
     tech: ["Flutter", "Dart", "Firebase", "App Store"],
+    link: "https://www.aviacoinus7.com/",
+    github: null,
     status: "Production",
     category: "Mobile",
   },
@@ -25,6 +55,7 @@ const projects = [
     description:
       "Automated Claude Code agent updater. Monitors GitHub releases, auto-updates binary, notification system. Self-hosted on VPS.",
     tech: ["Python", "GitHub API", "VPS", "Telegram"],
+    link: null,
     github: "https://github.com/CreatmanCEO/accu",
     status: "Production",
     category: "DevOps",
@@ -35,6 +66,7 @@ const projects = [
       "Full-stack marketplace platform built with Bubble.io. Complex algorithmic backend, payment integration, user management. Co-author project.",
     tech: ["Bubble.io", "No-Code", "API", "Payments"],
     link: "https://club-sbor.ru",
+    github: null,
     status: "Production",
     category: "Web",
   },
@@ -43,6 +75,7 @@ const projects = [
     description:
       "Real estate data scraper with advanced filtering. Exports to Excel, scheduled parsing, duplicate detection. Headless browser automation.",
     tech: ["Python", "Selenium", "Pandas", "Excel"],
+    link: null,
     github: "https://github.com/CreatmanCEO/cian-parser-showcase",
     status: "Production",
     category: "Automation",
@@ -52,6 +85,7 @@ const projects = [
     description:
       "Browser extension for organizing links with AI-powered categorization. Sync across devices, export to Notion.",
     tech: ["TypeScript", "Chrome API", "Claude", "Notion API"],
+    link: null,
     github: "https://github.com/CreatmanCEO/smart-link-collector",
     status: "Beta",
     category: "Extension",
@@ -61,6 +95,7 @@ const projects = [
     description:
       "Telegram bot for document translation with OCR support. Handles images, PDFs, text. Translation memory for consistency.",
     tech: ["Python", "Telegram Bot API", "OCR", "Translation API"],
+    link: null,
     github: "https://github.com/CreatmanCEO/hebrew_doc_translator",
     status: "Production",
     category: "Automation",

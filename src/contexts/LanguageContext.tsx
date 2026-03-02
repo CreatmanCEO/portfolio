@@ -40,6 +40,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.translator.title": "Hebrew Translator Bot",
     "projects.translator.description": "Telegram bot for document translation with OCR support. Handles images, PDFs, text. Translation memory for consistency.",
 
+    // New projects
+    "projects.lifehub.title": "Creatman Life Hub",
+    "projects.lifehub.description": "AI-powered life management system with goal visualization, natural language input, and intelligent activity classification. Track progress through plant growth metaphor.",
+
+    "projects.vpn.title": "VPN Infrastructure",
+    "projects.vpn.description": "Production VPN infrastructure with WebSocket transport and DPI bypass serving business clients. Custom protocol implementation with automated monitoring.",
+
+    "projects.datn.title": "DATN",
+    "projects.datn.description": "Multi-agent trading AI system with complex decision-making architecture. Concept phase exploring autonomous trading strategies with AI coordination.",
+
     // Tech Stack
     "tech.title": "Tech Stack",
     "tech.languages": "Languages",
@@ -119,6 +129,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.ghost.description": "Asistente AI con superposición invisible para entrevistas, reuniones y programación. Soporte multi-proveedor LLM (Claude, GPT-4, Gemini), transcripción de voz en tiempo real.",
     "projects.translator.title": "Bot Traductor de Hebreo",
     "projects.translator.description": "Bot de Telegram para traducción de documentos con soporte OCR. Maneja imágenes, PDFs, texto. Memoria de traducción para consistencia.",
+
+    // New projects
+    "projects.lifehub.title": "Creatman Life Hub",
+    "projects.lifehub.description": "Sistema de gestión de vida impulsado por IA con visualización de objetivos, entrada en lenguaje natural y clasificación inteligente de actividades. Rastrea el progreso mediante metáfora de crecimiento de plantas.",
+
+    "projects.vpn.title": "Infraestructura VPN",
+    "projects.vpn.description": "Infraestructura VPN de producción con transporte WebSocket y bypass DPI que sirve a clientes empresariales. Implementación de protocolo personalizado con monitoreo automatizado.",
+
+    "projects.datn.title": "DATN",
+    "projects.datn.description": "Sistema de IA de trading multi-agente con arquitectura de toma de decisiones compleja. Fase de concepto explorando estrategias de trading autónomas con coordinación de IA.",
 
     // Tech Stack
     "tech.title": "Stack Tecnológico",
@@ -200,6 +220,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.translator.title": "Бот-переводчик иврита",
     "projects.translator.description": "Telegram бот для перевода документов с поддержкой OCR. Обрабатывает изображения, PDF, текст. Память переводов для согласованности.",
 
+    // New projects
+    "projects.lifehub.title": "Creatman Life Hub",
+    "projects.lifehub.description": "AI-система управления жизнью с визуализацией целей, вводом на естественном языке и интеллектуальной классификацией активностей. Отслеживание прогресса через метафору роста растений.",
+
+    "projects.vpn.title": "VPN-инфраструктура",
+    "projects.vpn.description": "Продакшн VPN-инфраструктура с WebSocket-транспортом и обходом DPI для бизнес-клиентов. Реализация собственного протокола с автоматизированным мониторингом.",
+
+    "projects.datn.title": "DATN",
+    "projects.datn.description": "Мультиагентная торговая AI-система со сложной архитектурой принятия решений. Концептуальная фаза исследования автономных торговых стратегий с координацией ИИ.",
+
     // Tech Stack
     "tech.title": "Технологический стек",
     "tech.languages": "Языки программирования",
@@ -280,6 +310,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.translator.title": "בוט תרגום עברית",
     "projects.translator.description": "בוט טלגרם לתרגום מסמכים עם תמיכה OCR. מטפל בתמונות, PDF, טקסט. זיכרון תרגום לעקביות.",
 
+    // New projects
+    "projects.lifehub.title": "Creatman Life Hub",
+    "projects.lifehub.description": "מערכת ניהול חיים מבוססת AI עם ויזואליזציית מטרות, קלט בשפה טבעית וסיווג פעילויות חכם. מעקב אחר התקדמות דרך מטפורת צמיחת צמחים.",
+
+    "projects.vpn.title": "תשתית VPN",
+    "projects.vpn.description": "תשתית VPN ייצורית עם העברת WebSocket ועקיפת DPI המשרתת לקוחות עסקיים. יישום פרוטוקול מותאם אישית עם ניטור אוטומטי.",
+
+    "projects.datn.title": "DATN",
+    "projects.datn.description": "מערכת AI מסחר רב-סוכנים עם ארכיטקטורת קבלת החלטות מורכבת. שלב קונספט החוקר אסטרטגיות מסחר אוטונומיות עם תיאום AI.",
+
     // Tech Stack
     "tech.title": "סטק טכנולוגי",
     "tech.languages": "שפות תכנות",
@@ -359,6 +399,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.ghost.description": "面接、会議、コーディング用の透明オーバーレイAIアシスタント。マルチプロバイダーLLMサポート（Claude、GPT-4、Gemini）、リアルタイム音声文字起こし。",
     "projects.translator.title": "ヘブライ語翻訳ボット",
     "projects.translator.description": "OCRサポート付きドキュメント翻訳用Telegramボット。画像、PDF、テキストを処理。一貫性のための翻訳メモリ。",
+
+    // New projects
+    "projects.lifehub.title": "Creatman Life Hub",
+    "projects.lifehub.description": "目標の可視化、自然言語入力、インテリジェントなアクティビティ分類を備えたAI搭載ライフマネジメントシステム。植物の成長メタファーで進捗を追跡。",
+
+    "projects.vpn.title": "VPNインフラストラクチャ",
+    "projects.vpn.description": "ビジネスクライアントにサービスを提供するWebSocketトランスポートとDPIバイパスを備えた本番環境VPNインフラストラクチャ。自動監視付きカスタムプロトコル実装。",
+
+    "projects.datn.title": "DATN",
+    "projects.datn.description": "複雑な意思決定アーキテクチャを備えたマルチエージェント取引AIシステム。AI調整による自律的な取引戦略を探求するコンセプトフェーズ。",
 
     // Tech Stack
     "tech.title": "技術スタック",
