@@ -77,6 +77,24 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "about.status": "Open to remote & relocation",
     "about.experience": "5 years experience",
     "about.background": "Engineering geologist → Developer",
+
+    // Contact Form
+    "contact.title": "Let's Work Together",
+    "contact.name": "Your Name",
+    "contact.namePlaceholder": "John Doe",
+    "contact.contact": "Email or Telegram",
+    "contact.contactPlaceholder": "@username or email@example.com",
+    "contact.purpose": "What brings you here?",
+    "contact.purpose.collaborate": "Let's collaborate",
+    "contact.purpose.project": "Order a project",
+    "contact.purpose.hire": "Hire for a position",
+    "contact.message": "Message (optional)",
+    "contact.messagePlaceholder": "Tell me about your project or opportunity...",
+    "contact.submit": "Send Message",
+    "contact.sending": "Sending...",
+    "contact.success": "Thanks! I'll get back to you soon.",
+    "contact.error": "Failed to send. Please try again or contact me directly.",
+    "contact.orReach": "Or reach me directly:",
   },
   es: {
     // Navigation
@@ -139,6 +157,24 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "about.status": "Abierto a remoto y reubicación",
     "about.experience": "5 años de experiencia",
     "about.background": "Geólogo de ingeniería → Desarrollador",
+
+    // Contact Form
+    "contact.title": "Trabajemos Juntos",
+    "contact.name": "Tu Nombre",
+    "contact.namePlaceholder": "Juan Pérez",
+    "contact.contact": "Email o Telegram",
+    "contact.contactPlaceholder": "@usuario o email@ejemplo.com",
+    "contact.purpose": "¿Qué te trae aquí?",
+    "contact.purpose.collaborate": "Colaboremos",
+    "contact.purpose.project": "Ordenar un proyecto",
+    "contact.purpose.hire": "Contratar para un puesto",
+    "contact.message": "Mensaje (opcional)",
+    "contact.messagePlaceholder": "Cuéntame sobre tu proyecto u oportunidad...",
+    "contact.submit": "Enviar Mensaje",
+    "contact.sending": "Enviando...",
+    "contact.success": "¡Gracias! Te responderé pronto.",
+    "contact.error": "Error al enviar. Inténtalo de nuevo o contáctame directamente.",
+    "contact.orReach": "O contáctame directamente:",
   },
   ru: {
     // Navigation
@@ -201,6 +237,24 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "about.status": "Открыт к удаленке и релокации",
     "about.experience": "5 лет опыта",
     "about.background": "Инженер-геолог → Разработчик",
+
+    // Contact Form
+    "contact.title": "Давайте работать вместе",
+    "contact.name": "Ваше имя",
+    "contact.namePlaceholder": "Иван Иванов",
+    "contact.contact": "Email или Telegram",
+    "contact.contactPlaceholder": "@username или email@example.com",
+    "contact.purpose": "Что вас привело?",
+    "contact.purpose.collaborate": "Давайте сотрудничать",
+    "contact.purpose.project": "Заказать проект",
+    "contact.purpose.hire": "Нанять на должность",
+    "contact.message": "Сообщение (необязательно)",
+    "contact.messagePlaceholder": "Расскажите о вашем проекте или возможности...",
+    "contact.submit": "Отправить сообщение",
+    "contact.sending": "Отправка...",
+    "contact.success": "Спасибо! Я скоро свяжусь с вами.",
+    "contact.error": "Не удалось отправить. Попробуйте снова или свяжитесь со мной напрямую.",
+    "contact.orReach": "Или свяжитесь со мной напрямую:",
   },
   he: {
     // Navigation
@@ -263,6 +317,24 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "about.status": "פתוח לעבודה מרחוק ורילוקיישן",
     "about.experience": "5 שנות ניסיון",
     "about.background": "גאולוג הנדסי → מפתח",
+
+    // Contact Form
+    "contact.title": "בוא נעבוד ביחד",
+    "contact.name": "שמך",
+    "contact.namePlaceholder": "ישראל ישראלי",
+    "contact.contact": "Email או Telegram",
+    "contact.contactPlaceholder": "@username או email@example.com",
+    "contact.purpose": "מה מביא אותך לכאן?",
+    "contact.purpose.collaborate": "בוא נשתף פעולה",
+    "contact.purpose.project": "הזמנת פרויקט",
+    "contact.purpose.hire": "גיוס לתפקיד",
+    "contact.message": "הודעה (אופציונלי)",
+    "contact.messagePlaceholder": "ספר לי על הפרויקט או ההזדמנות שלך...",
+    "contact.submit": "שלח הודעה",
+    "contact.sending": "שולח...",
+    "contact.success": "תודה! אחזור אליך בקרוב.",
+    "contact.error": "שליחה נכשלה. נסה שוב או צור קשר ישירות.",
+    "contact.orReach": "או צור קשר ישירות:",
   },
   jp: {
     // Navigation
@@ -325,6 +397,24 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "about.status": "リモート・リロケーション可",
     "about.experience": "5年の経験",
     "about.background": "エンジニアリング地質学者 → 開発者",
+
+    // Contact Form
+    "contact.title": "一緒に働きましょう",
+    "contact.name": "お名前",
+    "contact.namePlaceholder": "山田太郎",
+    "contact.contact": "メールまたはTelegram",
+    "contact.contactPlaceholder": "@username または email@example.com",
+    "contact.purpose": "ご用件は？",
+    "contact.purpose.collaborate": "協力しましょう",
+    "contact.purpose.project": "プロジェクトを発注",
+    "contact.purpose.hire": "採用のため",
+    "contact.message": "メッセージ（任意）",
+    "contact.messagePlaceholder": "プロジェクトや機会について教えてください...",
+    "contact.submit": "メッセージを送信",
+    "contact.sending": "送信中...",
+    "contact.success": "ありがとうございます！すぐにご連絡します。",
+    "contact.error": "送信に失敗しました。もう一度お試しいただくか、直接ご連絡ください。",
+    "contact.orReach": "または直接ご連絡ください：",
   },
 };
 
