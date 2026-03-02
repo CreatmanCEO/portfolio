@@ -61,6 +61,7 @@ export default function ProjectSelector({ onProjectSelect, currentProject }: Pro
       if (portfolioRepo) {
         console.log("[ProjectSelector] Setting default repo:", portfolioRepo.name);
         setSelectedRepo(portfolioRepo);
+        onProjectSelect(portfolioRepo); // Notify parent component to load files
       } else {
         console.log("[ProjectSelector] Portfolio repo not found, available repos:", data.map((r: Repository) => r.name));
       }

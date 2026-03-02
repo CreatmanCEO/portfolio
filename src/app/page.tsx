@@ -8,7 +8,9 @@ export default function Home() {
     <>
       <main>
         <Hero />
+        <div className="my-12 md:my-24"></div>
         <AboutMe />
+        <div className="my-12 md:my-24"></div>
         <ContactForm />
       </main>
       <Footer />
