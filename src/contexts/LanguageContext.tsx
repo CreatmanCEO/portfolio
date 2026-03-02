@@ -23,9 +23,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "AI Analyst",
 
     // Hero
-    "hero.label": "Full-Stack Developer & Automation Engineer",
-    "hero.headline": "Building intelligent automation systems",
-    "hero.description": "7+ projects | App Store | 100+ hours saved",
+    "hero.label": "Full-Stack Product Developer",
+    "hero.headline": "Solo-shipped to Production",
+    "hero.description": "✓ Published in App Store & Production\n✓ VPN Infrastructure for Business Clients\n✓ AI-powered Automation Tools",
     "hero.viewProjects": "View Projects",
     "hero.tryAI": "Try AI Analyst",
     "hero.featuredProjects": "Featured Projects",
@@ -75,9 +75,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "Analista AI",
 
     // Hero
-    "hero.label": "Desarrollador Full-Stack e Ingeniero de Automatización",
-    "hero.headline": "Construyendo sistemas de automatización inteligentes",
-    "hero.description": "7+ proyectos | App Store | 100+ horas ahorradas",
+    "hero.label": "Desarrollador de Producto Full-Stack",
+    "hero.headline": "Lanzado a Producción en Solitario",
+    "hero.description": "✓ Publicado en App Store y Producción\n✓ Infraestructura VPN para Clientes Empresariales\n✓ Herramientas de Automatización con IA",
     "hero.viewProjects": "Ver Proyectos",
     "hero.tryAI": "Probar Analista AI",
     "hero.featuredProjects": "Proyectos Destacados",
@@ -127,9 +127,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "AI Аналитик",
 
     // Hero
-    "hero.label": "Full-Stack Разработчик и Инженер по Автоматизации",
-    "hero.headline": "Создаю интеллектуальные системы автоматизации",
-    "hero.description": "7+ проектов | App Store | 100+ часов сэкономлено",
+    "hero.label": "Full-Stack Product Developer",
+    "hero.headline": "Solo-shipped to Production",
+    "hero.description": "✓ Опубликовано в App Store и Production\n✓ VPN-инфраструктура для бизнес-клиентов\n✓ AI-инструменты автоматизации",
     "hero.viewProjects": "Смотреть проекты",
     "hero.tryAI": "Попробовать AI Аналитик",
     "hero.featuredProjects": "Избранные Проекты",
@@ -179,9 +179,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "אנליסט AI",
 
     // Hero
-    "hero.label": "מפתח Full-Stack ומהנדס אוטומציה",
-    "hero.headline": "בונה מערכות אוטומציה חכמות",
-    "hero.description": "7+ פרויקטים | App Store | 100+ שעות שנחסכו",
+    "hero.label": "מפתח מוצר Full-Stack",
+    "hero.headline": "שוחרר לייצור באופן עצמאי",
+    "hero.description": "✓ פורסם ב-App Store וב-Production\n✓ תשתית VPN עבור לקוחות עסקיים\n✓ כלי אוטומציה מבוססי AI",
     "hero.viewProjects": "צפה בפרויקטים",
     "hero.tryAI": "נסה אנליסט AI",
     "hero.featuredProjects": "פרויקטים נבחרים",
@@ -231,9 +231,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "AIアナリスト",
 
     // Hero
-    "hero.label": "フルスタック開発者＆自動化エンジニア",
-    "hero.headline": "インテリジェント自動化システムの構築",
-    "hero.description": "7+プロジェクト | App Store | 100+時間節約",
+    "hero.label": "フルスタックプロダクト開発者",
+    "hero.headline": "単独でプロダクションにリリース",
+    "hero.description": "✓ App StoreとProductionで公開\n✓ ビジネスクライアント向けVPNインフラ\n✓ AI搭載自動化ツール",
     "hero.viewProjects": "プロジェクトを見る",
     "hero.tryAI": "AIアナリストを試す",
     "hero.featuredProjects": "おすすめプロジェクト",

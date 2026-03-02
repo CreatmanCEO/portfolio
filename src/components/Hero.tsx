@@ -45,9 +45,13 @@ export default function Hero() {
         <h1 className="mb-10 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
           {t("hero.headline")}
         </h1>
-        <p className="mb-12 text-lg leading-relaxed text-muted md:text-xl">
-          {t("hero.description")}
-        </p>
+        <div className="mb-12 space-y-2">
+          {t("hero.description").split('\n').map((line, i) => (
+            <p key={i} className="text-lg leading-relaxed text-muted md:text-xl">
+              {line}
+            </p>
+          ))}
+        </div>
         <div className="flex flex-wrap gap-4">
           <Link
             href="/projects"
