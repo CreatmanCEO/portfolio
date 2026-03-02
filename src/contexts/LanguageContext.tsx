@@ -67,6 +67,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.category.extension": "Extension",
     "projects.link.github": "GitHub",
     "projects.link.demo": "Live Demo",
+
+    // About Me
+    "about.title": "About Me",
+    "about.bio.p1": "I'm a Python developer and automation engineer with 5 years of experience building and shipping products end-to-end. Before tech, I worked as an engineering geologist — mapping subsurface structures and modeling complex data taught me to think in systems and solve problems with precision. Now I apply that mindset to software: from AI-powered tools to production infrastructure.",
+    "about.bio.p2": "I solo-ship. My projects include an AI desktop assistant with real-time screen analysis and multi-LLM support, production VPN infrastructure with DPI bypass serving business clients, mobile apps published in the App Store, and 15+ Telegram bots and automation workflows in production. My core stack is Python, but I work across the full cycle — backend, infrastructure, deployment, and when needed, frontend.",
+    "about.bio.p3": "Currently based in Russia and actively looking for opportunities abroad — remote or relocation, anywhere in the world. If you need a developer who can own a product from architecture to production, let's talk.",
+    "about.location": "Based in Russia",
+    "about.status": "Open to remote & relocation",
+    "about.experience": "5 years experience",
+    "about.background": "Engineering geologist → Developer",
   },
   es: {
     // Navigation
@@ -119,6 +129,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.category.extension": "Extensión",
     "projects.link.github": "GitHub",
     "projects.link.demo": "Demo en Vivo",
+
+    // About Me
+    "about.title": "Sobre Mí",
+    "about.bio.p1": "Soy un desarrollador de Python e ingeniero de automatización con 5 años de experiencia construyendo y lanzando productos de extremo a extremo. Antes de la tecnología, trabajé como geólogo de ingeniería: el mapeo de estructuras subterráneas y el modelado de datos complejos me enseñaron a pensar en sistemas y resolver problemas con precisión. Ahora aplico esa mentalidad al software: desde herramientas impulsadas por IA hasta infraestructura de producción.",
+    "about.bio.p2": "Lanzo proyectos en solitario. Mis proyectos incluyen un asistente de escritorio de IA con análisis de pantalla en tiempo real y soporte multi-LLM, infraestructura VPN de producción con bypass DPI sirviendo clientes empresariales, aplicaciones móviles publicadas en App Store, y más de 15 bots de Telegram y flujos de automatización en producción. Mi stack principal es Python, pero trabajo en todo el ciclo: backend, infraestructura, despliegue y, cuando es necesario, frontend.",
+    "about.bio.p3": "Actualmente ubicado en Rusia y buscando activamente oportunidades en el extranjero: remoto o reubicación, en cualquier parte del mundo. Si necesitas un desarrollador que pueda ser dueño de un producto desde la arquitectura hasta la producción, hablemos.",
+    "about.location": "Ubicado en Rusia",
+    "about.status": "Abierto a remoto y reubicación",
+    "about.experience": "5 años de experiencia",
+    "about.background": "Geólogo de ingeniería → Desarrollador",
   },
   ru: {
     // Navigation
@@ -171,6 +191,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.category.extension": "Расширение",
     "projects.link.github": "GitHub",
     "projects.link.demo": "Живое Демо",
+
+    // About Me
+    "about.title": "Обо мне",
+    "about.bio.p1": "Я Python-разработчик и инженер по автоматизации с 5-летним опытом создания и запуска продуктов от начала до конца. До технологий я работал инженером-геологом — картирование подземных структур и моделирование сложных данных научили меня мыслить системно и решать проблемы с точностью. Теперь я применяю этот подход к разработке ПО: от AI-инструментов до продакшн-инфраструктуры.",
+    "about.bio.p2": "Я запускаю проекты самостоятельно. Мои проекты включают AI-ассистент для desktop с анализом экрана в реальном времени и поддержкой нескольких LLM, продакшн VPN-инфраструктуру с обходом DPI для бизнес-клиентов, мобильные приложения в App Store и 15+ Telegram-ботов и автоматизаций в продакшене. Мой основной стек — Python, но я работаю на всех этапах: backend, инфраструктура, деплой и, при необходимости, frontend.",
+    "about.bio.p3": "Сейчас нахожусь в России и активно ищу возможности за рубежом — удаленная работа или релокация, в любую точку мира. Если вам нужен разработчик, который может вести продукт от архитектуры до продакшена — давайте поговорим.",
+    "about.location": "Нахожусь в России",
+    "about.status": "Открыт к удаленке и релокации",
+    "about.experience": "5 лет опыта",
+    "about.background": "Инженер-геолог → Разработчик",
   },
   he: {
     // Navigation
@@ -223,6 +253,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.category.extension": "תוסף",
     "projects.link.github": "GitHub",
     "projects.link.demo": "דמו חי",
+
+    // About Me
+    "about.title": "אודותיי",
+    "about.bio.p1": "אני מפתח Python ומהנדס אוטומציה עם 5 שנות ניסיון בבנייה ושיגור מוצרים מקצה לקצה. לפני עולם הטכנולוגיה, עבדתי כגאולוג הנדסי — מיפוי מבנים תת-קרקעיים ומידול נתונים מורכבים לימדו אותי לחשוב במערכות ולפתור בעיות בדיוק. כעת אני מיישם חשיבה זו בפיתוח תוכנה: מכלי AI ועד תשתית ייצור.",
+    "about.bio.p2": "אני משגר פרויקטים לבד. הפרויקטים שלי כוללים עוזר AI לשולחן עבודה עם ניתוח מסך בזמן אמת ותמיכה במספר LLM, תשתית VPN ייצורית עם מעקף DPI המשרתת לקוחות עסקיים, אפליקציות מובייל שפורסמו ב-App Store, ויותר מ-15 בוטים של Telegram ותהליכי אוטומציה בייצור. הסטאק העיקרי שלי הוא Python, אבל אני עובד על כל המחזור — backend, תשתית, פריסה, וכשצריך, frontend.",
+    "about.bio.p3": "כרגע מבוסס ברוסיה ומחפש באופן אקטיבי הזדמנויות בחו״ל — עבודה מרחוק או רילוקיישן, לכל מקום בעולם. אם אתה צריך מפתח שיכול לנהל מוצר מארכיטקטורה ועד ייצור, בוא נדבר.",
+    "about.location": "מבוסס ברוסיה",
+    "about.status": "פתוח לעבודה מרחוק ורילוקיישן",
+    "about.experience": "5 שנות ניסיון",
+    "about.background": "גאולוג הנדסי → מפתח",
   },
   jp: {
     // Navigation
@@ -275,6 +315,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "projects.category.extension": "拡張機能",
     "projects.link.github": "GitHub",
     "projects.link.demo": "ライブデモ",
+
+    // About Me
+    "about.title": "私について",
+    "about.bio.p1": "私は5年の経験を持つPython開発者および自動化エンジニアで、製品のエンドツーエンドの構築と出荷を行っています。テクノロジー業界に入る前は、エンジニアリング地質学者として働いていました。地下構造のマッピングと複雑なデータのモデリングを通じて、システム思考と精密な問題解決を学びました。現在はその考え方をソフトウェアに適用しています：AI搭載ツールから本番インフラまで。",
+    "about.bio.p2": "私は単独で製品を出荷します。私のプロジェクトには、リアルタイム画面分析とマルチLLMサポートを備えたAIデスクトップアシスタント、ビジネスクライアントにサービスを提供するDPIバイパス付き本番VPNインフラ、App Storeで公開されたモバイルアプリ、本番環境で稼働する15以上のTelegramボットと自動化ワークフローが含まれます。コアスタックはPythonですが、バックエンド、インフラ、デプロイメント、必要に応じてフロントエンドまで、フルサイクルで作業します。",
+    "about.bio.p3": "現在ロシアを拠点としており、海外での機会を積極的に探しています。リモートまたはリロケーション、世界中どこでも対応可能です。アーキテクチャから本番環境まで製品を所有できる開発者が必要な場合は、ぜひお話ししましょう。",
+    "about.location": "ロシア在住",
+    "about.status": "リモート・リロケーション可",
+    "about.experience": "5年の経験",
+    "about.background": "エンジニアリング地質学者 → 開発者",
   },
 };
 
