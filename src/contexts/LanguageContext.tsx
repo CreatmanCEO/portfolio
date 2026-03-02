@@ -105,6 +105,23 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "contact.success": "Thanks! I'll get back to you soon.",
     "contact.error": "Failed to send. Please try again or contact me directly.",
     "contact.orReach": "Or reach me directly:",
+
+    // AI Analyst Welcome
+    "aiAnalyst.welcome.title": "Welcome to AI Code Analyst",
+    "aiAnalyst.welcome.subtitle": "Analyze any code instantly using Gemini AI",
+    "aiAnalyst.welcome.howTo": "How to use:",
+    "aiAnalyst.welcome.step1": "Select files from file tree (left)",
+    "aiAnalyst.welcome.step2": "OR paste your code in the editor (center)",
+    "aiAnalyst.welcome.step3": "Choose language (top right)",
+    "aiAnalyst.welcome.step4": "Click \"Analyze Code\" → get instant review",
+    "aiAnalyst.welcome.features": "Features:",
+    "aiAnalyst.welcome.feature1": "Code quality assessment",
+    "aiAnalyst.welcome.feature2": "Bug detection",
+    "aiAnalyst.welcome.feature3": "Improvement suggestions",
+    "aiAnalyst.welcome.feature4": "Best practices check",
+    "aiAnalyst.welcome.feature5": "Multi-language support (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.gotIt": "Got it, let's start",
+    "aiAnalyst.welcome.showEveryTime": "Show every time",
   },
   es: {
     // Navigation
@@ -195,6 +212,23 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "contact.success": "¡Gracias! Te responderé pronto.",
     "contact.error": "Error al enviar. Inténtalo de nuevo o contáctame directamente.",
     "contact.orReach": "O contáctame directamente:",
+
+    // AI Analyst Welcome
+    "aiAnalyst.welcome.title": "Bienvenido al Analista de Código AI",
+    "aiAnalyst.welcome.subtitle": "Analiza cualquier código al instante usando Gemini AI",
+    "aiAnalyst.welcome.howTo": "Cómo usar:",
+    "aiAnalyst.welcome.step1": "Selecciona archivos del árbol (izquierda)",
+    "aiAnalyst.welcome.step2": "O pega tu código en el editor (centro)",
+    "aiAnalyst.welcome.step3": "Elige el idioma (arriba derecha)",
+    "aiAnalyst.welcome.step4": "Haz clic en \"Analizar Código\" → obtén revisión instantánea",
+    "aiAnalyst.welcome.features": "Características:",
+    "aiAnalyst.welcome.feature1": "Evaluación de calidad de código",
+    "aiAnalyst.welcome.feature2": "Detección de errores",
+    "aiAnalyst.welcome.feature3": "Sugerencias de mejora",
+    "aiAnalyst.welcome.feature4": "Verificación de mejores prácticas",
+    "aiAnalyst.welcome.feature5": "Soporte multiidioma (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.gotIt": "Entendido, comencemos",
+    "aiAnalyst.welcome.showEveryTime": "Mostrar siempre",
   },
   ru: {
     // Navigation
@@ -285,6 +319,23 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "contact.success": "Спасибо! Я скоро свяжусь с вами.",
     "contact.error": "Не удалось отправить. Попробуйте снова или свяжитесь со мной напрямую.",
     "contact.orReach": "Или свяжитесь со мной напрямую:",
+
+    // AI Analyst Welcome
+    "aiAnalyst.welcome.title": "Добро пожаловать в AI Code Analyst",
+    "aiAnalyst.welcome.subtitle": "Анализируйте любой код мгновенно с помощью Gemini AI",
+    "aiAnalyst.welcome.howTo": "Как использовать:",
+    "aiAnalyst.welcome.step1": "Выберите файлы из дерева файлов (слева)",
+    "aiAnalyst.welcome.step2": "ИЛИ вставьте код в редактор (в центре)",
+    "aiAnalyst.welcome.step3": "Выберите язык (справа вверху)",
+    "aiAnalyst.welcome.step4": "Нажмите \"Analyze Code\" → получите мгновенный обзор",
+    "aiAnalyst.welcome.features": "Возможности:",
+    "aiAnalyst.welcome.feature1": "Оценка качества кода",
+    "aiAnalyst.welcome.feature2": "Обнаружение ошибок",
+    "aiAnalyst.welcome.feature3": "Предложения по улучшению",
+    "aiAnalyst.welcome.feature4": "Проверка лучших практик",
+    "aiAnalyst.welcome.feature5": "Поддержка нескольких языков (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.gotIt": "Понятно, начнём",
+    "aiAnalyst.welcome.showEveryTime": "Показывать каждый раз",
   },
   he: {
     // Navigation
@@ -375,6 +426,23 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "contact.success": "תודה! אחזור אליך בקרוב.",
     "contact.error": "שליחה נכשלה. נסה שוב או צור קשר ישירות.",
     "contact.orReach": "או צור קשר ישירות:",
+
+    // AI Analyst Welcome
+    "aiAnalyst.welcome.title": "ברוכים הבאים ל-AI Code Analyst",
+    "aiAnalyst.welcome.subtitle": "נתח כל קוד באופן מיידי באמצעות Gemini AI",
+    "aiAnalyst.welcome.howTo": "איך להשתמש:",
+    "aiAnalyst.welcome.step1": "בחר קבצים מעץ הקבצים (משמאל)",
+    "aiAnalyst.welcome.step2": "או הדבק את הקוד שלך בעורך (במרכז)",
+    "aiAnalyst.welcome.step3": "בחר שפה (למעלה מימין)",
+    "aiAnalyst.welcome.step4": "לחץ על \"Analyze Code\" → קבל סקירה מיידית",
+    "aiAnalyst.welcome.features": "תכונות:",
+    "aiAnalyst.welcome.feature1": "הערכת איכות קוד",
+    "aiAnalyst.welcome.feature2": "זיהוי באגים",
+    "aiAnalyst.welcome.feature3": "הצעות לשיפור",
+    "aiAnalyst.welcome.feature4": "בדיקת שיטות עבודה מומלצות",
+    "aiAnalyst.welcome.feature5": "תמיכה מרובת שפות (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.gotIt": "הבנתי, בואו נתחיל",
+    "aiAnalyst.welcome.showEveryTime": "הצג בכל פעם",
   },
   jp: {
     // Navigation
@@ -465,6 +533,23 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "contact.success": "ありがとうございます！すぐにご連絡します。",
     "contact.error": "送信に失敗しました。もう一度お試しいただくか、直接ご連絡ください。",
     "contact.orReach": "または直接ご連絡ください：",
+
+    // AI Analyst Welcome
+    "aiAnalyst.welcome.title": "AI Code Analystへようこそ",
+    "aiAnalyst.welcome.subtitle": "Gemini AIを使用して任意のコードを即座に分析",
+    "aiAnalyst.welcome.howTo": "使い方：",
+    "aiAnalyst.welcome.step1": "ファイルツリーからファイルを選択（左側）",
+    "aiAnalyst.welcome.step2": "またはエディターにコードを貼り付け（中央）",
+    "aiAnalyst.welcome.step3": "言語を選択（右上）",
+    "aiAnalyst.welcome.step4": "「Analyze Code」をクリック → 即座にレビューを取得",
+    "aiAnalyst.welcome.features": "機能：",
+    "aiAnalyst.welcome.feature1": "コード品質評価",
+    "aiAnalyst.welcome.feature2": "バグ検出",
+    "aiAnalyst.welcome.feature3": "改善提案",
+    "aiAnalyst.welcome.feature4": "ベストプラクティスチェック",
+    "aiAnalyst.welcome.feature5": "多言語サポート（EN、RU、ES、HE、JP）",
+    "aiAnalyst.welcome.gotIt": "わかりました、始めましょう",
+    "aiAnalyst.welcome.showEveryTime": "毎回表示",
   },
 };
 
