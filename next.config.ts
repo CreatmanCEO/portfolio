@@ -12,6 +12,16 @@ const nextConfig: NextConfig = {
 
   // Compression
   compress: true,
+
+  // Image optimization domains
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "creatman.site" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "cdn.hashnode.com" },
+      { protocol: "https", hostname: "media2.dev.to" },
+    ],
+  },
 };
 
 export default nextConfig;

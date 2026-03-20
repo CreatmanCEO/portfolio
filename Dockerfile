@@ -36,6 +36,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
+# Create data directory for SQLite and uploads
+RUN mkdir -p /app/data/uploads && chown -R nextjs:nodejs /app/data
+
 # Set ownership
 RUN chown -R nextjs:nodejs /app
 

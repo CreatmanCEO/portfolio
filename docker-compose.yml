@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Next.js Portfolio Application
   portfolio:
@@ -13,6 +11,8 @@ services:
     env_file:
       - .env
     volumes:
+      # Persistent data (SQLite DB + uploads)
+      - ./data:/app/data
       # Mount Claude Code CLI (read-only)
       - /usr/local/bin/claude:/usr/local/bin/claude:ro
       # Mount workbot's Claude config (read-only)
