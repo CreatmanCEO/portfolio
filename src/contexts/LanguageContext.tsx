@@ -80,13 +80,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
 
     // About Me
     "about.title": "About Me",
-    "about.bio.p1": "I'm a Python developer and automation engineer with 5 years of experience building and shipping products end-to-end. Before tech, I worked as an engineering geologist — mapping subsurface structures and modeling complex data taught me to think in systems and solve problems with precision. Now I apply that mindset to software: from AI-powered tools to production infrastructure.",
-    "about.bio.p2": "I solo-ship. My projects include an AI desktop assistant with real-time screen analysis and multi-LLM support, production VPN infrastructure with DPI bypass serving business clients, mobile apps published in the App Store, and 15+ Telegram bots and automation workflows in production. My core stack is Python, but I work across the full cycle — backend, infrastructure, deployment, and when needed, frontend.",
-    "about.bio.p3": "Currently based in Russia and actively looking for opportunities abroad — remote or relocation, anywhere in the world. If you need a developer who can own a product from architecture to production, let's talk.",
-    "about.location": "Based in Russia",
-    "about.status": "Open to remote & relocation",
-    "about.experience": "5 years experience",
-    "about.background": "Engineering geologist → Developer",
+    "about.p1": "I build things that solve real problems. In whatever field the problem lives.",
+    "about.p2": "A friend's phone was compromised — I'd never built a security scanner before. Two days later I had a working product with Suricata IDS, behavioral analysis, and AI-generated reports finding real threats on real devices.",
+    "about.p3": "Government breaks the internet — I build VPN infrastructure that bypasses censorship for dozens of clients. Need a crypto wallet — I ship it to the App Store. Need a marketplace — I build it on Flutter and GCP. Need developer tools — I publish them on GitHub.",
+    "about.p4": "Before software, I led geological field expeditions in Kolyma, Siberia — mapping subsurface structures in conditions where you can't afford to guess wrong.",
+    "about.p5": "6 years running CREATMAN. 20+ shipped products. Security, AI, fintech, infrastructure, automation, developer tools, education.",
+    "about.tagline": "I don't specialize. I solve.",
+    "about.fact1": "20+ Products",
+    "about.fact2": "6 Years Solo",
+    "about.fact3": "Open Worldwide",
+    "about.fact4": "Idea → Production",
 
     // Contact Form
     "contact.title": "Let's Work Together",
@@ -187,13 +190,16 @@ const translations: Record<LanguageCode, Record<string, string>> = {
 
     // About Me
     "about.title": "Обо мне",
-    "about.bio.p1": "Я Python-разработчик и инженер по автоматизации с 5-летним опытом создания и запуска продуктов от начала до конца. До технологий я работал инженером-геологом — картирование подземных структур и моделирование сложных данных научили меня мыслить системно и решать проблемы с точностью. Теперь я применяю этот подход к разработке ПО: от AI-инструментов до продакшн-инфраструктуры.",
-    "about.bio.p2": "Я запускаю проекты самостоятельно. Мои проекты включают AI-ассистент для desktop с анализом экрана в реальном времени и поддержкой нескольких LLM, продакшн VPN-инфраструктуру с обходом DPI для бизнес-клиентов, мобильные приложения в App Store и 15+ Telegram-ботов и автоматизаций в продакшене. Мой основной стек — Python, но я работаю на всех этапах: backend, инфраструктура, деплой и, при необходимости, frontend.",
-    "about.bio.p3": "Сейчас нахожусь в России и активно ищу возможности за рубежом — удаленная работа или релокация, в любую точку мира. Если вам нужен разработчик, который может вести продукт от архитектуры до продакшена — давайте поговорим.",
-    "about.location": "Нахожусь в России",
-    "about.status": "Открыт к удаленке и релокации",
-    "about.experience": "5 лет опыта",
-    "about.background": "Инженер-геолог → Разработчик",
+    "about.p1": "Я строю вещи, которые решают реальные проблемы. В какой бы области эта проблема ни жила.",
+    "about.p2": "Телефон друга был скомпрометирован — я никогда раньше не строил сканер безопасности. Через два дня у меня был рабочий продукт с Suricata IDS, поведенческим анализом и AI-отчётами, находящими реальные угрозы на реальных устройствах.",
+    "about.p3": "Правительство ломает интернет — я строю VPN-инфраструктуру, обходящую цензуру для десятков клиентов. Нужен крипто-кошелёк — выпускаю в App Store. Нужен маркетплейс — строю на Flutter и GCP. Нужны developer tools — публикую на GitHub.",
+    "about.p4": "До софтвера я руководил геологическими полевыми экспедициями на Колыме, в Сибири — картировал подземные структуры в условиях, где нельзя позволить себе ошибку.",
+    "about.p5": "6 лет CREATMAN. 20+ shipped продуктов. Безопасность, AI, финтех, инфраструктура, автоматизация, developer tools, образование.",
+    "about.tagline": "Я не специализируюсь. Я решаю.",
+    "about.fact1": "20+ Продуктов",
+    "about.fact2": "6 Лет Соло",
+    "about.fact3": "Открыт миру",
+    "about.fact4": "Идея → Продакшн",
 
     // Contact Form
     "contact.title": "Давайте работать вместе",
