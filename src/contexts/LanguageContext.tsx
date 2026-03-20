@@ -20,6 +20,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Navigation
     "nav.home": "Home",
     "nav.projects": "Projects",
+    "nav.blog": "Blog",
     "nav.aiAnalyst": "AI Analyst",
 
     // Hero
@@ -131,6 +132,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     // Navigation
     "nav.home": "Главная",
     "nav.projects": "Проекты",
+    "nav.blog": "Блог",
     "nav.aiAnalyst": "AI Аналитик",
 
     // Hero
