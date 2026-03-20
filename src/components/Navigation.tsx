@@ -10,23 +10,12 @@ export default function Navigation() {
   const pathname = usePathname();
   const { language, setLanguage, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   const links = [
     { href: "/", label: t("nav.home") },
     { href: "/projects", label: t("nav.projects") },
     { href: "/ai-analyst", label: t("nav.aiAnalyst") },
   ];
-
-  const languages = [
-    { code: "en" as const, flag: "🇬🇧", display: "EN", label: "English" },
-    { code: "es" as const, flag: "🇪🇸", display: "ES", label: "Español" },
-    { code: "ru" as const, flag: "🇷🇺", display: "RU", label: "Русский" },
-    { code: "he" as const, flag: "🇮🇱", display: "HE", label: "עברית" },
-    { code: "jp" as const, flag: "🇯🇵", display: "JP", label: "日本語" },
-  ];
-
-  const currentLangDisplay = languages.find((l) => l.code === language)?.display || "EN";
 
   const socialLinks = [
     {
@@ -61,6 +50,31 @@ export default function Navigation() {
       ),
     },
   ];
+
+  const LanguageToggle = () => (
+    <div className="flex gap-1 text-xs">
+      <button
+        onClick={() => setLanguage('en')}
+        className={`rounded-md px-2 py-1 transition-colors ${
+          language === 'en'
+            ? 'bg-accent/10 font-medium text-accent'
+            : 'text-muted hover:text-foreground'
+        }`}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLanguage('ru')}
+        className={`rounded-md px-2 py-1 transition-colors ${
+          language === 'ru'
+            ? 'bg-accent/10 font-medium text-accent'
+            : 'text-muted hover:text-foreground'
+        }`}
+      >
+        RU
+      </button>
+    </div>
+  );
 
   return (
     <>
@@ -106,49 +120,9 @@ export default function Navigation() {
                 ))}
               </div>
 
-              {/* Language Selector - Desktop Only */}
-              <div className="relative hidden md:block">
-                <button
-                  onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                  className="flex items-center gap-1 text-sm font-medium transition-colors hover:text-accent"
-                  aria-label="Select language"
-                >
-                  <span>{languages.find((l) => l.code === language)?.flag || "🌐"}</span>
-                  <span>{currentLangDisplay}</span>
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </button>
-
-                {langDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-40 rounded-lg border border-border bg-surface shadow-lg">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code);
-                          setLangDropdownOpen(false);
-                        }}
-                        className={`flex w-full items-center gap-2 px-4 py-2 text-left text-sm transition-colors hover:bg-accent/10 first:rounded-t-lg last:rounded-b-lg ${
-                          language === lang.code ? "text-accent" : ""
-                        }`}
-                      >
-                        <span>{lang.flag}</span>
-                        <span>{lang.label}</span>
-                      </button>
-                    ))}
-                  </div>
-                )}
+              {/* Language Toggle - Desktop Only */}
+              <div className="hidden md:block">
+                <LanguageToggle />
               </div>
 
               {/* Theme Toggle */}
@@ -257,23 +231,10 @@ export default function Navigation() {
               {/* Divider */}
               <div className="border-t border-border" />
 
-              {/* Language Selector */}
+              {/* Language Toggle */}
               <div className="flex flex-col gap-3">
                 <p className="text-xs font-medium text-muted">Language</p>
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => {
-                      setLanguage(lang.code);
-                    }}
-                    className={`flex items-center gap-2 text-left text-sm transition-colors hover:text-accent ${
-                      language === lang.code ? "text-accent font-medium" : ""
-                    }`}
-                  >
-                    <span>{lang.flag}</span>
-                    <span>{lang.label}</span>
-                  </button>
-                ))}
+                <LanguageToggle />
               </div>
             </div>
           </div>

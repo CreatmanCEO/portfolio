@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-type LanguageCode = "en" | "es" | "ru" | "he" | "jp";
+type LanguageCode = "en" | "ru";
 
 interface LanguageContextType {
   language: LanguageCode;
@@ -119,116 +119,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "aiAnalyst.welcome.feature2": "Bug detection",
     "aiAnalyst.welcome.feature3": "Improvement suggestions",
     "aiAnalyst.welcome.feature4": "Best practices check",
-    "aiAnalyst.welcome.feature5": "Multi-language support (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.feature5": "Multi-language support (EN, RU)",
     "aiAnalyst.welcome.gotIt": "Got it, let's start",
     "aiAnalyst.welcome.showEveryTime": "Show every time",
-  },
-  es: {
-    // Navigation
-    "nav.home": "Inicio",
-    "nav.projects": "Proyectos",
-    "nav.aiAnalyst": "Analista AI",
-
-    // Hero
-    "hero.label": "Desarrollador de Producto Full-Stack",
-    "hero.headline": "Lanzado a Producción en Solitario",
-    "hero.description": "✓ Publicado en App Store y Producción\n✓ Infraestructura VPN para Clientes Empresariales\n✓ Herramientas de Automatización con IA",
-    "hero.viewProjects": "Ver Proyectos",
-    "hero.tryAI": "Probar Analista AI",
-    "hero.featuredProjects": "Proyectos Destacados",
-
-    // Projects
-    "projects.accu.title": "ACCU",
-    "projects.accu.description": "Actualizador automático del agente Claude Code. Monitorea lanzamientos de GitHub, actualiza binarios automáticamente, sistema de notificaciones. Auto-alojado en VPS.",
-    "projects.aviawallet.title": "AviaWallet",
-    "projects.aviawallet.description": "Aplicación iOS para administrar puntos de billeteras de aviación. Construido con Flutter, enviado a App Store. Características: sincronización offline, notificaciones push, análisis.",
-    "projects.ghost.title": "GHOST",
-    "projects.ghost.description": "Asistente AI con superposición invisible para entrevistas, reuniones y programación. Soporte multi-proveedor LLM (Claude, GPT-4, Gemini), transcripción de voz en tiempo real.",
-    "projects.translator.title": "Bot Traductor de Hebreo",
-    "projects.translator.description": "Bot de Telegram para traducción de documentos con soporte OCR. Maneja imágenes, PDFs, texto. Memoria de traducción para consistencia.",
-
-    // New projects
-    "projects.lifehub.title": "Creatman Life Hub",
-    "projects.lifehub.description": "Sistema de gestión de vida impulsado por IA con visualización de objetivos, entrada en lenguaje natural y clasificación inteligente de actividades. Rastrea el progreso mediante metáfora de crecimiento de plantas.",
-
-    "projects.vpn.title": "Infraestructura VPN",
-    "projects.vpn.description": "Infraestructura VPN de producción con transporte WebSocket y bypass DPI que sirve a clientes empresariales. Implementación de protocolo personalizado con monitoreo automatizado.",
-
-    "projects.datn.title": "DATN",
-    "projects.datn.description": "Sistema de IA de trading multi-agente con arquitectura de toma de decisiones compleja. Fase de concepto explorando estrategias de trading autónomas con coordinación de IA.",
-
-    // Tech Stack
-    "tech.title": "Stack Tecnológico",
-    "tech.languages": "Lenguajes",
-    "tech.frameworks": "Frameworks y Bibliotecas",
-    "tech.tools": "Herramientas y Plataformas",
-
-    // Footer
-    "footer.copyright": "Construido con Next.js, TypeScript y Tailwind CSS",
-
-    // Common
-    "common.learnMore": "Más información",
-    "common.viewAll": "Ver todo",
-
-    // Projects Page
-    "projects.page.title": "Proyectos",
-    "projects.page.subtitle": "Aplicaciones listas para producción y sistemas de automatización",
-    "projects.status.production": "Producción",
-    "projects.status.beta": "Beta",
-    "projects.status.inDevelopment": "En Desarrollo",
-    "projects.category.ai": "IA",
-    "projects.category.mobile": "Móvil",
-    "projects.category.devops": "DevOps",
-    "projects.category.web": "Web",
-    "projects.category.automation": "Automatización",
-    "projects.category.extension": "Extensión",
-    "projects.link.github": "GitHub",
-    "projects.link.demo": "Demo en Vivo",
-
-    // About Me
-    "about.title": "Sobre Mí",
-    "about.bio.p1": "Soy un desarrollador de Python e ingeniero de automatización con 5 años de experiencia construyendo y lanzando productos de extremo a extremo. Antes de la tecnología, trabajé como geólogo de ingeniería: el mapeo de estructuras subterráneas y el modelado de datos complejos me enseñaron a pensar en sistemas y resolver problemas con precisión. Ahora aplico esa mentalidad al software: desde herramientas impulsadas por IA hasta infraestructura de producción.",
-    "about.bio.p2": "Lanzo proyectos en solitario. Mis proyectos incluyen un asistente de escritorio de IA con análisis de pantalla en tiempo real y soporte multi-LLM, infraestructura VPN de producción con bypass DPI sirviendo clientes empresariales, aplicaciones móviles publicadas en App Store, y más de 15 bots de Telegram y flujos de automatización en producción. Mi stack principal es Python, pero trabajo en todo el ciclo: backend, infraestructura, despliegue y, cuando es necesario, frontend.",
-    "about.bio.p3": "Actualmente ubicado en Rusia y buscando activamente oportunidades en el extranjero: remoto o reubicación, en cualquier parte del mundo. Si necesitas un desarrollador que pueda ser dueño de un producto desde la arquitectura hasta la producción, hablemos.",
-    "about.location": "Ubicado en Rusia",
-    "about.status": "Abierto a remoto y reubicación",
-    "about.experience": "5 años de experiencia",
-    "about.background": "Geólogo de ingeniería → Desarrollador",
-
-    // Contact Form
-    "contact.title": "Trabajemos Juntos",
-    "contact.name": "Tu Nombre",
-    "contact.namePlaceholder": "Juan Pérez",
-    "contact.contact": "Email o Telegram",
-    "contact.contactPlaceholder": "@usuario o email@ejemplo.com",
-    "contact.purpose": "¿Qué te trae aquí?",
-    "contact.purpose.collaborate": "Colaboremos",
-    "contact.purpose.project": "Ordenar un proyecto",
-    "contact.purpose.hire": "Contratar para un puesto",
-    "contact.message": "Mensaje (opcional)",
-    "contact.messagePlaceholder": "Cuéntame sobre tu proyecto u oportunidad...",
-    "contact.submit": "Enviar Mensaje",
-    "contact.sending": "Enviando...",
-    "contact.success": "¡Gracias! Te responderé pronto.",
-    "contact.error": "Error al enviar. Inténtalo de nuevo o contáctame directamente.",
-    "contact.orReach": "O contáctame directamente:",
-
-    // AI Analyst Welcome
-    "aiAnalyst.welcome.title": "Bienvenido al Analista de Código AI",
-    "aiAnalyst.welcome.subtitle": "Analiza cualquier código al instante usando Gemini AI",
-    "aiAnalyst.welcome.howTo": "Cómo usar:",
-    "aiAnalyst.welcome.step1": "Selecciona archivos del árbol (izquierda)",
-    "aiAnalyst.welcome.step2": "O pega tu código en el editor (centro)",
-    "aiAnalyst.welcome.step3": "Elige el idioma (arriba derecha)",
-    "aiAnalyst.welcome.step4": "Haz clic en \"Analizar Código\" → obtén revisión instantánea",
-    "aiAnalyst.welcome.features": "Características:",
-    "aiAnalyst.welcome.feature1": "Evaluación de calidad de código",
-    "aiAnalyst.welcome.feature2": "Detección de errores",
-    "aiAnalyst.welcome.feature3": "Sugerencias de mejora",
-    "aiAnalyst.welcome.feature4": "Verificación de mejores prácticas",
-    "aiAnalyst.welcome.feature5": "Soporte multiidioma (EN, RU, ES, HE, JP)",
-    "aiAnalyst.welcome.gotIt": "Entendido, comencemos",
-    "aiAnalyst.welcome.showEveryTime": "Mostrar siempre",
   },
   ru: {
     // Navigation
@@ -333,223 +226,9 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "aiAnalyst.welcome.feature2": "Обнаружение ошибок",
     "aiAnalyst.welcome.feature3": "Предложения по улучшению",
     "aiAnalyst.welcome.feature4": "Проверка лучших практик",
-    "aiAnalyst.welcome.feature5": "Поддержка нескольких языков (EN, RU, ES, HE, JP)",
+    "aiAnalyst.welcome.feature5": "Поддержка нескольких языков (EN, RU)",
     "aiAnalyst.welcome.gotIt": "Понятно, начнём",
     "aiAnalyst.welcome.showEveryTime": "Показывать каждый раз",
-  },
-  he: {
-    // Navigation
-    "nav.home": "בית",
-    "nav.projects": "פרויקטים",
-    "nav.aiAnalyst": "אנליסט AI",
-
-    // Hero
-    "hero.label": "מפתח מוצר Full-Stack",
-    "hero.headline": "שוחרר לייצור באופן עצמאי",
-    "hero.description": "✓ פורסם ב-App Store וב-Production\n✓ תשתית VPN עבור לקוחות עסקיים\n✓ כלי אוטומציה מבוססי AI",
-    "hero.viewProjects": "צפה בפרויקטים",
-    "hero.tryAI": "נסה אנליסט AI",
-    "hero.featuredProjects": "פרויקטים נבחרים",
-
-    // Projects
-    "projects.accu.title": "ACCU",
-    "projects.accu.description": "מעדכן אוטומטי של סוכן Claude Code. עוקב אחר שחרורי GitHub, מעדכן קובץ בינארי אוטומטית, מערכת התראות. מאוחסן על VPS.",
-    "projects.aviawallet.title": "AviaWallet",
-    "projects.aviawallet.description": "אפליקציית iOS לניהול נקודות ארנק תעופה. נבנתה עם Flutter, פורסמה ב-App Store. תכונות: סנכרון לא מקוון, התראות push, אנליטיקה.",
-    "projects.ghost.title": "GHOST",
-    "projects.ghost.description": "עוזר AI עם שכבת-על בלתי נראית לראיונות, פגישות וקידוד. תמיכה במספר ספקי LLM (Claude, GPT-4, Gemini), תמלול קולי בזמן אמת.",
-    "projects.translator.title": "בוט תרגום עברית",
-    "projects.translator.description": "בוט טלגרם לתרגום מסמכים עם תמיכה OCR. מטפל בתמונות, PDF, טקסט. זיכרון תרגום לעקביות.",
-
-    // New projects
-    "projects.lifehub.title": "Creatman Life Hub",
-    "projects.lifehub.description": "מערכת ניהול חיים מבוססת AI עם ויזואליזציית מטרות, קלט בשפה טבעית וסיווג פעילויות חכם. מעקב אחר התקדמות דרך מטפורת צמיחת צמחים.",
-
-    "projects.vpn.title": "תשתית VPN",
-    "projects.vpn.description": "תשתית VPN ייצורית עם העברת WebSocket ועקיפת DPI המשרתת לקוחות עסקיים. יישום פרוטוקול מותאם אישית עם ניטור אוטומטי.",
-
-    "projects.datn.title": "DATN",
-    "projects.datn.description": "מערכת AI מסחר רב-סוכנים עם ארכיטקטורת קבלת החלטות מורכבת. שלב קונספט החוקר אסטרטגיות מסחר אוטונומיות עם תיאום AI.",
-
-    // Tech Stack
-    "tech.title": "סטק טכנולוגי",
-    "tech.languages": "שפות תכנות",
-    "tech.frameworks": "פריימוורקים וספריות",
-    "tech.tools": "כלים ופלטפורמות",
-
-    // Footer
-    "footer.copyright": "נבנה עם Next.js, TypeScript ו-Tailwind CSS",
-
-    // Common
-    "common.learnMore": "למד עוד",
-    "common.viewAll": "צפה בהכל",
-
-    // Projects Page
-    "projects.page.title": "פרויקטים",
-    "projects.page.subtitle": "אפליקציות מוכנות לייצור ומערכות אוטומציה",
-    "projects.status.production": "ייצור",
-    "projects.status.beta": "בטא",
-    "projects.status.inDevelopment": "בפיתוח",
-    "projects.category.ai": "בינה מלאכותית",
-    "projects.category.mobile": "מובייל",
-    "projects.category.devops": "DevOps",
-    "projects.category.web": "אינטרנט",
-    "projects.category.automation": "אוטומציה",
-    "projects.category.extension": "תוסף",
-    "projects.link.github": "GitHub",
-    "projects.link.demo": "דמו חי",
-
-    // About Me
-    "about.title": "אודותיי",
-    "about.bio.p1": "אני מפתח Python ומהנדס אוטומציה עם 5 שנות ניסיון בבנייה ושיגור מוצרים מקצה לקצה. לפני עולם הטכנולוגיה, עבדתי כגאולוג הנדסי — מיפוי מבנים תת-קרקעיים ומידול נתונים מורכבים לימדו אותי לחשוב במערכות ולפתור בעיות בדיוק. כעת אני מיישם חשיבה זו בפיתוח תוכנה: מכלי AI ועד תשתית ייצור.",
-    "about.bio.p2": "אני משגר פרויקטים לבד. הפרויקטים שלי כוללים עוזר AI לשולחן עבודה עם ניתוח מסך בזמן אמת ותמיכה במספר LLM, תשתית VPN ייצורית עם מעקף DPI המשרתת לקוחות עסקיים, אפליקציות מובייל שפורסמו ב-App Store, ויותר מ-15 בוטים של Telegram ותהליכי אוטומציה בייצור. הסטאק העיקרי שלי הוא Python, אבל אני עובד על כל המחזור — backend, תשתית, פריסה, וכשצריך, frontend.",
-    "about.bio.p3": "כרגע מבוסס ברוסיה ומחפש באופן אקטיבי הזדמנויות בחו״ל — עבודה מרחוק או רילוקיישן, לכל מקום בעולם. אם אתה צריך מפתח שיכול לנהל מוצר מארכיטקטורה ועד ייצור, בוא נדבר.",
-    "about.location": "מבוסס ברוסיה",
-    "about.status": "פתוח לעבודה מרחוק ורילוקיישן",
-    "about.experience": "5 שנות ניסיון",
-    "about.background": "גאולוג הנדסי → מפתח",
-
-    // Contact Form
-    "contact.title": "בוא נעבוד ביחד",
-    "contact.name": "שמך",
-    "contact.namePlaceholder": "ישראל ישראלי",
-    "contact.contact": "Email או Telegram",
-    "contact.contactPlaceholder": "@username או email@example.com",
-    "contact.purpose": "מה מביא אותך לכאן?",
-    "contact.purpose.collaborate": "בוא נשתף פעולה",
-    "contact.purpose.project": "הזמנת פרויקט",
-    "contact.purpose.hire": "גיוס לתפקיד",
-    "contact.message": "הודעה (אופציונלי)",
-    "contact.messagePlaceholder": "ספר לי על הפרויקט או ההזדמנות שלך...",
-    "contact.submit": "שלח הודעה",
-    "contact.sending": "שולח...",
-    "contact.success": "תודה! אחזור אליך בקרוב.",
-    "contact.error": "שליחה נכשלה. נסה שוב או צור קשר ישירות.",
-    "contact.orReach": "או צור קשר ישירות:",
-
-    // AI Analyst Welcome
-    "aiAnalyst.welcome.title": "ברוכים הבאים ל-AI Code Analyst",
-    "aiAnalyst.welcome.subtitle": "נתח כל קוד באופן מיידי באמצעות Gemini AI",
-    "aiAnalyst.welcome.howTo": "איך להשתמש:",
-    "aiAnalyst.welcome.step1": "בחר קבצים מעץ הקבצים (משמאל)",
-    "aiAnalyst.welcome.step2": "או הדבק את הקוד שלך בעורך (במרכז)",
-    "aiAnalyst.welcome.step3": "בחר שפה (למעלה מימין)",
-    "aiAnalyst.welcome.step4": "לחץ על \"Analyze Code\" → קבל סקירה מיידית",
-    "aiAnalyst.welcome.features": "תכונות:",
-    "aiAnalyst.welcome.feature1": "הערכת איכות קוד",
-    "aiAnalyst.welcome.feature2": "זיהוי באגים",
-    "aiAnalyst.welcome.feature3": "הצעות לשיפור",
-    "aiAnalyst.welcome.feature4": "בדיקת שיטות עבודה מומלצות",
-    "aiAnalyst.welcome.feature5": "תמיכה מרובת שפות (EN, RU, ES, HE, JP)",
-    "aiAnalyst.welcome.gotIt": "הבנתי, בואו נתחיל",
-    "aiAnalyst.welcome.showEveryTime": "הצג בכל פעם",
-  },
-  jp: {
-    // Navigation
-    "nav.home": "ホーム",
-    "nav.projects": "プロジェクト",
-    "nav.aiAnalyst": "AIアナリスト",
-
-    // Hero
-    "hero.label": "フルスタックプロダクト開発者",
-    "hero.headline": "単独でプロダクションにリリース",
-    "hero.description": "✓ App StoreとProductionで公開\n✓ ビジネスクライアント向けVPNインフラ\n✓ AI搭載自動化ツール",
-    "hero.viewProjects": "プロジェクトを見る",
-    "hero.tryAI": "AIアナリストを試す",
-    "hero.featuredProjects": "おすすめプロジェクト",
-
-    // Projects
-    "projects.accu.title": "ACCU",
-    "projects.accu.description": "Claude Codeエージェントの自動アップデーター。GitHubリリースを監視し、バイナリを自動更新、通知システム。VPSでセルフホスト。",
-    "projects.aviawallet.title": "AviaWallet",
-    "projects.aviawallet.description": "航空ウォレットポイント管理用のiOSアプリ。Flutterで構築、App Storeに配信。オフライン同期、プッシュ通知、分析機能を搭載。",
-    "projects.ghost.title": "GHOST",
-    "projects.ghost.description": "面接、会議、コーディング用の透明オーバーレイAIアシスタント。マルチプロバイダーLLMサポート（Claude、GPT-4、Gemini）、リアルタイム音声文字起こし。",
-    "projects.translator.title": "ヘブライ語翻訳ボット",
-    "projects.translator.description": "OCRサポート付きドキュメント翻訳用Telegramボット。画像、PDF、テキストを処理。一貫性のための翻訳メモリ。",
-
-    // New projects
-    "projects.lifehub.title": "Creatman Life Hub",
-    "projects.lifehub.description": "目標の可視化、自然言語入力、インテリジェントなアクティビティ分類を備えたAI搭載ライフマネジメントシステム。植物の成長メタファーで進捗を追跡。",
-
-    "projects.vpn.title": "VPNインフラストラクチャ",
-    "projects.vpn.description": "ビジネスクライアントにサービスを提供するWebSocketトランスポートとDPIバイパスを備えた本番環境VPNインフラストラクチャ。自動監視付きカスタムプロトコル実装。",
-
-    "projects.datn.title": "DATN",
-    "projects.datn.description": "複雑な意思決定アーキテクチャを備えたマルチエージェント取引AIシステム。AI調整による自律的な取引戦略を探求するコンセプトフェーズ。",
-
-    // Tech Stack
-    "tech.title": "技術スタック",
-    "tech.languages": "プログラミング言語",
-    "tech.frameworks": "フレームワークとライブラリ",
-    "tech.tools": "ツールとプラットフォーム",
-
-    // Footer
-    "footer.copyright": "Next.js、TypeScript、Tailwind CSSで構築",
-
-    // Common
-    "common.learnMore": "詳しく見る",
-    "common.viewAll": "すべて見る",
-
-    // Projects Page
-    "projects.page.title": "プロジェクト",
-    "projects.page.subtitle": "本番環境対応アプリケーションと自動化システム",
-    "projects.status.production": "本番稼働中",
-    "projects.status.beta": "ベータ版",
-    "projects.status.inDevelopment": "開発中",
-    "projects.category.ai": "AI",
-    "projects.category.mobile": "モバイル",
-    "projects.category.devops": "DevOps",
-    "projects.category.web": "ウェブ",
-    "projects.category.automation": "自動化",
-    "projects.category.extension": "拡張機能",
-    "projects.link.github": "GitHub",
-    "projects.link.demo": "ライブデモ",
-
-    // About Me
-    "about.title": "私について",
-    "about.bio.p1": "私は5年の経験を持つPython開発者および自動化エンジニアで、製品のエンドツーエンドの構築と出荷を行っています。テクノロジー業界に入る前は、エンジニアリング地質学者として働いていました。地下構造のマッピングと複雑なデータのモデリングを通じて、システム思考と精密な問題解決を学びました。現在はその考え方をソフトウェアに適用しています：AI搭載ツールから本番インフラまで。",
-    "about.bio.p2": "私は単独で製品を出荷します。私のプロジェクトには、リアルタイム画面分析とマルチLLMサポートを備えたAIデスクトップアシスタント、ビジネスクライアントにサービスを提供するDPIバイパス付き本番VPNインフラ、App Storeで公開されたモバイルアプリ、本番環境で稼働する15以上のTelegramボットと自動化ワークフローが含まれます。コアスタックはPythonですが、バックエンド、インフラ、デプロイメント、必要に応じてフロントエンドまで、フルサイクルで作業します。",
-    "about.bio.p3": "現在ロシアを拠点としており、海外での機会を積極的に探しています。リモートまたはリロケーション、世界中どこでも対応可能です。アーキテクチャから本番環境まで製品を所有できる開発者が必要な場合は、ぜひお話ししましょう。",
-    "about.location": "ロシア在住",
-    "about.status": "リモート・リロケーション可",
-    "about.experience": "5年の経験",
-    "about.background": "エンジニアリング地質学者 → 開発者",
-
-    // Contact Form
-    "contact.title": "一緒に働きましょう",
-    "contact.name": "お名前",
-    "contact.namePlaceholder": "山田太郎",
-    "contact.contact": "メールまたはTelegram",
-    "contact.contactPlaceholder": "@username または email@example.com",
-    "contact.purpose": "ご用件は？",
-    "contact.purpose.collaborate": "協力しましょう",
-    "contact.purpose.project": "プロジェクトを発注",
-    "contact.purpose.hire": "採用のため",
-    "contact.message": "メッセージ（任意）",
-    "contact.messagePlaceholder": "プロジェクトや機会について教えてください...",
-    "contact.submit": "メッセージを送信",
-    "contact.sending": "送信中...",
-    "contact.success": "ありがとうございます！すぐにご連絡します。",
-    "contact.error": "送信に失敗しました。もう一度お試しいただくか、直接ご連絡ください。",
-    "contact.orReach": "または直接ご連絡ください：",
-
-    // AI Analyst Welcome
-    "aiAnalyst.welcome.title": "AI Code Analystへようこそ",
-    "aiAnalyst.welcome.subtitle": "Gemini AIを使用して任意のコードを即座に分析",
-    "aiAnalyst.welcome.howTo": "使い方：",
-    "aiAnalyst.welcome.step1": "ファイルツリーからファイルを選択（左側）",
-    "aiAnalyst.welcome.step2": "またはエディターにコードを貼り付け（中央）",
-    "aiAnalyst.welcome.step3": "言語を選択（右上）",
-    "aiAnalyst.welcome.step4": "「Analyze Code」をクリック → 即座にレビューを取得",
-    "aiAnalyst.welcome.features": "機能：",
-    "aiAnalyst.welcome.feature1": "コード品質評価",
-    "aiAnalyst.welcome.feature2": "バグ検出",
-    "aiAnalyst.welcome.feature3": "改善提案",
-    "aiAnalyst.welcome.feature4": "ベストプラクティスチェック",
-    "aiAnalyst.welcome.feature5": "多言語サポート（EN、RU、ES、HE、JP）",
-    "aiAnalyst.welcome.gotIt": "わかりました、始めましょう",
-    "aiAnalyst.welcome.showEveryTime": "毎回表示",
   },
 };
 
@@ -566,25 +245,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     } else {
       // Detect browser language
       const browserLang = navigator.language.toLowerCase().split("-")[0];
-      const supportedLang = (
-        ["en", "es", "ru", "he", "jp"].includes(browserLang)
-          ? browserLang
-          : "en"
-      ) as LanguageCode;
+      const supportedLang: LanguageCode = browserLang === "ru" ? "ru" : "en";
       setLanguageState(supportedLang);
     }
   }, []);
-
-  useEffect(() => {
-    if (mounted) {
-      // Apply RTL for Hebrew
-      if (language === "he") {
-        document.documentElement.setAttribute("dir", "rtl");
-      } else {
-        document.documentElement.setAttribute("dir", "ltr");
-      }
-    }
-  }, [language, mounted]);
 
   const setLanguage = (lang: LanguageCode) => {
     setLanguageState(lang);
