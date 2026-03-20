@@ -23,12 +23,12 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "AI Analyst",
 
     // Hero
-    "hero.label": "Full-Stack Product Developer",
-    "hero.headline": "Solo-shipped to Production",
-    "hero.description": "✓ Published in App Store & Production\n✓ VPN Infrastructure for Business Clients\n✓ AI-powered Automation Tools",
+    "hero.headline": "I see problems. I build solutions.",
+    "hero.subtitle": "A phone had 26 backdoor connections — I built a security scanner with Suricata IDS.\nGovernment broke the internet — I built VPN infrastructure for 100+ clients.\nSomeone needed a crypto wallet — I shipped it to the App Store.",
+    "hero.punchline": "20+ products. 6 years. Every time a new field.",
     "hero.viewProjects": "View Projects",
-    "hero.tryAI": "Try AI Analyst",
-    "hero.featuredProjects": "Featured Projects",
+    "hero.exploreCode": "Explore My Code with AI",
+    "hero.getInTouch": "Get in touch ↓",
 
     // Projects
     "projects.accu.title": "ACCU",
@@ -130,12 +130,12 @@ const translations: Record<LanguageCode, Record<string, string>> = {
     "nav.aiAnalyst": "AI Аналитик",
 
     // Hero
-    "hero.label": "Full-Stack Product Developer",
-    "hero.headline": "Solo-shipped to Production",
-    "hero.description": "✓ Опубликовано в App Store и Production\n✓ VPN-инфраструктура для бизнес-клиентов\n✓ AI-инструменты автоматизации",
+    "hero.headline": "Вижу проблемы. Строю решения.",
+    "hero.subtitle": "У телефона было 26 бэкдор-соединений — я построил сканер безопасности с Suricata IDS.\nПравительство сломало интернет — я построил VPN-инфраструктуру для 100+ клиентов.\nКому-то понадобился крипто-кошелёк — я выпустил его в App Store.",
+    "hero.punchline": "20+ продуктов. 6 лет. Каждый раз новая область.",
     "hero.viewProjects": "Смотреть проекты",
-    "hero.tryAI": "Попробовать AI Аналитик",
-    "hero.featuredProjects": "Избранные Проекты",
+    "hero.exploreCode": "Исследовать код с AI",
+    "hero.getInTouch": "Связаться ↓",
 
     // Projects
     "projects.accu.title": "ACCU",
