@@ -10,10 +10,7 @@ interface AnalysisPanelProps {
 
 const languages = [
   { code: "en", name: "English", flag: "🇬🇧" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
   { code: "ru", name: "Русский", flag: "🇷🇺" },
-  { code: "he", name: "עברית", flag: "🇮🇱" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
 ];
 
 export default function AnalysisPanel({
