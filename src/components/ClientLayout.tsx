@@ -3,7 +3,7 @@
 import { ThemeProvider } from "./ThemeProvider";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Navigation from "./Navigation";
-import CookieAlert from "./CookieAlert";
+
 import Analytics from "./Analytics";
 
 export default function ClientLayout({
@@ -16,7 +16,7 @@ export default function ClientLayout({
       <LanguageProvider>
         <Navigation />
         {children}
-        <CookieAlert />
+
         <Analytics />
       </LanguageProvider>
     </ThemeProvider>
