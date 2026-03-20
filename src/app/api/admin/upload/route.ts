@@ -37,7 +37,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate unique filename
-    const ext = file.name.split(".").pop() || "jpg";
+    const extMap: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif",
+    };
+    const ext = extMap[file.type] || "jpg";
     const filename = `${crypto.randomUUID()}.${ext}`;
     const filepath = path.join(UPLOAD_DIR, filename);
 

@@ -84,7 +84,7 @@ describe('Content API data layer', () => {
       content[row.key] = row.value
     }
 
-    expect(Object.keys(content).length).toBe(12)
+    expect(Object.keys(content).length).toBe(14)
   })
 
   it('should contain all expected keys', () => {

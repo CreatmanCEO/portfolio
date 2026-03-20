@@ -3,6 +3,7 @@ import { projects } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import TranslatedText from "@/components/TranslatedText";
 import type { Metadata } from "next";
 
 // Tag badge colors (same as ProjectCard)
@@ -59,7 +60,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     <main className="mx-auto max-w-4xl px-6 py-16 md:py-20">
       {/* Back link */}
       <Link href="/projects" className="mb-8 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors">
-        &larr; Back to Projects
+        <TranslatedText tKey="projects.backToProjects" />
       </Link>
 
       {/* Header */}

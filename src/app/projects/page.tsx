@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { projects } from "@/db/schema";
 import { desc, asc } from "drizzle-orm";
 import ProjectGrid from "@/components/ProjectGrid";
+import TranslatedText from "@/components/TranslatedText";
 
 export const metadata = {
   title: "Projects — Creatman",
@@ -24,9 +25,9 @@ export default function ProjectsPage() {
   return (
     <main className="mx-auto max-w-7xl px-6 py-16">
       <div className="mb-12 text-center">
-        <h1 className="mb-4 text-3xl font-bold md:text-4xl">Projects</h1>
+        <h1 className="mb-4 text-3xl font-bold md:text-4xl"><TranslatedText tKey="projects.page.title" /></h1>
         <p className="text-muted">
-          20+ shipped products across security, AI, fintech, infrastructure, and developer tools.
+          <TranslatedText tKey="projects.page.subtitle" />
         </p>
       </div>
       <ProjectGrid projects={allProjects} />

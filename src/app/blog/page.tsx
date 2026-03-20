@@ -2,6 +2,7 @@ import { db } from "@/db";
 import { blogPosts } from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import BlogCard from "@/components/BlogCard";
+import TranslatedText from "@/components/TranslatedText";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,9 +21,9 @@ export default function BlogPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">
       <div className="mb-12 text-center">
-        <h1 className="mb-4 text-3xl font-bold md:text-4xl">Blog</h1>
+        <h1 className="mb-4 text-3xl font-bold md:text-4xl"><TranslatedText tKey="blog.title" /></h1>
         <p className="text-muted">
-          Articles about security, AI, infrastructure, and developer tools.
+          <TranslatedText tKey="blog.subtitle" />
         </p>
       </div>
 

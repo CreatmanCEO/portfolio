@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const tagColors: Record<string, { bg: string; text: string }> = {
   security: { bg: "bg-red-100 dark:bg-red-900/20", text: "text-red-700 dark:text-red-400" },
@@ -23,7 +26,9 @@ const statusColors: Record<string, string> = {
 interface Project {
   slug: string;
   titleEn: string;
+  titleRu?: string;
   descriptionEn: string;
+  descriptionRu?: string;
   tags: string[];
   techStack: string[];
   status: string;
@@ -32,10 +37,14 @@ interface Project {
 }
 
 export default function ProjectCard({ project }: { project: Project }) {
-  const href = project.descriptionEn
+  const { language } = useLanguage();
+  const title = (language === "ru" && project.titleRu) ? project.titleRu : project.titleEn;
+  const description = (language === "ru" && project.descriptionRu) ? project.descriptionRu : project.descriptionEn;
+
+  const href = description
     ? `/projects/${project.slug}`
     : (project.liveUrl || project.githubUrl || "#");
-  const isExternal = !project.descriptionEn;
+  const isExternal = !description;
 
   return (
     <Link
@@ -45,12 +54,12 @@ export default function ProjectCard({ project }: { project: Project }) {
       className="group flex flex-col rounded-xl border border-border bg-background p-5 transition-colors hover:border-accent/50"
     >
       {/* Title */}
-      <h3 className="mb-2 text-sm font-medium">{project.titleEn}</h3>
+      <h3 className="mb-2 text-sm font-medium">{title}</h3>
 
       {/* Description */}
-      {project.descriptionEn && (
+      {description && (
         <p className="mb-3 text-xs leading-relaxed text-muted line-clamp-3">
-          {project.descriptionEn}
+          {description}
         </p>
       )}
 

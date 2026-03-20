@@ -3,6 +3,7 @@ import { blogPosts } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import TranslatedText from "@/components/TranslatedText";
 import type { Metadata } from "next";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
@@ -71,7 +72,7 @@ export default async function BlogPostPage({
         href="/blog"
         className="mb-8 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors"
       >
-        &larr; Back to Blog
+        <TranslatedText tKey="blog.backToBlog" />
       </Link>
 
       <article>

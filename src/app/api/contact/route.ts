@@ -12,6 +12,14 @@ interface ContactRequest {
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body: ContactRequest = await request.json();
@@ -41,14 +49,19 @@ export async function POST(request: NextRequest) {
       connect: "👋 Знакомство",
     };
 
+    // Escape user inputs to prevent HTML injection
+    const safeName = escapeHtml(body.name);
+    const safeContact = escapeHtml(body.contact);
+    const safeMessage = body.message ? escapeHtml(body.message) : "";
+
     // Format message for Telegram
     const telegramMessage = `
 ${purposeMap[body.purpose]} <b>New Contact Form Submission</b>
 
-<b>Name:</b> ${body.name}
-<b>Contact:</b> ${body.contact}
+<b>Name:</b> ${safeName}
+<b>Contact:</b> ${safeContact}
 <b>Purpose:</b> ${purposeMap[body.purpose]}
-${body.message ? `\n<b>Message:</b>\n${body.message}` : ""}
+${safeMessage ? `\n<b>Message:</b>\n${safeMessage}` : ""}
 
 <i>Sent from portfolio contact form</i>
     `.trim();

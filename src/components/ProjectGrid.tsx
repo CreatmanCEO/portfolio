@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ProjectFilter from "./ProjectFilter";
 import ProjectCard from "./ProjectCard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Project {
   id: number;
@@ -26,6 +27,7 @@ interface ProjectGridProps {
 
 export default function ProjectGrid({ projects }: ProjectGridProps) {
   const [activeTag, setActiveTag] = useState("all");
+  const { language } = useLanguage();
 
   const filtered = activeTag === "all"
     ? projects
@@ -44,8 +46,8 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
                 key={project.slug}
                 className="col-span-full rounded-xl bg-surface border border-border p-6"
               >
-                <h3 className="mb-2 text-sm font-medium">{project.titleEn}</h3>
-                <p className="text-xs text-muted leading-relaxed">{project.descriptionEn}</p>
+                <h3 className="mb-2 text-sm font-medium">{(language === "ru" && project.titleRu) ? project.titleRu : project.titleEn}</h3>
+                <p className="text-xs text-muted leading-relaxed">{(language === "ru" && project.descriptionRu) ? project.descriptionRu : project.descriptionEn}</p>
                 <a
                   href="https://github.com/CreatmanCEO?tab=repositories"
                   target="_blank"

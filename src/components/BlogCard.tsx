@@ -1,8 +1,12 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BlogPost {
   slug: string;
   titleEn: string;
+  titleRu?: string;
   excerpt: string | null;
   coverImage: string | null;
   source: string;
@@ -37,6 +41,8 @@ function estimateReadingTime(excerpt: string | null): string {
 }
 
 function CardContent({ post }: { post: BlogPost }) {
+  const { language } = useLanguage();
+  const title = (language === "ru" && post.titleRu) ? post.titleRu : post.titleEn;
   const badge = sourceBadges[post.source] || sourceBadges.original;
   const isExternal = post.source !== "original" && post.externalUrl;
 
@@ -46,7 +52,7 @@ function CardContent({ post }: { post: BlogPost }) {
         <div className="mb-4 aspect-video overflow-hidden rounded-lg bg-surface">
           <img
             src={post.coverImage}
-            alt={post.titleEn}
+            alt={title}
             className="h-full w-full object-cover"
           />
         </div>
@@ -63,7 +69,7 @@ function CardContent({ post }: { post: BlogPost }) {
       </div>
 
       <h3 className="mb-2 text-sm font-medium group-hover:text-accent transition-colors">
-        {post.titleEn}
+        {title}
       </h3>
 
       {post.excerpt && (

@@ -76,11 +76,11 @@ afterEach(() => {
 })
 
 describe('seedDatabase', () => {
-  it('should seed 12 site_content keys on empty DB', async () => {
+  it('should seed 14 site_content keys on empty DB', async () => {
     await seedDatabase(db)
 
     const rows = db.select().from(schema.siteContent).all()
-    expect(rows).toHaveLength(12)
+    expect(rows).toHaveLength(14)
   })
 
   it('should seed 20 projects on empty DB', async () => {
@@ -97,7 +97,7 @@ describe('seedDatabase', () => {
     const contentRows = db.select().from(schema.siteContent).all()
     const projectRows = db.select().from(schema.projects).all()
 
-    expect(contentRows).toHaveLength(12)
+    expect(contentRows).toHaveLength(14)
     expect(projectRows).toHaveLength(20)
   })
 

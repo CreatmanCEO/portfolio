@@ -100,10 +100,10 @@ describe('Admin Content API logic', () => {
     expect(inserted!.value).toBe('Welcome to my portfolio!')
   })
 
-  it('should read all content and verify 12 seed keys plus custom', () => {
+  it('should read all content and verify 14 seed keys plus custom', () => {
     const rows = db.select().from(schema.siteContent).all()
-    // 12 from seed + 1 from previous test
-    expect(rows.length).toBe(13)
+    // 14 from seed + 1 from previous test
+    expect(rows.length).toBe(15)
 
     const keys = rows.map(r => r.key)
     expect(keys).toContain('hero_subtitle_en')

@@ -75,6 +75,8 @@ Before software, I led geological field expeditions in Kolyma, Siberia — mappi
   { key: 'footer_telegram', value: 'https://t.me/Creatman_it' },
   { key: 'footer_linkedin', value: 'https://www.linkedin.com/in/creatman/' },
   { key: 'footer_email', value: 'creatmanick@gmail.com' },
+  { key: 'og_image_url', value: '' },
+  { key: 'twitter_handle', value: '' },
 ]
 
 /* ───────── Projects ───────── */

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Footer() {
@@ -40,6 +41,14 @@ export default function Footer() {
             >
               LinkedIn
             </Link>
+            <a
+              href="mailto:creatmanick@gmail.com"
+              className="inline-flex items-center gap-1 text-muted transition-colors hover:text-accent"
+              aria-label="Email"
+            >
+              <Mail className="h-4 w-4" />
+              creatmanick@gmail.com
+            </a>
           </div>
 
           {/* Copyright */}

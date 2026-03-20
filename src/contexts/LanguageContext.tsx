@@ -66,7 +66,13 @@ const translations: Record<LanguageCode, Record<string, string>> = {
 
     // Projects Page
     "projects.page.title": "Projects",
-    "projects.page.subtitle": "Production-ready applications and automation systems",
+    "projects.page.subtitle": "20+ shipped products across security, AI, fintech, infrastructure, and developer tools.",
+    "projects.backToProjects": "\u2190 Back to Projects",
+
+    // Blog Page
+    "blog.title": "Blog",
+    "blog.subtitle": "Articles about security, AI, infrastructure, and developer tools.",
+    "blog.backToBlog": "\u2190 Back to Blog",
     "projects.status.production": "Production",
     "projects.status.beta": "Beta",
     "projects.status.inDevelopment": "In Development",
@@ -178,7 +184,13 @@ const translations: Record<LanguageCode, Record<string, string>> = {
 
     // Projects Page
     "projects.page.title": "Проекты",
-    "projects.page.subtitle": "Готовые к продакшену приложения и системы автоматизации",
+    "projects.page.subtitle": "20+ продуктов в безопасности, AI, финтехе, инфраструктуре и инструментах разработчика.",
+    "projects.backToProjects": "\u2190 К проектам",
+
+    // Blog Page
+    "blog.title": "Блог",
+    "blog.subtitle": "Статьи о безопасности, AI, инфраструктуре и инструментах разработчика.",
+    "blog.backToBlog": "\u2190 К блогу",
     "projects.status.production": "Продакшен",
     "projects.status.beta": "Бета",
     "projects.status.inDevelopment": "В Разработке",
@@ -244,10 +256,7 @@ const translations: Record<LanguageCode, Record<string, string>> = {
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguageState] = useState<LanguageCode>("en");
-  const [mounted, setMounted] = useState(false);
-
   useEffect(() => {
-    setMounted(true);
     // Get language from localStorage or browser preference
     const savedLang = localStorage.getItem("language") as LanguageCode | null;
     if (savedLang && translations[savedLang]) {
