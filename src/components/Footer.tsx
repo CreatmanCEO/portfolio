@@ -32,7 +32,7 @@ export default function Footer() {
               Telegram
             </Link>
             <Link
-              href="https://linkedin.com/in/creatman"
+              href="https://www.linkedin.com/in/creatman/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted transition-colors hover:text-accent"

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type Purpose = "collaborate" | "project" | "hire";
+type Purpose = "hire" | "discuss" | "consulting" | "connect";
 
 interface ContactRequest {
   name: string;
@@ -33,20 +33,21 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Map purpose to emoji
-    const purposeEmoji: Record<Purpose, string> = {
-      collaborate: "🤝",
-      project: "💼",
-      hire: "👔",
+    // Map purpose to display text
+    const purposeMap: Record<Purpose, string> = {
+      hire: "🎯 Предложение работы",
+      discuss: "💼 Обсуждение проекта",
+      consulting: "🔧 Техническая консультация",
+      connect: "👋 Знакомство",
     };
 
     // Format message for Telegram
     const telegramMessage = `
-${purposeEmoji[body.purpose]} <b>New Contact Form Submission</b>
+${purposeMap[body.purpose]} <b>New Contact Form Submission</b>
 
 <b>Name:</b> ${body.name}
 <b>Contact:</b> ${body.contact}
-<b>Purpose:</b> ${body.purpose}
+<b>Purpose:</b> ${purposeMap[body.purpose]}
 ${body.message ? `\n<b>Message:</b>\n${body.message}` : ""}
 
 <i>Sent from portfolio contact form</i>

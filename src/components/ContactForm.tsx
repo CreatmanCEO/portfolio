@@ -5,13 +5,13 @@ import { useState } from "react";
 import { FaTelegram, FaGithub, FaEnvelope } from "react-icons/fa";
 
 type FormStatus = "idle" | "sending" | "success" | "error";
-type Purpose = "collaborate" | "project" | "hire";
+type Purpose = "hire" | "discuss" | "consulting" | "connect";
 
 export default function ContactForm() {
   const { t } = useLanguage();
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
-  const [purpose, setPurpose] = useState<Purpose>("collaborate");
+  const [purpose, setPurpose] = useState<Purpose>("hire");
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
 
@@ -31,7 +31,7 @@ export default function ContactForm() {
       setStatus("success");
       setName("");
       setContact("");
-      setPurpose("collaborate");
+      setPurpose("hire");
       setMessage("");
 
       // Reset success message after 5 seconds
@@ -43,10 +43,10 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="py-24 px-6 bg-gradient-to-b from-white to-gray-50">
+    <section id="contact" className="py-24 px-6 bg-surface">
       <div className="max-w-2xl mx-auto">
         {/* Title */}
-        <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">
+        <h2 className="text-4xl font-bold text-foreground mb-12 text-center">
           {t("contact.title")}
         </h2>
 
@@ -56,7 +56,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-muted mb-2"
             >
               {t("contact.name")}
             </label>
@@ -67,7 +67,7 @@ export default function ContactForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t("contact.namePlaceholder")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all bg-surface text-foreground"
               disabled={status === "sending"}
             />
           </div>
@@ -76,7 +76,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="contact"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-muted mb-2"
             >
               {t("contact.contact")}
             </label>
@@ -87,7 +87,7 @@ export default function ContactForm() {
               value={contact}
               onChange={(e) => setContact(e.target.value)}
               placeholder={t("contact.contactPlaceholder")}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+              className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all bg-surface text-foreground"
               disabled={status === "sending"}
             />
           </div>
@@ -96,7 +96,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="purpose"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-muted mb-2"
             >
               {t("contact.purpose")}
             </label>
@@ -104,14 +104,21 @@ export default function ContactForm() {
               id="purpose"
               value={purpose}
               onChange={(e) => setPurpose(e.target.value as Purpose)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-white"
+              className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all bg-surface text-foreground"
               disabled={status === "sending"}
             >
-              <option value="collaborate">
-                {t("contact.purpose.collaborate")}
+              <option value="hire">
+                {t("contact.purpose.hire")}
               </option>
-              <option value="project">{t("contact.purpose.project")}</option>
-              <option value="hire">{t("contact.purpose.hire")}</option>
+              <option value="discuss">
+                {t("contact.purpose.discuss")}
+              </option>
+              <option value="consulting">
+                {t("contact.purpose.consulting")}
+              </option>
+              <option value="connect">
+                {t("contact.purpose.connect")}
+              </option>
             </select>
           </div>
 
@@ -119,7 +126,7 @@ export default function ContactForm() {
           <div>
             <label
               htmlFor="message"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-muted mb-2"
             >
               {t("contact.message")}
             </label>
@@ -129,7 +136,7 @@ export default function ContactForm() {
               onChange={(e) => setMessage(e.target.value)}
               placeholder={t("contact.messagePlaceholder")}
               rows={4}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
+              className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all resize-none bg-surface text-foreground"
               disabled={status === "sending"}
             />
           </div>
@@ -138,7 +145,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={status === "sending"}
-            className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="w-full bg-accent text-white py-3 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {status === "sending" ? t("contact.sending") : t("contact.submit")}
           </button>
@@ -158,35 +165,35 @@ export default function ContactForm() {
         </form>
 
         {/* Social Links */}
-        <div className="mt-12 pt-8 border-t border-gray-200">
-          <p className="text-center text-gray-600 mb-6">
+        <div className="mt-12 pt-8 border-t border-border">
+          <p className="text-center text-muted mb-6">
             {t("contact.orReach")}
           </p>
           <div className="flex justify-center gap-6">
             <a
-              href="https://t.me/nir_creator"
+              href="https://t.me/Creatman_it"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+              className="flex items-center gap-2 text-muted hover:text-accent transition-colors"
             >
               <FaTelegram className="text-2xl" />
-              <span className="font-medium">@nir_creator</span>
+              <span className="font-medium">@Creatman_it</span>
             </a>
             <a
-              href="mailto:nirazulay@gmail.com"
-              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+              href="mailto:creatmanick@gmail.com"
+              className="flex items-center gap-2 text-muted hover:text-accent transition-colors"
             >
               <FaEnvelope className="text-2xl" />
-              <span className="font-medium">nirazulay@gmail.com</span>
+              <span className="font-medium">creatmanick@gmail.com</span>
             </a>
             <a
-              href="https://github.com/nirwo"
+              href="https://github.com/CreatmanCEO/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+              className="flex items-center gap-2 text-muted hover:text-accent transition-colors"
             >
               <FaGithub className="text-2xl" />
-              <span className="font-medium">nirwo</span>
+              <span className="font-medium">CreatmanCEO</span>
             </a>
           </div>
         </div>
