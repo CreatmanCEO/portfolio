@@ -22,15 +22,19 @@ const tagColors: Record<string, { bg: string; text: string }> = {
 };
 
 function getProject(slug: string) {
-  const project = db.select().from(projects).where(eq(projects.slug, slug)).get();
-  if (!project) return null;
-  return {
-    ...project,
-    tags: JSON.parse(project.tags) as string[],
-    techStack: JSON.parse(project.techStack) as string[],
-    screenshots: project.screenshots ? JSON.parse(project.screenshots) as string[] : [],
-    parsedResults: project.results ? (() => { try { return JSON.parse(project.results) as string[]; } catch { return []; } })() : [],
-  };
+  try {
+    const project = db.select().from(projects).where(eq(projects.slug, slug)).get();
+    if (!project) return null;
+    return {
+      ...project,
+      tags: JSON.parse(project.tags) as string[],
+      techStack: JSON.parse(project.techStack) as string[],
+      screenshots: project.screenshots ? JSON.parse(project.screenshots) as string[] : [],
+      parsedResults: project.results ? (() => { try { return JSON.parse(project.results) as string[]; } catch { return []; } })() : [],
+    };
+  } catch {
+    return null; // DB schema mismatch during build
+  }
 }
 
 export const dynamicParams = true;
