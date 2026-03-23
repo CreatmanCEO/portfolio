@@ -56,15 +56,8 @@ export default function ProjectSelector({ onProjectSelect, currentProject }: Pro
 
       setRepos(data);
 
-      // Set current portfolio as default
-      const portfolioRepo = data.find((repo: Repository) => repo.name === "portfolio");
-      if (portfolioRepo) {
-        console.log("[ProjectSelector] Setting default repo:", portfolioRepo.name);
-        setSelectedRepo(portfolioRepo);
-        onProjectSelect(portfolioRepo); // Notify parent component to load files
-      } else {
-        console.log("[ProjectSelector] Portfolio repo not found, available repos:", data.map((r: Repository) => r.name));
-      }
+      // Don't auto-select — let user choose
+      console.log("[ProjectSelector] Repos loaded, waiting for user selection");
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(`Failed to load repositories: ${errorMessage}`);

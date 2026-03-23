@@ -24,25 +24,32 @@ export async function POST(request: NextRequest) {
     }
 
     const languageInstructions: { [key: string]: string } = {
-      en: "Please respond in English.",
-      ru: "Пожалуйста, отвечай на Русском языке.",
+      en: "Respond ONLY in English. Do not mix languages.",
+      ru: "Отвечай ТОЛЬКО на русском языке. Не смешивай языки. Пиши грамотно, завершай все предложения.",
     };
 
     const languageInstruction = languageInstructions[language] || languageInstructions.en;
 
     const currentDate = new Date().toISOString().split('T')[0];
 
-    const prompt = `${languageInstruction}
-Current date: ${currentDate}. All technologies and tools mentioned are current as of 2026. Analyze professionally.
+    const prompt = `You are a professional code reviewer. ${languageInstruction}
 
-Analyze the following code and provide:
-1. What it does (brief summary)
-2. Code quality assessment
-3. Potential issues or bugs
-4. Suggestions for improvement
-5. Best practices violations (if any)
+Current date: ${currentDate}. All technologies mentioned are current as of 2026.
 
-Code:
+IMPORTANT RULES:
+- Complete every sentence. Never leave text unfinished.
+- Do not hallucinate or invent information not present in the code.
+- Only analyze what you see in the code below.
+- Be concise and factual.
+
+Analyze the following code:
+
+1. Brief summary (what it does)
+2. Code quality (1-10 score with reasoning)
+3. Potential bugs or issues
+4. Improvement suggestions
+5. Best practices check
+
 \`\`\`
 ${code}
 \`\`\``;
@@ -50,7 +57,14 @@ ${code}
     console.log("[API /analyze-code] Starting Gemini AI analysis...");
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.5-flash",
+      generationConfig: {
+        temperature: 0.3,
+        topP: 0.8,
+        maxOutputTokens: 4096,
+      },
+    });
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({

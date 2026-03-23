@@ -198,7 +198,7 @@ export default function AIAnalyst() {
             <span>📁 File Explorer</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${!treeCollapsed ? "rotate-180" : ""}`} />
           </button>
-          <div className={`overflow-hidden transition-all duration-300 ${treeCollapsed ? "max-h-0" : "max-h-64"}`}>
+          <div className={`transition-all duration-300 ${treeCollapsed ? "max-h-0 overflow-hidden" : "max-h-64 overflow-y-auto"}`}>
             <FileTree onFileSelect={handleFileSelect} repository={currentRepo} />
           </div>
         </div>
@@ -212,7 +212,7 @@ export default function AIAnalyst() {
             <span>📝 Code Editor</span>
             <ChevronDown className={`h-4 w-4 transition-transform ${!editorCollapsed ? "rotate-180" : ""}`} />
           </button>
-          <div className={`overflow-hidden transition-all duration-300 ${editorCollapsed ? "max-h-0" : "max-h-[30vh]"}`}>
+          <div className={`transition-all duration-300 ${editorCollapsed ? "max-h-0 overflow-hidden" : "h-[35vh] min-h-[200px]"}`}>
             <CodeEditor
               filePath={selectedFile}
               onAnalyzeSelection={handleAnalyzeSelection}
