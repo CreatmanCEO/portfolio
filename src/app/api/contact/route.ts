@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-type Purpose = "collaborate" | "project" | "hire";
+type Purpose = "hire" | "discuss" | "consulting" | "connect";
 
 interface ContactRequest {
   name: string;
@@ -11,6 +11,14 @@ interface ContactRequest {
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,21 +41,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Map purpose to emoji
-    const purposeEmoji: Record<Purpose, string> = {
-      collaborate: "🤝",
-      project: "💼",
-      hire: "👔",
+    // Map purpose to display text
+    const purposeMap: Record<Purpose, string> = {
+      hire: "🎯 Предложение работы",
+      discuss: "💼 Обсуждение проекта",
+      consulting: "🔧 Техническая консультация",
+      connect: "👋 Знакомство",
     };
+
+    // Escape user inputs to prevent HTML injection
+    const safeName = escapeHtml(body.name);
+    const safeContact = escapeHtml(body.contact);
+    const safeMessage = body.message ? escapeHtml(body.message) : "";
 
     // Format message for Telegram
     const telegramMessage = `
-${purposeEmoji[body.purpose]} <b>New Contact Form Submission</b>
+${purposeMap[body.purpose]} <b>New Contact Form Submission</b>
 
-<b>Name:</b> ${body.name}
-<b>Contact:</b> ${body.contact}
-<b>Purpose:</b> ${body.purpose}
-${body.message ? `\n<b>Message:</b>\n${body.message}` : ""}
+<b>Name:</b> ${safeName}
+<b>Contact:</b> ${safeContact}
+<b>Purpose:</b> ${purposeMap[body.purpose]}
+${safeMessage ? `\n<b>Message:</b>\n${safeMessage}` : ""}
 
 <i>Sent from portfolio contact form</i>
     `.trim();

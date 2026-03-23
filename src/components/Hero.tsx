@@ -1,90 +1,67 @@
 "use client";
 
 import Link from "next/link";
-import ProjectCard from "./ProjectCard";
-import TechStack from "./TechStack";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Hero() {
   const { t } = useLanguage();
 
-  const featuredProjects = [
-    {
-      title: t("projects.lifehub.title"),
-      description: t("projects.lifehub.description"),
-      tech: ["Python", "FastAPI", "React", "AI"],
-      link: "https://hub.creatman.ru",
-    },
-    {
-      title: t("projects.ghost.title"),
-      description: t("projects.ghost.description"),
-      tech: ["Electron", "React", "TypeScript", "Python", "Claude", "Deepgram"],
-      link: "https://github.com/CreatmanCEO/ghost-showcase",
-    },
-    {
-      title: t("projects.accu.title"),
-      description: t("projects.accu.description"),
-      tech: ["Python", "GitHub API", "VPS", "Telegram"],
-      link: "https://github.com/CreatmanCEO/accu",
-    },
-    {
-      title: t("projects.aviawallet.title"),
-      description: t("projects.aviawallet.description"),
-      tech: ["Flutter", "Dart", "Firebase", "App Store"],
-      link: "https://www.aviacoinus7.com/",
-    },
-  ];
+  const handleScrollToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
-    <section className="mx-auto max-w-6xl px-6 pt-16 pb-16 md:pt-20 md:pb-20">
-      {/* Minimalist Hero - Left Aligned */}
-      <div className="mb-20 md:mb-24">
-        <div className="mb-10 text-sm font-medium uppercase tracking-widest text-muted">
-          {t("hero.label")}
-        </div>
-        <h1 className="mb-10 text-4xl font-black leading-[1.1] tracking-tight md:text-5xl">
-          {t("hero.headline")}
-        </h1>
-        <div className="mb-12 space-y-2">
-          {t("hero.description").split('\n').map((line, i) => (
-            <p key={i} className="text-lg leading-relaxed text-muted md:text-xl">
+    <section className="mx-auto max-w-3xl px-6 pt-20 pb-16 text-center md:pt-28 md:pb-20">
+      {/* Headline */}
+      <h1 className="mb-8 text-3xl font-medium leading-tight tracking-tight md:text-4xl">
+        {t("hero.headline")}
+      </h1>
+
+      {/* Storytelling subtitle */}
+      <div className="mx-auto mb-4 max-w-2xl space-y-1">
+        {t("hero.subtitle")
+          .split("\n")
+          .map((line, i) => (
+            <p
+              key={i}
+              className="text-base leading-relaxed text-muted md:text-lg"
+            >
               {line}
             </p>
           ))}
-        </div>
-        <div className="flex flex-wrap gap-4">
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-2 bg-foreground px-8 py-4 text-lg font-semibold text-background transition-all hover:gap-3"
-          >
-            {t("hero.viewProjects")}
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
-          <Link
-            href="/ai-analyst"
-            className="inline-flex items-center gap-2 border-2 border-foreground px-8 py-4 text-lg font-semibold transition-all hover:bg-foreground hover:text-background"
-          >
-            {t("hero.tryAI")}
-          </Link>
-        </div>
       </div>
 
-      {/* Featured Projects Grid */}
-      <div className="mb-16 md:mb-20">
-        <h2 className="mb-8 text-sm font-medium uppercase tracking-widest text-muted md:mb-12">
-          {t("hero.featuredProjects")}
-        </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-8">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.title} {...project} />
-          ))}
-        </div>
+      {/* Punchline — bold */}
+      <p className="mb-10 text-base font-medium md:text-lg">
+        {t("hero.punchline")}
+      </p>
+
+      {/* CTA Buttons */}
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <Link
+          href="/projects"
+          className="rounded-lg bg-foreground px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
+        >
+          {t("hero.viewProjects")}
+        </Link>
+        <Link
+          href="/ai-analyst"
+          className="rounded-lg border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-accent/5"
+        >
+          {t("hero.exploreCode")}
+        </Link>
       </div>
 
-      {/* Tech Stack */}
-      <TechStack />
+      {/* Text link — scroll to contact */}
+      <button
+        onClick={handleScrollToContact}
+        className="mt-4 text-sm text-muted transition-colors hover:text-foreground"
+      >
+        {t("hero.getInTouch")}
+      </button>
     </section>
   );
 }

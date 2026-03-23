@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Panel, Group, Separator } from "react-resizable-panels";
+import { ChevronDown } from "lucide-react";
 import FileTree from "./FileTree";
 import CodeEditor from "./CodeEditor";
 import AnalysisPanel from "./AnalysisPanel";
@@ -24,6 +25,7 @@ export default function AIAnalyst() {
   const [language, setLanguage] = useState("en");
   const [isMobile, setIsMobile] = useState(false);
   const [treeCollapsed, setTreeCollapsed] = useState(true);
+  const [editorCollapsed, setEditorCollapsed] = useState(false);
   const [currentRepo, setCurrentRepo] = useState<{ name: string; owner: string; branch: string } | undefined>();
 
   useEffect(() => {
@@ -61,10 +63,8 @@ export default function AIAnalyst() {
       setSelectedFile(path);
       // Content will be loaded by CodeEditor and passed via onContentChange
       // Analysis will be triggered automatically when content loads
-    } else {
-      // For directories, analyze immediately
-      await analyzeCode(path, type);
     }
+    // Directory clicks only expand the tree — no analysis
   };
 
   const handleContentChange = async (content: string) => {
@@ -85,14 +85,37 @@ export default function AIAnalyst() {
     setLanguage(newLanguage);
   };
 
-  const handleProjectSelect = (repo: Repository) => {
+  const handleProjectSelect = async (repo: Repository) => {
     setCurrentRepo({
       name: repo.name,
       owner: repo.full_name.split("/")[0],
       branch: repo.default_branch,
     });
-    setSelectedFile(""); // Clear selected file when switching projects
-    setAnalysis(""); // Clear analysis
+    setSelectedFile("");
+    setAnalysis("");
+
+    // Auto-load and analyze README
+    try {
+      const readmeResponse = await fetch(
+        `/api/read-file?owner=${repo.full_name.split("/")[0]}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`
+      );
+
+      if (readmeResponse.ok) {
+        const readmeContent = await readmeResponse.text();
+        if (readmeContent) {
+          setSelectedFile("README.md");
+          await analyzeCode(readmeContent, "file");
+          return;
+        }
+      }
+
+      // Fallback: show repo description
+      const fallbackText = `Repository: ${repo.full_name}\nDescription: ${repo.description || "No description"}\n\nSelect a file from the tree to start analyzing code.`;
+      setAnalysis(fallbackText);
+    } catch (error) {
+      console.error("[AIAnalyst] Failed to auto-load README:", error);
+      setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
+    }
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
@@ -160,34 +183,47 @@ export default function AIAnalyst() {
   };
 
   if (isMobile) {
-    // Mobile Layout: Vertical stack with collapsible tree
+    // Mobile Layout: Vertical stack with collapsible panels
     return (
-      <div className="flex h-screen flex-col overflow-hidden px-2 sm:px-4">
+      <div className="flex h-full flex-col overflow-hidden px-2 sm:px-4">
         {/* Project Selector */}
         <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
 
         {/* Collapsible File Tree */}
-        <details open={!treeCollapsed} onToggle={(e) => setTreeCollapsed(!(e.target as HTMLDetailsElement).open)} className="border-b border-border">
-          <summary className="cursor-pointer bg-surface px-4 py-3 font-medium hover:bg-accent/5">
-            <span className="text-sm">📁 File Explorer</span>
-          </summary>
-          <div className="h-64 overflow-hidden">
+        <div className="border-b border-border">
+          <button
+            onClick={() => setTreeCollapsed(!treeCollapsed)}
+            className="flex w-full items-center justify-between bg-surface px-4 py-3 text-sm font-medium"
+          >
+            <span>📁 File Explorer</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${!treeCollapsed ? "rotate-180" : ""}`} />
+          </button>
+          <div className={`overflow-hidden transition-all duration-300 ${treeCollapsed ? "max-h-0" : "max-h-64"}`}>
             <FileTree onFileSelect={handleFileSelect} repository={currentRepo} />
           </div>
-        </details>
-
-        {/* Code Editor */}
-        <div className="flex-1 overflow-hidden border-b border-border">
-          <CodeEditor
-            filePath={selectedFile}
-            onAnalyzeSelection={handleAnalyzeSelection}
-            onContentChange={handleContentChange}
-            repository={currentRepo}
-            hasRepository={!!currentRepo}
-          />
         </div>
 
-        {/* Analysis Panel */}
+        {/* Collapsible Code Editor — ~30% */}
+        <div className="border-b border-border">
+          <button
+            onClick={() => setEditorCollapsed(!editorCollapsed)}
+            className="flex w-full items-center justify-between bg-surface px-4 py-3 text-sm font-medium"
+          >
+            <span>📝 Code Editor</span>
+            <ChevronDown className={`h-4 w-4 transition-transform ${!editorCollapsed ? "rotate-180" : ""}`} />
+          </button>
+          <div className={`overflow-hidden transition-all duration-300 ${editorCollapsed ? "max-h-0" : "max-h-[30vh]"}`}>
+            <CodeEditor
+              filePath={selectedFile}
+              onAnalyzeSelection={handleAnalyzeSelection}
+              onContentChange={handleContentChange}
+              repository={currentRepo}
+              hasRepository={!!currentRepo}
+            />
+          </div>
+        </div>
+
+        {/* Analysis Panel — fills remaining space (~70%) */}
         <div className="flex-1 overflow-hidden">
           <AnalysisPanel
             analysis={analysis}
@@ -201,11 +237,11 @@ export default function AIAnalyst() {
 
   // Desktop Layout: 3-panel with resizable separators
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-full overflow-hidden">
       {/* Project Selector */}
       <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
 
-      <div className="h-[calc(100vh-64px)] px-4 md:px-6 lg:px-8">
+      <div className="h-[calc(100%-64px)] px-4 md:px-6 lg:px-8">
         <Group
           orientation="horizontal"
           onLayoutChanged={(layout) => {

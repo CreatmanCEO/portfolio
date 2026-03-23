@@ -25,15 +25,15 @@ export async function POST(request: NextRequest) {
 
     const languageInstructions: { [key: string]: string } = {
       en: "Please respond in English.",
-      es: "Por favor responde en Español.",
       ru: "Пожалуйста, отвечай на Русском языке.",
-      he: "אנא השב בעברית.",
-      ja: "日本語で返答してください。",
     };
 
     const languageInstruction = languageInstructions[language] || languageInstructions.en;
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     const prompt = `${languageInstruction}
+Current date: ${currentDate}. All technologies and tools mentioned are current as of 2026. Analyze professionally.
 
 Analyze the following code and provide:
 1. What it does (brief summary)
@@ -50,8 +50,7 @@ ${code}
     console.log("[API /analyze-code] Starting Gemini AI analysis...");
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Use gemini-flash-latest - stable alias for latest Flash model (currently Gemini 2.5)
-    const model = genAI.getGenerativeModel({ model: "gemini-flash-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const encoder = new TextEncoder();
     const readable = new ReadableStream({

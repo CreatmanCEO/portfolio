@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { db } from "@/db";
+import { siteContent } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,11 +16,38 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Creatman - Full-Stack Developer & Automation Engineer",
-  description:
-    "Portfolio of Creatman - Building intelligent automation systems, AI-powered applications, and production-ready solutions with Python, TypeScript, and modern frameworks.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let metaTitle = "Creatman — Technical Product Builder";
+  let metaDescription = "I see problems and build solutions.";
+
+  try {
+    const titleRow = db.select().from(siteContent).where(eq(siteContent.key, "meta_title")).get();
+    const descRow = db.select().from(siteContent).where(eq(siteContent.key, "meta_description")).get();
+    if (titleRow?.value) metaTitle = titleRow.value;
+    if (descRow?.value) metaDescription = descRow.value;
+  } catch {
+    // Fallback to defaults if DB not available during build
+  }
+
+  return {
+    title: metaTitle,
+    description: metaDescription,
+    openGraph: {
+      title: metaTitle,
+      description: metaDescription,
+      url: "https://creatman.site",
+      siteName: "Creatman",
+      type: "website",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDescription,
+    },
+    metadataBase: new URL("https://creatman.site"),
+  };
+}
 
 export default function RootLayout({
   children,
