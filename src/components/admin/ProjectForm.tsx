@@ -31,6 +31,7 @@ interface ProjectData {
   githubUrl: string;
   liveUrl: string;
   sortOrder: number;
+  complexityBadge: string;
 }
 
 interface ProjectFormProps {
@@ -54,6 +55,7 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
       githubUrl: "",
       liveUrl: "",
       sortOrder: 0,
+      complexityBadge: "",
     }
   );
   const [techInput, setTechInput] = useState(
@@ -375,6 +377,22 @@ export default function ProjectForm({ initialData, isEdit }: ProjectFormProps) {
             setData((p) => ({ ...p, liveUrl: e.target.value }))
           }
           placeholder="https://..."
+          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+        />
+      </div>
+
+      {/* Complexity Badge */}
+      <div>
+        <label className="mb-1 block text-xs font-medium text-muted">
+          Complexity Badge
+        </label>
+        <input
+          type="text"
+          value={data.complexityBadge}
+          onChange={(e) =>
+            setData((p) => ({ ...p, complexityBadge: e.target.value }))
+          }
+          placeholder='e.g. "⚡ Built in 2 days"'
           className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
         />
       </div>

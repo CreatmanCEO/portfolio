@@ -16,6 +16,10 @@ export const projects = sqliteTable('projects', {
   liveUrl: text('live_url'),
   coverImage: text('cover_image'),
   screenshots: text('screenshots'), // JSON array of paths
+  problem: text('problem').notNull().default(''),
+  solution: text('solution').notNull().default(''),
+  results: text('results').notNull().default(''), // JSON array of strings
+  complexityBadge: text('complexity_badge'),
   seoTitle: text('seo_title'),
   seoDescription: text('seo_description'),
   sortOrder: integer('sort_order').notNull().default(0),

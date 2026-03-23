@@ -35,8 +35,13 @@ export default function Hero() {
       </div>
 
       {/* Punchline — bold */}
-      <p className="mb-10 text-base font-medium md:text-lg">
+      <p className="mb-3 text-base font-medium md:text-lg">
         {t("hero.punchline")}
+      </p>
+
+      {/* Availability */}
+      <p className="mb-10 text-sm text-muted">
+        {t("hero.availability")}
       </p>
 
       {/* CTA Buttons */}

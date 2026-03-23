@@ -19,6 +19,7 @@ interface Project {
   githubUrl: string | null;
   liveUrl: string | null;
   coverImage: string | null;
+  complexityBadge: string | null;
 }
 
 interface ProjectGridProps {

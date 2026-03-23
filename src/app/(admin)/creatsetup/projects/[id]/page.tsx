@@ -85,6 +85,7 @@ export default function EditProjectPage({
     githubUrl: project.githubUrl || "",
     liveUrl: project.liveUrl || "",
     sortOrder: project.sortOrder,
+    complexityBadge: (project as ProjectRaw & { complexityBadge?: string | null }).complexityBadge || "",
   };
 
   return (

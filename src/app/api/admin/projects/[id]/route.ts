@@ -70,6 +70,10 @@ export async function PUT(
         screenshots: data.screenshots
           ? JSON.stringify(data.screenshots)
           : existing.screenshots,
+        problem: data.problem !== undefined ? data.problem : existing.problem,
+        solution: data.solution !== undefined ? data.solution : existing.solution,
+        results: data.results !== undefined ? data.results : existing.results,
+        complexityBadge: data.complexityBadge !== undefined ? (data.complexityBadge || null) : existing.complexityBadge,
         seoTitle:
           data.seoTitle !== undefined ? data.seoTitle : existing.seoTitle,
         seoDescription:

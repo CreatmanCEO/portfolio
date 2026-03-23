@@ -29,6 +29,7 @@ function getProject(slug: string) {
     tags: JSON.parse(project.tags) as string[],
     techStack: JSON.parse(project.techStack) as string[],
     screenshots: project.screenshots ? JSON.parse(project.screenshots) as string[] : [],
+    parsedResults: project.results ? (() => { try { return JSON.parse(project.results) as string[]; } catch { return []; } })() : [],
   };
 }
 
@@ -104,6 +105,37 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       {project.descriptionEn && (
         <section className="mb-10">
           <p className="text-base leading-relaxed text-muted">{project.descriptionEn}</p>
+        </section>
+      )}
+
+      {/* Problem */}
+      {project.problem && (
+        <section className="mb-8">
+          <h2 className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">Problem</h2>
+          <p className="text-sm leading-relaxed text-muted md:text-base">{project.problem}</p>
+        </section>
+      )}
+
+      {/* Solution */}
+      {project.solution && (
+        <section className="mb-8">
+          <h2 className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">Solution</h2>
+          <p className="text-sm leading-relaxed text-muted md:text-base">{project.solution}</p>
+        </section>
+      )}
+
+      {/* Results */}
+      {project.parsedResults && project.parsedResults.length > 0 && (
+        <section className="mb-10">
+          <h2 className="mb-3 text-xs font-medium uppercase tracking-widest text-muted">Results & Impact</h2>
+          <ul className="space-y-2">
+            {project.parsedResults.map((result: string, i: number) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-muted md:text-base">
+                <span className="mt-1 text-accent">{'\u2713'}</span>
+                <span>{result}</span>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 

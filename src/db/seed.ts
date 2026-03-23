@@ -1,5 +1,5 @@
 import { type BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
-import { sql } from 'drizzle-orm'
+import { sql, eq } from 'drizzle-orm'
 import * as schema from './schema'
 
 // Default: use the app's db instance
@@ -355,6 +355,73 @@ const projectRows: ProjectSeed[] = [
   },
 ]
 
+/* ───────── Problem/Solution/Results + Badges ───────── */
+
+interface ProjectPSR {
+  slug: string
+  problem: string
+  solution: string
+  results: string // JSON array
+  complexityBadge?: string
+}
+
+const projectUpdates: ProjectPSR[] = [
+  {
+    slug: 'security-scanner',
+    problem: "A friend's phone was compromised with 26 active backdoor connections. Existing mobile security tools require app installation on the target device — impossible when the device is already compromised.",
+    solution: "Built a Telegram bot that detects threats via VPN traffic analysis — zero installation on the target device. Four-layer detection engine: port analysis, behavioral patterns, blacklist correlation (919 stalkerware domains), JA3 TLS fingerprinting (97 malware signatures), plus Suricata IDS with ~19K rules.",
+    results: JSON.stringify(["Detected 26 active backdoor connections on first real test", "919 stalkerware domains in blacklist database", "97 JA3 malware fingerprints catalogued", "~19,000 Suricata IDS rules integrated", "Built from zero to working product in 2 days"]),
+    complexityBadge: "⚡ Built in 2 days",
+  },
+  {
+    slug: 'ghost',
+    problem: "Developers, interviewees, and meeting participants need real-time AI assistance without visible screen overlays that could be detected or distracting.",
+    solution: "Built an Electron desktop app with a fully invisible overlay. Multi-LLM support (Claude, GPT-4, Gemini), real-time voice transcription via Deepgram, and context-aware responses — all without any visible UI elements on screen.",
+    results: JSON.stringify(["Invisible overlay undetectable in screen sharing", "Multi-LLM support for different use cases", "Real-time voice transcription with Deepgram", "Cross-platform: Windows, macOS, Linux"]),
+  },
+  {
+    slug: 'vpn-infrastructure',
+    problem: "Government censorship breaks internet access. Commercial VPN services get blocked. Users need reliable, censorship-resistant access that bypasses DPI (Deep Packet Inspection).",
+    solution: "Built production VPN infrastructure with VLESS+Reality protocol and WebSocket transport. Custom DPI bypass implementation. Automated monitoring and client management via commercial Telegram bot with payments and referrals.",
+    results: JSON.stringify(["100+ active clients (friends and colleagues)", "DPI bypass working in production", "Commercial Telegram bot with payments", "Automated monitoring and alerting", "Zero downtime in production"]),
+  },
+  {
+    slug: 'aviawallet',
+    problem: "Client needed a crypto wallet mobile app shipped to App Store quickly. Complex requirements: offline sync, push notifications, real-time portfolio tracking.",
+    solution: "Built cross-platform mobile app with Flutter and Dart. Firebase backend for real-time sync. Published to App Store and Google Play. Later attracted investors based on the shipped product.",
+    results: JSON.stringify(["Published in App Store and Google Play", "Offline sync with Firebase", "Attracted investors post-launch", "Push notifications for portfolio changes"]),
+  },
+  {
+    slug: 'joy-vision-calculator',
+    problem: "Client's employee spent several weeks trying to build a glazing components calculator and couldn't solve it. Four different system types with complex interdependent parameters.",
+    solution: "Built a web application with Flask that calculates frameless glazing components for 4 system types. Automatic PDF generation of commercial proposals and specifications. Bitrix24 CRM integration. Excel price list import.",
+    results: JSON.stringify(["Built in 1 day (vs weeks of failed attempts)", "4 glazing system types supported", "Automatic PDF commercial proposals", "Bitrix24 CRM integration", "Excel price list management"]),
+    complexityBadge: "⚡ Built in 1 day",
+  },
+  {
+    slug: 'ai-code-analyst',
+    problem: "Portfolio visitors can see project names but can't evaluate code quality without cloning repos. Need a way to showcase code interactively.",
+    solution: "Built an interactive AI-powered code explorer directly into the portfolio site. Visitors browse GitHub repositories, click any file, and get instant AI analysis from Gemini. Three-panel layout with file tree, code editor, and analysis output.",
+    results: JSON.stringify(["Integrated into portfolio at creatman.site/ai-analyst", "Analyzes any file from any public GitHub repo", "Real-time streaming AI analysis", "Multi-language support (EN/RU)"]),
+  },
+]
+
+function updateProjects(database: BetterSQLite3Database<typeof schema>) {
+  for (const update of projectUpdates) {
+    database.update(schema.projects)
+      .set({
+        problem: update.problem,
+        solution: update.solution,
+        results: update.results,
+        ...(update.complexityBadge ? { complexityBadge: update.complexityBadge } : {}),
+        updatedAt: new Date().toISOString(),
+      })
+      .where(eq(schema.projects.slug, update.slug))
+      .run()
+  }
+  console.log(`Updated problem/solution/results for ${projectUpdates.length} projects`)
+}
+
 /* ───────── Seed Function ───────── */
 
 export async function seedDatabase(dbInstance?: BetterSQLite3Database<typeof schema>) {
@@ -368,6 +435,8 @@ export async function seedDatabase(dbInstance?: BetterSQLite3Database<typeof sch
 
   if (existing.length > 0) {
     console.log('Database already seeded, skipping')
+    // Always run project updates (idempotent — updates existing rows)
+    updateProjects(database)
     return
   }
 
@@ -380,6 +449,9 @@ export async function seedDatabase(dbInstance?: BetterSQLite3Database<typeof sch
   for (const row of projectRows) {
     database.insert(schema.projects).values(row).run()
   }
+
+  // Set problem/solution/results on key projects
+  updateProjects(database)
 
   const contentCount = database.select({ count: sql<number>`count(*)` }).from(schema.siteContent).get()
   const projectCount = database.select({ count: sql<number>`count(*)` }).from(schema.projects).get()

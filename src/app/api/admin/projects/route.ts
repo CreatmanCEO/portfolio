@@ -52,6 +52,10 @@ export async function POST(request: NextRequest) {
         screenshots: data.screenshots
           ? JSON.stringify(data.screenshots)
           : null,
+        problem: data.problem || '',
+        solution: data.solution || '',
+        results: data.results ? JSON.stringify(data.results) : '',
+        complexityBadge: data.complexityBadge || null,
         seoTitle: data.seoTitle || null,
         seoDescription: data.seoDescription || null,
         sortOrder: data.sortOrder || 0,
