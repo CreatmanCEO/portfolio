@@ -37,16 +37,7 @@ function getProject(slug: string) {
   }
 }
 
-export const dynamicParams = true;
-
-export function generateStaticParams() {
-  try {
-    const allProjects = db.select({ slug: projects.slug }).from(projects).all();
-    return allProjects.map((p) => ({ slug: p.slug }));
-  } catch {
-    return [];
-  }
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   try {

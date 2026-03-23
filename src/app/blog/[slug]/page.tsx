@@ -21,8 +21,9 @@ function getPost(slug: string) {
     .get();
 }
 
-export const dynamicParams = true;
+export const dynamic = "force-dynamic";
 
+/* generateStaticParams removed — pages render at runtime
 export function generateStaticParams() {
   try {
     const posts = db
@@ -36,7 +37,7 @@ export function generateStaticParams() {
   } catch {
     return [];
   }
-}
+} */
 
 export async function generateMetadata({
   params,
