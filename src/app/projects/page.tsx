@@ -4,6 +4,8 @@ import { desc, asc } from "drizzle-orm";
 import ProjectGrid from "@/components/ProjectGrid";
 import TranslatedText from "@/components/TranslatedText";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Projects — Creatman",
   description: "20+ shipped products across security, AI, fintech, infrastructure, and developer tools.",

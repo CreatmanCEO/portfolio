@@ -24,6 +24,7 @@ services:
       - HOSTNAME=0.0.0.0
     networks:
       - portfolio-network
+      - coolify
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
@@ -56,3 +57,5 @@ services:
 networks:
   portfolio-network:
     driver: bridge
+  coolify:
+    external: true

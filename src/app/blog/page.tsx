@@ -5,6 +5,8 @@ import BlogCard from "@/components/BlogCard";
 import TranslatedText from "@/components/TranslatedText";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Blog — Creatman",
   description: "Articles about security, AI, infrastructure, and developer tools.",
