@@ -32,20 +32,30 @@ function getProject(slug: string) {
   };
 }
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  const allProjects = db.select({ slug: projects.slug }).from(projects).all();
-  return allProjects.map((p) => ({ slug: p.slug }));
+  try {
+    const allProjects = db.select({ slug: projects.slug }).from(projects).all();
+    return allProjects.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const project = getProject(slug);
-  if (!project) return { title: "Project Not Found" };
+  try {
+    const { slug } = await params;
+    const project = getProject(slug);
+    if (!project) return { title: "Project Not Found" };
 
-  return {
-    title: `${project.seoTitle || project.titleEn} — Creatman`,
-    description: project.seoDescription || project.descriptionEn,
-  };
+    return {
+      title: `${project.seoTitle || project.titleEn} — Creatman`,
+      description: project.seoDescription || project.descriptionEn,
+    };
+  } catch {
+    return { title: "Projects — Creatman" };
+  }
 }
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {

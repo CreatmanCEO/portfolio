@@ -11,12 +11,17 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
-  const posts = db
-    .select()
-    .from(blogPosts)
-    .where(eq(blogPosts.published, true))
-    .orderBy(desc(blogPosts.publishedAt))
-    .all();
+  let posts: Array<typeof blogPosts.$inferSelect> = [];
+  try {
+    posts = db
+      .select()
+      .from(blogPosts)
+      .where(eq(blogPosts.published, true))
+      .orderBy(desc(blogPosts.publishedAt))
+      .all();
+  } catch {
+    // DB not available during build
+  }
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-16">

@@ -9,8 +9,8 @@ export const metadata = {
   description: "20+ shipped products across security, AI, fintech, infrastructure, and developer tools.",
 };
 
-export default function ProjectsPage() {
-  const allProjects = db
+function queryProjects() {
+  return db
     .select()
     .from(projects)
     .orderBy(desc(projects.year), asc(projects.sortOrder))
@@ -21,6 +21,15 @@ export default function ProjectsPage() {
       techStack: JSON.parse(p.techStack) as string[],
       screenshots: p.screenshots ? JSON.parse(p.screenshots) as string[] : [],
     }));
+}
+
+export default function ProjectsPage() {
+  let allProjects: ReturnType<typeof queryProjects> = [];
+  try {
+    allProjects = queryProjects();
+  } catch {
+    // DB not available during build
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-16">

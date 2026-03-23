@@ -14,30 +14,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/ai-analyst`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
   ];
 
-  // Dynamic project pages
-  const allProjects = db
-    .select({ slug: projects.slug, updatedAt: projects.updatedAt })
-    .from(projects)
-    .all();
-  const projectPages = allProjects.map((p) => ({
-    url: `${baseUrl}/projects/${p.slug}`,
-    lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  let projectPages: MetadataRoute.Sitemap = [];
+  let blogPages: MetadataRoute.Sitemap = [];
 
-  // Dynamic blog pages (original only)
-  const originalPosts = db
-    .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt })
-    .from(blogPosts)
-    .where(and(eq(blogPosts.source, "original"), eq(blogPosts.published, true)))
-    .all();
-  const blogPages = originalPosts.map((p) => ({
-    url: `${baseUrl}/blog/${p.slug}`,
-    lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  try {
+    // Dynamic project pages
+    const allProjects = db
+      .select({ slug: projects.slug, updatedAt: projects.updatedAt })
+      .from(projects)
+      .all();
+    projectPages = allProjects.map((p) => ({
+      url: `${baseUrl}/projects/${p.slug}`,
+      lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+
+    // Dynamic blog pages (original only)
+    const originalPosts = db
+      .select({ slug: blogPosts.slug, updatedAt: blogPosts.updatedAt })
+      .from(blogPosts)
+      .where(and(eq(blogPosts.source, "original"), eq(blogPosts.published, true)))
+      .all();
+    blogPages = originalPosts.map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  } catch {
+    // DB not available during build
+  }
 
   return [...staticPages, ...projectPages, ...blogPages];
 }

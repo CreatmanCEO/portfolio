@@ -21,15 +21,21 @@ function getPost(slug: string) {
     .get();
 }
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  const posts = db
-    .select({ slug: blogPosts.slug })
-    .from(blogPosts)
-    .where(
-      and(eq(blogPosts.source, "original"), eq(blogPosts.published, true))
-    )
-    .all();
-  return posts.map((p) => ({ slug: p.slug }));
+  try {
+    const posts = db
+      .select({ slug: blogPosts.slug })
+      .from(blogPosts)
+      .where(
+        and(eq(blogPosts.source, "original"), eq(blogPosts.published, true))
+      )
+      .all();
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -37,13 +43,17 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getPost(slug);
-  if (!post) return { title: "Post Not Found" };
-  return {
-    title: `${post.titleEn} — Creatman Blog`,
-    description: post.excerpt || post.titleEn,
-  };
+  try {
+    const { slug } = await params;
+    const post = getPost(slug);
+    if (!post) return { title: "Post Not Found" };
+    return {
+      title: `${post.titleEn} — Creatman Blog`,
+      description: post.excerpt || post.titleEn,
+    };
+  } catch {
+    return { title: "Blog — Creatman" };
+  }
 }
 
 export default async function BlogPostPage({
