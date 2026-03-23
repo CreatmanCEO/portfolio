@@ -169,7 +169,7 @@ export default function ContactForm() {
           <p className="text-center text-muted mb-6">
             {t("contact.orReach")}
           </p>
-          <div className="flex justify-center gap-6">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-6">
             <a
               href="https://t.me/Creatman_it"
               target="_blank"

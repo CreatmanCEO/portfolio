@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6 py-16 md:py-24">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           {/* Social Links */}
-          <div className="flex gap-6">
+          <div className="flex flex-wrap justify-center gap-4 md:gap-6">
             <Link
               href="https://github.com/CreatmanCEO"
               target="_blank"
@@ -47,7 +47,7 @@ export default function Footer() {
               aria-label="Email"
             >
               <Mail className="h-4 w-4" />
-              creatmanick@gmail.com
+              Email
             </a>
           </div>
 
