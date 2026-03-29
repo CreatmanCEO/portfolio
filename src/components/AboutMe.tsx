@@ -27,6 +27,7 @@ export default function AboutMe() {
               src="/images/me.jpg"
               alt="Creatman"
               fill
+              sizes="200px"
               className="object-cover"
               priority
             />
