@@ -127,40 +127,65 @@ TONE: Like a pull request review from a senior colleague — constructive, speci
     const langKey = language === "ru" ? "ru" : "en";
     const systemPrompt = systemPrompts[mode]?.[langKey] || systemPrompts.file[langKey];
 
-    // Use lighter model for repo overviews (saves tokens), full model for file reviews
-    const model = mode === "repo" ? "llama-3.1-8b-instant" : "llama-3.3-70b-versatile";
+    const messages = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: code },
+    ];
+    const maxTokens = mode === "repo" ? 1024 : 4096;
 
-    const requestBody = JSON.stringify({
-      model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: code },
-      ],
-      temperature: 0.5,
-      max_tokens: mode === "repo" ? 1024 : 4096,
-      stream: true,
-    });
+    // Provider rotation: Groq 70b → Cerebras 70b → Groq 8b
+    const providers = [
+      {
+        url: "https://api.groq.com/openai/v1/chat/completions",
+        key: process.env.GROQ_API_KEY!,
+        model: "llama-3.3-70b-versatile",
+        name: "Groq-70b",
+      },
+      {
+        url: "https://api.cerebras.ai/v1/chat/completions",
+        key: process.env.CEREBRAS_API_KEY || "",
+        model: "llama-3.3-70b",
+        name: "Cerebras-70b",
+      },
+      {
+        url: "https://api.groq.com/openai/v1/chat/completions",
+        key: process.env.GROQ_API_KEY!,
+        model: "llama-3.1-8b-instant",
+        name: "Groq-8b",
+      },
+    ].filter(p => p.key); // Skip providers without API key
 
-    const requestHeaders = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    };
-
-    // Retry on 429
     let response: Response | null = null;
-    for (let attempt = 0; attempt < 3; attempt++) {
-      response = await fetch(GROQ_API_URL, {
-        method: "POST",
-        headers: requestHeaders,
-        body: requestBody,
-      });
+    let usedProvider = "";
 
-      if (response.status === 429) {
-        const retryAfter = parseInt(response.headers.get("retry-after") || "2");
-        await new Promise((r) => setTimeout(r, retryAfter * 1000));
-        continue;
+    for (const provider of providers) {
+      try {
+        response = await fetch(provider.url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${provider.key}`,
+          },
+          body: JSON.stringify({
+            model: provider.model,
+            messages,
+            temperature: 0.5,
+            max_tokens: maxTokens,
+            stream: true,
+          }),
+          signal: AbortSignal.timeout(15000),
+        });
+
+        if (response.ok) {
+          usedProvider = provider.name;
+          console.log(`[API /analyze-code] Using ${provider.name}`);
+          break;
+        }
+
+        console.log(`[API /analyze-code] ${provider.name} returned ${response.status}, trying next`);
+      } catch (error) {
+        console.log(`[API /analyze-code] ${provider.name} failed, trying next`);
       }
-      break;
     }
 
     if (!response || !response.ok) {
