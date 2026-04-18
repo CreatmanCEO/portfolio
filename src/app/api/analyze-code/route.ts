@@ -127,14 +127,17 @@ TONE: Like a pull request review from a senior colleague — constructive, speci
     const langKey = language === "ru" ? "ru" : "en";
     const systemPrompt = systemPrompts[mode]?.[langKey] || systemPrompts.file[langKey];
 
+    // Use lighter model for repo overviews (saves tokens), full model for file reviews
+    const model = mode === "repo" ? "llama-3.1-8b-instant" : "llama-3.3-70b-versatile";
+
     const requestBody = JSON.stringify({
-      model: "llama-3.3-70b-versatile",
+      model,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: code },
       ],
       temperature: 0.5,
-      max_tokens: 4096,
+      max_tokens: mode === "repo" ? 1024 : 4096,
       stream: true,
     });
 
