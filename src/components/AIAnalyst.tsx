@@ -19,7 +19,7 @@ interface Repository {
 
 export default function AIAnalyst() {
   const [selectedFile, setSelectedFile] = useState("");
-  const [fileContent, setFileContent] = useState(""); // Store loaded file content
+  const [fileContent, setFileContent] = useState("");
   const [analysis, setAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
   const [language, setLanguage] = useState("en");
@@ -27,61 +27,38 @@ export default function AIAnalyst() {
   const [treeCollapsed, setTreeCollapsed] = useState(true);
   const [editorCollapsed, setEditorCollapsed] = useState(false);
   const [currentRepo, setCurrentRepo] = useState<{ name: string; owner: string; branch: string } | undefined>();
-  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Request ID to prevent stale responses from overwriting current analysis
+  const requestIdRef = useRef(0);
+  const isAnalyzingRepoRef = useRef(false);
 
   useEffect(() => {
-    // Check if mobile
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-    };
-
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  useEffect(() => {
-    // Load saved panel sizes from localStorage
-    const savedSizes = localStorage.getItem("ai-analyst-panel-sizes");
-    if (savedSizes) {
-      try {
-        const sizes = JSON.parse(savedSizes);
-        // Panel sizes will be applied via defaultSize props
-      } catch (error) {
-        console.error("Failed to load panel sizes:", error);
-      }
-    }
-  }, []);
-
-  const savePanelSizes = (sizes: number[]) => {
-    localStorage.setItem("ai-analyst-panel-sizes", JSON.stringify(sizes));
-  };
-
   const handleFileSelect = async (path: string, type: "file" | "directory") => {
-    console.log("[AIAnalyst] File selected:", { path, type });
-
     if (type === "file") {
       setSelectedFile(path);
-      // Mark that we're waiting for content to load for this file
-      pendingAnalysisRef.current = path;
     }
-    // Directory clicks only expand the tree — no analysis
   };
-
-  const pendingAnalysisRef = useRef<string | null>(null);
 
   const handleContentChange = async (content: string) => {
     setFileContent(content);
 
-    // Only auto-analyze if this content load was triggered by a file selection
-    if (content && pendingAnalysisRef.current && selectedFile) {
-      pendingAnalysisRef.current = null; // Clear — only analyze once per file select
-      await analyzeCode(content, "file");
+    // Don't auto-analyze if we're doing repo analysis
+    if (isAnalyzingRepoRef.current) return;
+
+    // Auto-analyze when new file content loads
+    if (content && selectedFile) {
+      await runAnalysis(content, "file");
     }
   };
 
   const handleAnalyzeSelection = async (code: string) => {
-    await analyzeCode(code, "selection");
+    await runAnalysis(code, "file");
   };
 
   const handleLanguageChange = (newLanguage: string) => {
@@ -90,27 +67,24 @@ export default function AIAnalyst() {
 
   const handleProjectSelect = (repo: Repository) => {
     const owner = repo.full_name.split("/")[0];
-    setCurrentRepo({
-      name: repo.name,
-      owner,
-      branch: repo.default_branch,
-    });
+    setCurrentRepo({ name: repo.name, owner, branch: repo.default_branch });
     setSelectedFile("");
+    setFileContent("");
     setAnalysis("");
     setLoading(true);
+    isAnalyzingRepoRef.current = true;
 
-    // Deferred async — avoid race with React re-renders
-    setTimeout(async () => {
+    // Fetch context and analyze
+    (async () => {
       try {
-        // Fetch README + tree in parallel
-        const [readmeRes, treeRes] = await Promise.all([
+        const [readmeText, treeData] = await Promise.all([
           fetch(`/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`)
             .then(r => r.ok ? r.text() : "").catch(() => ""),
           fetch(`/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`)
             .then(r => r.ok ? r.json() : []).catch(() => []),
         ]);
 
-        // Flatten tree to compact path list
+        // Flatten tree
         const paths: string[] = [];
         const flatten = (nodes: { path: string; type: string; children?: unknown[] }[]) => {
           for (const n of nodes) {
@@ -118,97 +92,76 @@ export default function AIAnalyst() {
             if (n.children) flatten(n.children as typeof nodes);
           }
         };
-        flatten(Array.isArray(treeRes) ? treeRes : []);
+        flatten(Array.isArray(treeData) ? treeData : []);
 
-        // Build compact context
         const parts = [`Repository: ${repo.full_name}`];
         if (repo.description) parts.push(`Description: ${repo.description}`);
         if (paths.length > 0) parts.push(`\nArchitecture (file paths):\n${JSON.stringify(paths.slice(0, 60))}`);
-        if (readmeRes) parts.push(`\nREADME (excerpt):\n${readmeRes.slice(0, 1500)}`);
+        if (readmeText) parts.push(`\nREADME (excerpt):\n${readmeText.slice(0, 1500)}`);
 
-        const context = parts.join("\n");
-        setSelectedFile("README.md");
-        await analyzeCode(context, "repo");
+        await runAnalysis(parts.join("\n"), "repo");
       } catch {
         setLoading(false);
         setAnalysis("Failed to load project. Select a file to analyze.");
+      } finally {
+        isAnalyzingRepoRef.current = false;
       }
-    }, 100);
+    })();
   };
 
-  const analyzeCode = async (code: string, type: "file" | "directory" | "selection" | "repo") => {
-    // Cancel any previous analysis
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
+  const savePanelSizes = (sizes: number[]) => {
+    localStorage.setItem("ai-analyst-panel-sizes", JSON.stringify(sizes));
+  };
+
+  // Core analysis function with stale-response protection
+  const runAnalysis = async (code: string, mode: "file" | "repo") => {
+    const myId = ++requestIdRef.current;
 
     setLoading(true);
     setAnalysis("");
 
     try {
-      const mode = type === "repo" ? "repo" : "file";
-
       const response = await fetch("/api/analyze-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code, language, mode }),
-        signal: controller.signal,
       });
 
-      console.log("[AIAnalyst] Analysis response status:", response.status);
+      // Stale check — a newer request was started
+      if (requestIdRef.current !== myId) return;
 
       if (!response.ok) {
-        console.error("[AIAnalyst] Analysis failed:", response.status);
-        if (response.status === 503) {
-          throw new Error("AI service temporarily unavailable. Please try again.");
-        }
-        throw new Error("Analysis failed. Please try again.");
+        setAnalysis(response.status === 503
+          ? "AI service temporarily unavailable. Please try again."
+          : "Analysis failed. Please try again.");
+        return;
       }
 
       const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-
       if (!reader) {
-        console.error("[AIAnalyst] No response stream available");
-        throw new Error("No response stream");
-      }
-
-      let chunkCount = 0;
-
-      while (true) {
-        // Stop if this analysis was cancelled
-        if (controller.signal.aborted) {
-          reader.cancel();
-          return;
-        }
-
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        chunkCount++;
-        const chunk = decoder.decode(value, { stream: true });
-        setAnalysis((prev) => prev + chunk);
-      }
-    } catch (error) {
-      // Ignore abort errors (expected when new analysis replaces old)
-      if (error instanceof DOMException && error.name === "AbortError") {
+        setAnalysis("No response stream available.");
         return;
       }
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      console.error("[AIAnalyst] Analysis error:", error);
-      setAnalysis(`Error: ${errorMessage}`);
+
+      const decoder = new TextDecoder();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (requestIdRef.current !== myId) { reader.cancel(); return; }
+        const chunk = decoder.decode(value, { stream: true });
+        setAnalysis(prev => prev + chunk);
+      }
+    } catch (error) {
+      if (requestIdRef.current !== myId) return;
+      setAnalysis("Error: " + (error instanceof Error ? error.message : "Unknown error"));
     } finally {
-      setLoading(false);
+      if (requestIdRef.current === myId) setLoading(false);
     }
   };
 
   if (isMobile) {
-    // Mobile Layout: Vertical stack with collapsible panels
     return (
       <div className="flex h-full flex-col overflow-hidden px-2 sm:px-4">
-        {/* Project Selector */}
         <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
 
         {/* Collapsible File Tree */}
@@ -225,7 +178,7 @@ export default function AIAnalyst() {
           </div>
         </div>
 
-        {/* Collapsible Code Editor — ~30% */}
+        {/* Collapsible Code Editor */}
         <div className="border-b border-border">
           <button
             onClick={() => setEditorCollapsed(!editorCollapsed)}
@@ -245,61 +198,46 @@ export default function AIAnalyst() {
           </div>
         </div>
 
-        {/* Analysis Panel — fills remaining space (~70%) */}
+        {/* Analysis Panel */}
         <div className="flex-1 overflow-hidden">
-          <AnalysisPanel
-            analysis={analysis}
-            loading={loading}
-            onLanguageChange={handleLanguageChange}
-          />
+          <AnalysisPanel analysis={analysis} loading={loading} onLanguageChange={handleLanguageChange} />
         </div>
       </div>
     );
   }
 
-  // Desktop Layout: 3-panel with resizable separators
+  // Desktop Layout
   return (
     <div className="h-full overflow-hidden">
-      {/* Project Selector */}
       <ProjectSelector onProjectSelect={handleProjectSelect} currentProject={currentRepo?.name} />
 
       <div className="h-[calc(100%-64px)] px-4 md:px-6 lg:px-8">
         <Group
           orientation="horizontal"
-          onLayoutChanged={(layout) => {
-            const sizes = Object.values(layout);
-            savePanelSizes(sizes);
-          }}
+          onLayoutChanged={(layout) => savePanelSizes(Object.values(layout))}
           className="h-full"
         >
-          {/* Left Panel: File Tree (15%) */}
           <Panel defaultSize={15} minSize={10} maxSize={30}>
             <FileTree onFileSelect={handleFileSelect} repository={currentRepo} />
           </Panel>
 
-        <Separator className="w-1 bg-border transition-colors hover:bg-accent" />
+          <Separator className="w-1 bg-border transition-colors hover:bg-accent" />
 
-        {/* Center Panel: Code Editor (40%) */}
-        <Panel defaultSize={40} minSize={20} maxSize={60}>
-          <CodeEditor
-            filePath={selectedFile}
-            onAnalyzeSelection={handleAnalyzeSelection}
-            onContentChange={handleContentChange}
-            repository={currentRepo}
-            hasRepository={!!currentRepo}
-          />
-        </Panel>
+          <Panel defaultSize={40} minSize={20} maxSize={60}>
+            <CodeEditor
+              filePath={selectedFile}
+              onAnalyzeSelection={handleAnalyzeSelection}
+              onContentChange={handleContentChange}
+              repository={currentRepo}
+              hasRepository={!!currentRepo}
+            />
+          </Panel>
 
-        <Separator className="w-1 bg-border transition-colors hover:bg-accent" />
+          <Separator className="w-1 bg-border transition-colors hover:bg-accent" />
 
-        {/* Right Panel: AI Analysis (45%) */}
-        <Panel defaultSize={45} minSize={30} maxSize={70}>
-          <AnalysisPanel
-            analysis={analysis}
-            loading={loading}
-            onLanguageChange={handleLanguageChange}
-          />
-        </Panel>
+          <Panel defaultSize={45} minSize={30} maxSize={70}>
+            <AnalysisPanel analysis={analysis} loading={loading} onLanguageChange={handleLanguageChange} />
+          </Panel>
         </Group>
       </div>
     </div>
