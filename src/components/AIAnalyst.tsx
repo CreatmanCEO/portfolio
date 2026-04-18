@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Panel, Group, Separator } from "react-resizable-panels";
 import { ChevronDown } from "lucide-react";
 import FileTree from "./FileTree";
@@ -27,6 +27,7 @@ export default function AIAnalyst() {
   const [treeCollapsed, setTreeCollapsed] = useState(true);
   const [editorCollapsed, setEditorCollapsed] = useState(false);
   const [currentRepo, setCurrentRepo] = useState<{ name: string; owner: string; branch: string } | undefined>();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     // Check if mobile
@@ -119,6 +120,13 @@ export default function AIAnalyst() {
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
+    // Cancel any previous analysis
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
     console.log("[AIAnalyst] Starting analysis:", { type, codeLength: code.length, language });
     setLoading(true);
     setAnalysis("");
@@ -126,20 +134,15 @@ export default function AIAnalyst() {
     try {
       let promptCode = code;
 
-      // For files, code is already the content (passed from CodeEditor)
-      // For selections, code is the selected text
-      // For directories, create a prompt
       if (type === "directory") {
-        // For directories, just analyze the structure
         promptCode = `Directory: ${code}\nPlease provide insights about this directory structure and its purpose in the project.`;
-        console.log("[AIAnalyst] Directory analysis prompt created");
       }
 
-      console.log("[AIAnalyst] Sending to analysis API...");
       const response = await fetch("/api/analyze-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: promptCode, language }),
+        signal: controller.signal,
       });
 
       console.log("[AIAnalyst] Analysis response status:", response.status);
@@ -160,27 +163,32 @@ export default function AIAnalyst() {
         throw new Error("No response stream");
       }
 
-      console.log("[AIAnalyst] Starting stream reading...");
       let chunkCount = 0;
 
       while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          console.log("[AIAnalyst] Stream complete. Total chunks:", chunkCount);
-          break;
+        // Stop if this analysis was cancelled
+        if (controller.signal.aborted) {
+          reader.cancel();
+          return;
         }
+
+        const { done, value } = await reader.read();
+        if (done) break;
 
         chunkCount++;
         const chunk = decoder.decode(value, { stream: true });
         setAnalysis((prev) => prev + chunk);
       }
     } catch (error) {
+      // Ignore abort errors (expected when new analysis replaces old)
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return;
+      }
       const errorMessage = error instanceof Error ? error.message : "Unknown error";
       console.error("[AIAnalyst] Analysis error:", error);
-      setAnalysis(`Error: Unable to analyze. ${errorMessage}`);
+      setAnalysis(`Error: ${errorMessage}`);
     } finally {
       setLoading(false);
-      console.log("[AIAnalyst] Analysis complete");
     }
   };
 
