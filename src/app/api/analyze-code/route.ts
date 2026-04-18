@@ -1,6 +1,30 @@
 import { NextRequest } from "next/server";
+import crypto from "crypto";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
+
+// In-memory cache check via SQLite
+function getCached(hash: string): string | null {
+  try {
+    const { db } = require("@/db");
+    const { analysisCache } = require("@/db/schema");
+    const { eq } = require("drizzle-orm");
+    const row = db.select().from(analysisCache).where(eq(analysisCache.codeHash, hash)).get();
+    return row?.result || null;
+  } catch {
+    return null;
+  }
+}
+
+function setCache(hash: string, result: string, mode: string, language: string): void {
+  try {
+    const { db } = require("@/db");
+    const { analysisCache } = require("@/db/schema");
+    db.insert(analysisCache).values({ codeHash: hash, result, mode, language }).run();
+  } catch {
+    // Cache write failure is non-critical
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,6 +32,15 @@ export async function POST(request: NextRequest) {
 
     if (!code || typeof code !== "string") {
       return new Response("Invalid code input", { status: 400 });
+    }
+
+    // Check cache first
+    const codeHash = crypto.createHash("sha256").update(`${mode}:${language}:${code}`).digest("hex");
+    const cached = getCached(codeHash);
+    if (cached) {
+      return new Response(cached, {
+        headers: { "Content-Type": "text/plain; charset=utf-8", "X-Cache": "HIT" },
+      });
     }
 
     const apiKey = process.env.GROQ_API_KEY;
@@ -140,6 +173,7 @@ TONE: Like a pull request review from a senior colleague — constructive, speci
       async start(controller) {
         try {
           let buffer = "";
+          let fullResult = "";
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
@@ -157,12 +191,18 @@ TONE: Like a pull request review from a senior colleague — constructive, speci
                 const parsed = JSON.parse(data);
                 const content = parsed.choices?.[0]?.delta?.content;
                 if (content) {
+                  fullResult += content;
                   controller.enqueue(encoder.encode(content));
                 }
               } catch {
                 // Skip malformed chunks
               }
             }
+          }
+
+          // Cache the complete result
+          if (fullResult.length > 50) {
+            setCache(codeHash, fullResult, mode, language);
           }
           controller.close();
         } catch (error) {

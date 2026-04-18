@@ -50,6 +50,15 @@ export const blogPosts = sqliteTable('blog_posts', {
   updatedAt: text('updated_at').notNull().default(sql`(datetime('now'))`),
 })
 
+export const analysisCache = sqliteTable('analysis_cache', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  codeHash: text('code_hash').notNull().unique(), // SHA-256 of code+mode+language
+  result: text('result').notNull(),
+  mode: text('mode').notNull().default('file'),
+  language: text('language').notNull().default('en'),
+  createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
+})
+
 export const pageViews = sqliteTable('page_views', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   path: text('path').notNull(),
