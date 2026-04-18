@@ -62,18 +62,20 @@ export default function AIAnalyst() {
 
     if (type === "file") {
       setSelectedFile(path);
-      // Content will be loaded by CodeEditor and passed via onContentChange
-      // Analysis will be triggered automatically when content loads
+      // Mark that we're waiting for content to load for this file
+      pendingAnalysisRef.current = path;
     }
     // Directory clicks only expand the tree — no analysis
   };
 
+  const pendingAnalysisRef = useRef<string | null>(null);
+
   const handleContentChange = async (content: string) => {
-    console.log("[AIAnalyst] Content changed, length:", content.length);
     setFileContent(content);
 
-    // Auto-analyze when file content loads
-    if (content && selectedFile) {
+    // Only auto-analyze if this content load was triggered by a file selection
+    if (content && pendingAnalysisRef.current && selectedFile) {
+      pendingAnalysisRef.current = null; // Clear — only analyze once per file select
       await analyzeCode(content, "file");
     }
   };
