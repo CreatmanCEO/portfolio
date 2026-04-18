@@ -145,9 +145,11 @@ export default function AIAnalyst() {
       console.log("[AIAnalyst] Analysis response status:", response.status);
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("[AIAnalyst] Analysis failed:", errorText);
-        throw new Error(`Analysis failed: ${response.status} - ${errorText}`);
+        console.error("[AIAnalyst] Analysis failed:", response.status);
+        if (response.status === 503) {
+          throw new Error("AI service temporarily unavailable. Please try again.");
+        }
+        throw new Error("Analysis failed. Please try again.");
       }
 
       const reader = response.body?.getReader();

@@ -44,28 +44,44 @@ IMPORTANT RULES:
 ${code}
 \`\`\``;
 
-    const response = await fetch(GROQ_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-        temperature: 0.3,
-        max_tokens: 4096,
-        stream: true,
-      }),
+    const requestBody = JSON.stringify({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      temperature: 0.3,
+      max_tokens: 4096,
+      stream: true,
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("[API /analyze-code] Groq error:", response.status, errorText);
-      return new Response(`Analysis failed: ${response.status}`, { status: 500 });
+    const requestHeaders = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    };
+
+    // Try with retry on 429
+    let response: Response | null = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      response = await fetch(GROQ_API_URL, {
+        method: "POST",
+        headers: requestHeaders,
+        body: requestBody,
+      });
+
+      if (response.status === 429) {
+        const retryAfter = parseInt(response.headers.get("retry-after") || "2");
+        console.log(`[API /analyze-code] Rate limited, retrying in ${retryAfter}s (attempt ${attempt + 1}/3)`);
+        await new Promise((r) => setTimeout(r, retryAfter * 1000));
+        continue;
+      }
+      break;
+    }
+
+    if (!response || !response.ok) {
+      const status = response?.status || 500;
+      console.error("[API /analyze-code] Groq error:", status);
+      return new Response("AI service temporarily unavailable. Please try again in a moment.", { status: 503 });
     }
 
     // Stream SSE response from Groq
