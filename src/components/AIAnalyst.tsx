@@ -89,39 +89,60 @@ export default function AIAnalyst() {
   };
 
   const handleProjectSelect = async (repo: Repository) => {
+    const owner = repo.full_name.split("/")[0];
     setCurrentRepo({
       name: repo.name,
-      owner: repo.full_name.split("/")[0],
+      owner,
       branch: repo.default_branch,
     });
     setSelectedFile("");
     setAnalysis("");
 
-    // Auto-load and analyze README
+    // Fetch README + tree structure for architectural context
     try {
-      const readmeResponse = await fetch(
-        `/api/read-file?owner=${repo.full_name.split("/")[0]}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`
-      );
+      const [readmeRes, treeRes] = await Promise.allSettled([
+        fetch(`/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`),
+        fetch(`/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`),
+      ]);
 
-      if (readmeResponse.ok) {
-        const readmeContent = await readmeResponse.text();
-        if (readmeContent) {
-          setSelectedFile("README.md");
-          await analyzeCode(readmeContent, "file");
-          return;
+      let readmeContent = "";
+      if (readmeRes.status === "fulfilled" && readmeRes.value.ok) {
+        readmeContent = await readmeRes.value.text();
+      }
+
+      // Build tree summary from API response
+      let treeSummary = "";
+      if (treeRes.status === "fulfilled" && treeRes.value.ok) {
+        try {
+          const treeData = await treeRes.value.json();
+          const paths = (Array.isArray(treeData) ? treeData : treeData.tree || [])
+            .filter((f: { type?: string }) => f.type === "blob" || f.type === "file")
+            .map((f: { path?: string; name?: string }) => f.path || f.name)
+            .filter(Boolean)
+            .slice(0, 60);
+          if (paths.length > 0) {
+            treeSummary = `\n\nProject file structure:\n${paths.join("\n")}`;
+          }
+        } catch {
+          // Ignore tree parse errors
         }
       }
 
-      // Fallback: show repo description
-      const fallbackText = `Repository: ${repo.full_name}\nDescription: ${repo.description || "No description"}\n\nSelect a file from the tree to start analyzing code.`;
-      setAnalysis(fallbackText);
+      if (readmeContent || treeSummary) {
+        const context = `Repository: ${repo.full_name}\nDescription: ${repo.description || "No description provided"}\n\n${readmeContent ? `README.md:\n${readmeContent.slice(0, 4000)}` : ""}${treeSummary}`;
+        setSelectedFile("README.md");
+        await analyzeCode(context, "repo");
+        return;
+      }
+
+      setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
     } catch (error) {
-      console.error("[AIAnalyst] Failed to auto-load README:", error);
+      console.error("[AIAnalyst] Failed to load project context:", error);
       setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
     }
   };
 
-  const analyzeCode = async (code: string, type: "file" | "directory" | "selection") => {
+  const analyzeCode = async (code: string, type: "file" | "directory" | "selection" | "repo") => {
     // Cancel any previous analysis
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -129,21 +150,16 @@ export default function AIAnalyst() {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    console.log("[AIAnalyst] Starting analysis:", { type, codeLength: code.length, language });
     setLoading(true);
     setAnalysis("");
 
     try {
-      let promptCode = code;
-
-      if (type === "directory") {
-        promptCode = `Directory: ${code}\nPlease provide insights about this directory structure and its purpose in the project.`;
-      }
+      const mode = type === "repo" ? "repo" : "file";
 
       const response = await fetch("/api/analyze-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: promptCode, language }),
+        body: JSON.stringify({ code, language, mode }),
         signal: controller.signal,
       });
 

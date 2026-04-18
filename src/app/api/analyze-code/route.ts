@@ -4,7 +4,7 @@ const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, language = "en" } = await request.json();
+    const { code, language = "en", mode = "file" } = await request.json();
 
     if (!code || typeof code !== "string") {
       return new Response("Invalid code input", { status: 400 });
@@ -15,42 +15,92 @@ export async function POST(request: NextRequest) {
       return new Response("AI service not configured.", { status: 503 });
     }
 
-    const languageInstructions: { [key: string]: string } = {
-      en: "Respond ONLY in English. Do not mix languages.",
-      ru: "Отвечай ТОЛЬКО на русском языке. Не смешивай языки. Пиши грамотно, завершай все предложения.",
-    };
-
-    const languageInstruction = languageInstructions[language] || languageInstructions.en;
     const currentDate = new Date().toISOString().split("T")[0];
 
-    const systemPrompt = `You are a professional code reviewer. ${languageInstruction}
-Current date: ${currentDate}. All technologies mentioned are current as of 2026.
+    // Different prompts for repo overview vs file analysis
+    const systemPrompts: Record<string, Record<string, string>> = {
+      repo: {
+        en: `You are a senior engineering consultant reviewing a developer's portfolio project. Current date: ${currentDate}.
 
-IMPORTANT RULES:
-- Complete every sentence. Never leave text unfinished.
-- Do not hallucinate or invent information not present in the code.
-- Only analyze what you see in the code below.
-- Be concise and factual.`;
+Your audience is a technical recruiter, engineering manager, or CTO evaluating this developer's capabilities.
 
-    const userPrompt = `Analyze the following code:
+Write a narrative assessment (NOT a numbered list). Structure as flowing paragraphs:
 
-1. Brief summary (what it does)
-2. Code quality (1-10 score with reasoning)
-3. Potential bugs or issues
-4. Improvement suggestions
-5. Best practices check
+**Opening paragraph**: What this project does and what problem it solves. Show you understand the domain.
 
-\`\`\`
-${code}
-\`\`\``;
+**Architecture & Engineering**: Evaluate the technical decisions — stack choices, project structure, separation of concerns. Note what's done well and what's unconventional but justified.
+
+**Production Readiness**: Assess whether this code could run in production. Look for: error handling, security considerations, deployment setup, documentation quality.
+
+**Honest Assessment**: Be specific about strengths AND areas for improvement. Never give a generic score — instead say things like "The error handling is thorough in API routes but missing in the WebSocket layer" or "Clean separation of concerns, though the auth module would benefit from refresh token rotation."
+
+**Closing**: One sentence on what this project demonstrates about the developer's capabilities.
+
+TONE: Professional, specific, evidence-based. Like a code review from a respected colleague — honest but constructive. Avoid generic praise ("well-structured code") — be specific ("the middleware chain cleanly separates auth, validation, and rate limiting").
+
+NEVER use numbered lists. Write in paragraphs. Be concise — 200-300 words total.`,
+
+        ru: `Ты — старший инженерный консультант, оценивающий проект из портфолио разработчика. Текущая дата: ${currentDate}.
+
+Твоя аудитория — технический рекрутер, engineering manager или CTO, оценивающий возможности разработчика.
+
+Пиши narrative-оценку (НЕ нумерованный список). Структура — связные абзацы:
+
+**Первый абзац**: Что делает проект и какую проблему решает. Покажи что понимаешь домен.
+
+**Архитектура и инженерия**: Оцени технические решения — выбор стека, структуру проекта, разделение ответственности. Отметь что сделано хорошо и что нестандартно, но оправданно.
+
+**Production-готовность**: Может ли этот код работать в продакшене? Обрати внимание на: обработку ошибок, безопасность, настройку деплоя, качество документации.
+
+**Честная оценка**: Конкретно о сильных сторонах И областях для улучшения. Не давай общих оценок — вместо этого пиши вещи типа "Обработка ошибок тщательная в API-роутах, но отсутствует в WebSocket-слое" или "Чистое разделение ответственности, хотя модуль авторизации выиграл бы от ротации refresh-токенов."
+
+**Заключение**: Одно предложение о том, что этот проект демонстрирует о возможностях разработчика.
+
+ТОНАЛЬНОСТЬ: Профессионально, конкретно, основано на доказательствах. Как code review от уважаемого коллеги — честно, но конструктивно. Избегай общих похвал ("хорошо структурированный код") — будь конкретен ("middleware-цепочка чисто разделяет аутентификацию, валидацию и rate limiting").
+
+НИКОГДА не используй нумерованные списки. Пиши абзацами. Кратко — 200-300 слов.`,
+      },
+      file: {
+        en: `You are a senior engineer reviewing a single file from a developer's portfolio. Current date: ${currentDate}.
+
+Write a concise narrative review (NOT a numbered list), 150-250 words in flowing paragraphs:
+
+- What this file does and how it fits into the larger system
+- Notable engineering decisions (good or questionable)
+- Specific strengths worth highlighting
+- Concrete improvements (if any) — not generic advice, but specific to THIS code
+- One-line verdict: what this code says about the developer
+
+Be specific and evidence-based. Reference actual function names, patterns, or line-level decisions. Avoid generic statements.
+
+TONE: Like a pull request review from a senior colleague — constructive, specific, professional.`,
+
+        ru: `Ты — старший инженер, делающий ревью одного файла из портфолио разработчика. Текущая дата: ${currentDate}.
+
+Напиши краткий narrative-обзор (НЕ нумерованный список), 150-250 слов связными абзацами:
+
+- Что делает этот файл и как вписывается в систему
+- Примечательные инженерные решения (хорошие или спорные)
+- Конкретные сильные стороны
+- Конкретные улучшения (если есть) — не общие советы, а специфичные для ЭТОГО кода
+- Одна строка вердикта: что этот код говорит о разработчике
+
+Будь конкретен и опирайся на доказательства. Ссылайся на реальные имена функций, паттерны, решения на уровне строк. Избегай общих утверждений.
+
+ТОНАЛЬНОСТЬ: Как pull request review от старшего коллеги — конструктивно, конкретно, профессионально.`,
+      },
+    };
+
+    const langKey = language === "ru" ? "ru" : "en";
+    const systemPrompt = systemPrompts[mode]?.[langKey] || systemPrompts.file[langKey];
 
     const requestBody = JSON.stringify({
       model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
+        { role: "user", content: code },
       ],
-      temperature: 0.3,
+      temperature: 0.5,
       max_tokens: 4096,
       stream: true,
     });
@@ -60,7 +110,7 @@ ${code}
       Authorization: `Bearer ${apiKey}`,
     };
 
-    // Try with retry on 429
+    // Retry on 429
     let response: Response | null = null;
     for (let attempt = 0; attempt < 3; attempt++) {
       response = await fetch(GROQ_API_URL, {
@@ -71,7 +121,6 @@ ${code}
 
       if (response.status === 429) {
         const retryAfter = parseInt(response.headers.get("retry-after") || "2");
-        console.log(`[API /analyze-code] Rate limited, retrying in ${retryAfter}s (attempt ${attempt + 1}/3)`);
         await new Promise((r) => setTimeout(r, retryAfter * 1000));
         continue;
       }
@@ -79,12 +128,10 @@ ${code}
     }
 
     if (!response || !response.ok) {
-      const status = response?.status || 500;
-      console.error("[API /analyze-code] Groq error:", status);
-      return new Response("AI service temporarily unavailable. Please try again in a moment.", { status: 503 });
+      return new Response("AI service temporarily unavailable. Please try again.", { status: 503 });
     }
 
-    // Stream SSE response from Groq
+    // Stream SSE response
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     const reader = response.body!.getReader();
@@ -134,7 +181,6 @@ ${code}
     });
   } catch (error) {
     console.error("[API /analyze-code] Error:", error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    return new Response(`Analysis failed: ${errorMessage}`, { status: 500 });
+    return new Response("Analysis failed. Please try again.", { status: 500 });
   }
 }
