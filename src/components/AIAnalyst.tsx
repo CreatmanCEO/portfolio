@@ -98,44 +98,54 @@ export default function AIAnalyst() {
     setSelectedFile("");
     setAnalysis("");
 
-    // Fetch README + tree structure for architectural context
+    // Fetch README + compact architecture JSON
     try {
-      const [readmeRes, treeRes] = await Promise.allSettled([
-        fetch(`/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`),
-        fetch(`/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`),
-      ]);
-
+      // Fetch README
       let readmeContent = "";
-      if (readmeRes.status === "fulfilled" && readmeRes.value.ok) {
-        readmeContent = await readmeRes.value.text();
-      }
-
-      // Build tree summary from API response
-      let treeSummary = "";
-      if (treeRes.status === "fulfilled" && treeRes.value.ok) {
-        try {
-          const treeData = await treeRes.value.json();
-          const paths = (Array.isArray(treeData) ? treeData : treeData.tree || [])
-            .filter((f: { type?: string }) => f.type === "blob" || f.type === "file")
-            .map((f: { path?: string; name?: string }) => f.path || f.name)
-            .filter(Boolean)
-            .slice(0, 60);
-          if (paths.length > 0) {
-            treeSummary = `\n\nProject file structure:\n${paths.join("\n")}`;
-          }
-        } catch {
-          // Ignore tree parse errors
+      try {
+        const readmeRes = await fetch(
+          `/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`
+        );
+        if (readmeRes.ok) {
+          readmeContent = await readmeRes.text();
         }
+      } catch {
+        // No README available
       }
 
-      if (readmeContent || treeSummary) {
-        const context = `Repository: ${repo.full_name}\nDescription: ${repo.description || "No description provided"}\n\n${readmeContent ? `README.md:\n${readmeContent.slice(0, 4000)}` : ""}${treeSummary}`;
+      // Fetch tree via GitHub API directly for compact architecture
+      let architecture = "";
+      try {
+        const treeRes = await fetch(
+          `https://api.github.com/repos/${owner}/${repo.name}/git/trees/${repo.default_branch}?recursive=1`,
+          { headers: { Accept: "application/vnd.github.v3+json" } }
+        );
+        if (treeRes.ok) {
+          const treeData = await treeRes.json();
+          const paths = (treeData.tree || [])
+            .filter((f: { type: string }) => f.type === "blob")
+            .map((f: { path: string }) => f.path)
+            .filter((p: string) => !p.includes("node_modules/") && !p.includes(".next/") && !p.includes("package-lock"));
+          architecture = JSON.stringify(paths.slice(0, 80));
+        }
+      } catch {
+        // No tree available
+      }
+
+      // Build compact context for AI
+      const context = [
+        `Repository: ${repo.full_name}`,
+        repo.description ? `Description: ${repo.description}` : "",
+        architecture ? `\nArchitecture (file paths JSON):\n${architecture}` : "",
+        readmeContent ? `\nREADME.md (first 2000 chars):\n${readmeContent.slice(0, 2000)}` : "",
+      ].filter(Boolean).join("\n");
+
+      if (context.length > 50) {
         setSelectedFile("README.md");
         await analyzeCode(context, "repo");
-        return;
+      } else {
+        setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
       }
-
-      setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
     } catch (error) {
       console.error("[AIAnalyst] Failed to load project context:", error);
       setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
