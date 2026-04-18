@@ -88,7 +88,7 @@ export default function AIAnalyst() {
     setLanguage(newLanguage);
   };
 
-  const handleProjectSelect = async (repo: Repository) => {
+  const handleProjectSelect = (repo: Repository) => {
     const owner = repo.full_name.split("/")[0];
     setCurrentRepo({
       name: repo.name,
@@ -97,65 +97,43 @@ export default function AIAnalyst() {
     });
     setSelectedFile("");
     setAnalysis("");
+    setLoading(true);
 
-    // Fetch README + compact architecture JSON
-    try {
-      // Fetch README
-      let readmeContent = "";
+    // Deferred async — avoid race with React re-renders
+    setTimeout(async () => {
       try {
-        const readmeRes = await fetch(
-          `/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`
-        );
-        if (readmeRes.ok) {
-          readmeContent = await readmeRes.text();
-        }
-      } catch {
-        // No README available
-      }
+        // Fetch README + tree in parallel
+        const [readmeRes, treeRes] = await Promise.all([
+          fetch(`/api/read-file?owner=${owner}&repo=${repo.name}&path=README.md&branch=${repo.default_branch}`)
+            .then(r => r.ok ? r.text() : "").catch(() => ""),
+          fetch(`/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`)
+            .then(r => r.ok ? r.json() : []).catch(() => []),
+        ]);
 
-      // Fetch tree via our proxy (has GITHUB_TOKEN for private repos)
-      let architecture = "";
-      try {
-        const treeRes = await fetch(
-          `/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`
-        );
-        if (treeRes.ok) {
-          const treeData = await treeRes.json();
-          // Flatten nested tree to compact path list
-          const paths: string[] = [];
-          const flatten = (nodes: { path: string; type: string; children?: unknown[] }[]) => {
-            for (const n of nodes) {
-              if (n.type === "file") paths.push(n.path);
-              if (n.children) flatten(n.children as typeof nodes);
-            }
-          };
-          flatten(Array.isArray(treeData) ? treeData : []);
-          if (paths.length > 0) {
-            architecture = JSON.stringify(paths.slice(0, 80));
+        // Flatten tree to compact path list
+        const paths: string[] = [];
+        const flatten = (nodes: { path: string; type: string; children?: unknown[] }[]) => {
+          for (const n of nodes) {
+            if (n.type === "file") paths.push(n.path);
+            if (n.children) flatten(n.children as typeof nodes);
           }
-        }
-      } catch {
-        // No tree available
-      }
+        };
+        flatten(Array.isArray(treeRes) ? treeRes : []);
 
-      // Build compact context for AI
-      const context = [
-        `Repository: ${repo.full_name}`,
-        repo.description ? `Description: ${repo.description}` : "",
-        architecture ? `\nArchitecture (file paths JSON):\n${architecture}` : "",
-        readmeContent ? `\nREADME.md (first 2000 chars):\n${readmeContent.slice(0, 2000)}` : "",
-      ].filter(Boolean).join("\n");
+        // Build compact context
+        const parts = [`Repository: ${repo.full_name}`];
+        if (repo.description) parts.push(`Description: ${repo.description}`);
+        if (paths.length > 0) parts.push(`\nArchitecture (file paths):\n${JSON.stringify(paths.slice(0, 60))}`);
+        if (readmeRes) parts.push(`\nREADME (excerpt):\n${readmeRes.slice(0, 1500)}`);
 
-      if (context.length > 50) {
+        const context = parts.join("\n");
         setSelectedFile("README.md");
         await analyzeCode(context, "repo");
-      } else {
-        setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
+      } catch {
+        setLoading(false);
+        setAnalysis("Failed to load project. Select a file to analyze.");
       }
-    } catch (error) {
-      console.error("[AIAnalyst] Failed to load project context:", error);
-      setAnalysis(`Repository loaded: ${repo.full_name}. Select a file to analyze.`);
-    }
+    }, 100);
   };
 
   const analyzeCode = async (code: string, type: "file" | "directory" | "selection" | "repo") => {
