@@ -1,115 +1,102 @@
-# Portfolio Website
+# creatman.site — Portfolio Platform
 
-Personal portfolio website showcasing projects and AI-powered features.
+Personal portfolio with admin panel, blog, AI code analyst, and self-hosted analytics.
 
-**Live:** https://creatman.site (coming soon)
-**GitHub:** https://github.com/CreatmanCEO/portfolio
+**Live:** https://creatman.site
+**Admin:** https://creatman.site/creatsetup (Google OAuth)
+
+## Stack
+
+- **Framework:** Next.js 16 (App Router, TypeScript)
+- **Database:** SQLite + Drizzle ORM (projects, blog, analytics, site content)
+- **Auth:** NextAuth.js v5 + Google OAuth (email whitelist)
+- **AI:** Groq + Cerebras (Llama 3.3 70B) with provider rotation
+- **Styling:** Tailwind CSS 4
+- **Deployment:** Docker + Traefik (reverse proxy, auto SSL)
+- **Analytics:** Self-hosted, privacy-friendly (no cookies, no GA)
 
 ## Features
 
-- ⚡ **Next.js 14** with App Router and TypeScript
-- 🎨 **Eye-Friendly Design** - Warm color palette with reduced blue light
-- 🌓 **Theme Toggle** - Light/dark mode with localStorage persistence
-- 🤖 **AI Code Analyst** - Real-time streaming code analysis using Claude API
-- 📱 **Responsive** - Mobile-first design with Framer Motion animations
-- 🚀 **Production Ready** - Deployed on VPS with Nginx + PM2
+- **20 projects** from SQLite with tag filtering, detail pages (Problem/Solution/Results)
+- **AI Code Analyst** — browse GitHub repos, get instant AI code review (streaming)
+- **Blog** — aggregation from Dev.to/Hashnode + original posts (markdown)
+- **Admin panel** — content editor, projects CRUD with AI generation, blog management, analytics dashboard
+- **SEO** — dynamic metadata, sitemap.xml, robots.txt, JSON-LD schemas, Open Graph
+- **i18n** — EN/RU with auto-detection (Accept-Language)
+- **Contact form** → Telegram Bot API
 
-## Tech Stack
+## Architecture
 
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS 4
-- **Animations:** Framer Motion
-- **AI Integration:** Claude Code CLI (local installation)
-- **Code Highlighting:** Shiki
-- **Deployment:** VPS (Nginx + PM2) + GitHub Actions
+```
+src/
+├── app/
+│   ├── (admin)/creatsetup/  # Admin panel (auth-protected)
+│   ├── api/
+│   │   ├── analyze-code/    # AI analysis (Groq → Cerebras → fallback)
+│   │   ├── admin/           # CRUD APIs (auth-protected via middleware)
+│   │   ├── contact/         # Contact form → Telegram
+│   │   ├── track/           # Page view analytics
+│   │   └── content/         # Site content API
+│   ├── projects/            # Project listing + [slug] detail
+│   ├── blog/                # Blog listing + [slug] detail
+│   └── ai-analyst/          # Interactive code explorer
+├── components/
+│   ├── admin/               # Admin UI (ContentEditor, ProjectForm, etc.)
+│   └── ...                  # Public components (Hero, AboutMe, etc.)
+├── db/
+│   ├── schema.ts            # Drizzle schema (5 tables)
+│   ├── index.ts             # SQLite connection (WAL mode)
+│   └── seed.ts              # Initial data (20 projects, site content)
+└── lib/
+    ├── auth.ts              # NextAuth config
+    └── blog-aggregator.ts   # Dev.to + Hashnode fetcher
+```
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm or yarn
-- Claude Code CLI installed and available in PATH (for AI Code Analyst feature)
-
-### Installation
+## Setup
 
 ```bash
-# Clone the repository
 git clone https://github.com/CreatmanCEO/portfolio.git
 cd portfolio
-
-# Install dependencies
 npm install
-
-# Ensure Claude Code is installed and in PATH
-# Installation: https://github.com/anthropics/claude-code
-# Test: claude --version
-
-# Run development server
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the site.
-
-## Requirements
-
-### Claude Code CLI
-
-The AI Code Analyst feature requires Claude Code to be installed and available in your system PATH.
-
-**Installation:**
-```bash
-# Linux/macOS (via curl)
-curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | sh
-
-# Or download from GitHub releases
-# https://github.com/anthropics/claude-code/releases
-```
-
-**Verify installation:**
-```bash
-claude --version
-# Should output: 2.1.42 (Claude Code) or higher
+cp .env.example .env  # Fill in API keys
+npm run seed          # Populate database
+npm run dev           # http://localhost:3000
 ```
 
 ### Environment Variables
 
-Optional `.env.local` file:
-
-```bash
-# Next.js Configuration
-NODE_ENV=development
-PORT=3000
-HOSTNAME=localhost
-```
-
-## Scripts
-
-```bash
-# Development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Start production server
-npm run start
-
-# Lint code
-npm run lint
+```env
+GROQ_API_KEY=            # Groq API (primary AI provider)
+CEREBRAS_API_KEY=        # Cerebras API (fallback AI provider)
+GITHUB_TOKEN=            # GitHub API (higher rate limits)
+TELEGRAM_BOT_TOKEN=      # Contact form delivery
+TELEGRAM_CHAT_ID=        # Your Telegram chat ID
+GOOGLE_CLIENT_ID=        # Admin panel OAuth
+GOOGLE_CLIENT_SECRET=    # Admin panel OAuth
+NEXTAUTH_SECRET=         # Generate: openssl rand -base64 32
+NEXTAUTH_URL=            # https://creatman.site
+AUTHORIZED_EMAIL=        # Admin email whitelist
 ```
 
 ## Deployment
 
-This site is deployed on a VPS using:
+Docker + Traefik on VPS:
 
-- **Nginx** - Reverse proxy and SSL termination
-- **PM2** - Process manager for Node.js
-- **Let's Encrypt** - Free SSL certificates
-- **GitHub Actions** - Automated deployment on push
+```bash
+docker compose up --build -d
+npx drizzle-kit push          # Create/update tables
+npm run seed                   # Seed initial data
+chown -R 1001:1001 data/      # Fix permissions for nextjs user
+```
 
-Deployment configuration files are available in the parent `/vps-config` directory.
+Data persisted in `./data/` volume (SQLite DB + uploaded images).
+
+## Tests
+
+```bash
+npm test          # 54 tests (Vitest)
+npm run build     # Production build verification
+```
 
 ## License
 
@@ -117,10 +104,7 @@ Deployment configuration files are available in the parent `/vps-config` directo
 
 ## Contact
 
+- **Telegram:** [@Creatman_it](https://t.me/Creatman_it)
 - **Email:** creatmanick@gmail.com
 - **GitHub:** [@CreatmanCEO](https://github.com/CreatmanCEO)
-- **Site:** https://creatman.site
-
----
-
-**Built with ❤️ and Claude Code**
+- **LinkedIn:** [/in/creatman](https://www.linkedin.com/in/creatman/)
