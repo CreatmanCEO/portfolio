@@ -1,26 +1,18 @@
 import { NextRequest } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("[API /analyze-code] Received request");
     const { code, language = "en" } = await request.json();
 
-    console.log("[API /analyze-code] Request params:", {
-      codeLength: code?.length,
-      language,
-    });
-
     if (!code || typeof code !== "string") {
-      console.error("[API /analyze-code] Invalid code input");
       return new Response("Invalid code input", { status: 400 });
     }
 
-    // Check for API key
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
-      console.error("[API /analyze-code] GEMINI_API_KEY not configured");
-      return new Response("AI service not configured. Please set GEMINI_API_KEY.", { status: 503 });
+      return new Response("AI service not configured.", { status: 503 });
     }
 
     const languageInstructions: { [key: string]: string } = {
@@ -29,20 +21,18 @@ export async function POST(request: NextRequest) {
     };
 
     const languageInstruction = languageInstructions[language] || languageInstructions.en;
+    const currentDate = new Date().toISOString().split("T")[0];
 
-    const currentDate = new Date().toISOString().split('T')[0];
-
-    const prompt = `You are a professional code reviewer. ${languageInstruction}
-
+    const systemPrompt = `You are a professional code reviewer. ${languageInstruction}
 Current date: ${currentDate}. All technologies mentioned are current as of 2026.
 
 IMPORTANT RULES:
 - Complete every sentence. Never leave text unfinished.
 - Do not hallucinate or invent information not present in the code.
 - Only analyze what you see in the code below.
-- Be concise and factual.
+- Be concise and factual.`;
 
-Analyze the following code:
+    const userPrompt = `Analyze the following code:
 
 1. Brief summary (what it does)
 2. Code quality (1-10 score with reasoning)
@@ -54,37 +44,65 @@ Analyze the following code:
 ${code}
 \`\`\``;
 
-    console.log("[API /analyze-code] Starting Gemini AI analysis...");
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
-      generationConfig: {
-        temperature: 0.3,
-        topP: 0.8,
-        maxOutputTokens: 4096,
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
       },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 4096,
+        stream: true,
+      }),
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[API /analyze-code] Groq error:", response.status, errorText);
+      return new Response(`Analysis failed: ${response.status}`, { status: 500 });
+    }
+
+    // Stream SSE response from Groq
     const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const reader = response.body!.getReader();
+
     const readable = new ReadableStream({
       async start(controller) {
         try {
-          console.log("[API /analyze-code] Sending prompt to Gemini");
-          const result = await model.generateContentStream(prompt);
+          let buffer = "";
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
 
-          let chunkCount = 0;
-          for await (const chunk of result.stream) {
-            chunkCount++;
-            const chunkText = chunk.text();
-            console.log("[API /analyze-code] Received chunk", chunkCount, "- length:", chunkText.length);
-            controller.enqueue(encoder.encode(chunkText));
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || "";
+
+            for (const line of lines) {
+              if (!line.startsWith("data: ")) continue;
+              const data = line.slice(6).trim();
+              if (data === "[DONE]") continue;
+
+              try {
+                const parsed = JSON.parse(data);
+                const content = parsed.choices?.[0]?.delta?.content;
+                if (content) {
+                  controller.enqueue(encoder.encode(content));
+                }
+              } catch {
+                // Skip malformed chunks
+              }
+            }
           }
-
-          console.log("[API /analyze-code] Gemini stream complete. Total chunks:", chunkCount);
           controller.close();
         } catch (error) {
-          console.error("[API /analyze-code] Gemini stream error:", error);
           const errorMessage = error instanceof Error ? error.message : "Unknown error";
           controller.enqueue(encoder.encode(`Error: ${errorMessage}`));
           controller.close();

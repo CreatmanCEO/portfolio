@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +13,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract owner/repo from URL
     const match = githubUrl.match(/github\.com\/([^/]+)\/([^/]+)/);
     if (!match) {
       return NextResponse.json(
@@ -66,8 +66,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate with Gemini
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: "AI service not configured" },
@@ -75,10 +74,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-
-    const prompt = `Based on this GitHub project, generate a portfolio entry. Return ONLY valid JSON, no markdown.
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You generate portfolio project entries. Return ONLY valid JSON, no markdown code blocks.",
+          },
+          {
+            role: "user",
+            content: `Based on this GitHub project, generate a portfolio entry.
 
 Repository: ${owner}/${repo}
 Description: ${repoDescription}
@@ -94,12 +106,28 @@ Return JSON with these exact fields:
 }
 
 Valid tags: security, ai, automation, devtools, fintech, infra, marketplace, business-tool, mobile, bot, opensource
-Keep descriptions concise and professional.`;
+Keep descriptions concise and professional.`,
+          },
+        ],
+        temperature: 0.3,
+        max_tokens: 1024,
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("[Admin Projects Generate] Groq error:", response.status, errorText);
+      return NextResponse.json(
+        { error: "AI generation unavailable, fill manually" },
+        { status: 500 }
+      );
+    }
 
-    // Parse JSON from response (handle markdown code blocks)
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content || "";
+
+    // Parse JSON from response
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       return NextResponse.json(
@@ -109,7 +137,6 @@ Keep descriptions concise and professional.`;
     }
 
     const generated = JSON.parse(jsonMatch[0]);
-
     return NextResponse.json(generated);
   } catch (error) {
     console.error("[Admin Projects Generate] Error:", error);
