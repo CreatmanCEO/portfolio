@@ -113,20 +113,26 @@ export default function AIAnalyst() {
         // No README available
       }
 
-      // Fetch tree via GitHub API directly for compact architecture
+      // Fetch tree via our proxy (has GITHUB_TOKEN for private repos)
       let architecture = "";
       try {
         const treeRes = await fetch(
-          `https://api.github.com/repos/${owner}/${repo.name}/git/trees/${repo.default_branch}?recursive=1`,
-          { headers: { Accept: "application/vnd.github.v3+json" } }
+          `/api/github-tree?owner=${owner}&repo=${repo.name}&branch=${repo.default_branch}`
         );
         if (treeRes.ok) {
           const treeData = await treeRes.json();
-          const paths = (treeData.tree || [])
-            .filter((f: { type: string }) => f.type === "blob")
-            .map((f: { path: string }) => f.path)
-            .filter((p: string) => !p.includes("node_modules/") && !p.includes(".next/") && !p.includes("package-lock"));
-          architecture = JSON.stringify(paths.slice(0, 80));
+          // Flatten nested tree to compact path list
+          const paths: string[] = [];
+          const flatten = (nodes: { path: string; type: string; children?: unknown[] }[]) => {
+            for (const n of nodes) {
+              if (n.type === "file") paths.push(n.path);
+              if (n.children) flatten(n.children as typeof nodes);
+            }
+          };
+          flatten(Array.isArray(treeData) ? treeData : []);
+          if (paths.length > 0) {
+            architecture = JSON.stringify(paths.slice(0, 80));
+          }
         }
       } catch {
         // No tree available
