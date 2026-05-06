@@ -31,7 +31,7 @@ jobs:
       # Excludes src/__tests__ and *.test.ts files — those have pre-existing
       # BetterSQLite3Database generic-mismatch type errors that are out of
       # scope for the docs/meta polish that introduced this CI job.
-      - run: npx tsc --noEmit -p .github/workflows/tsconfig.ci.json
+      - run: npx tsc --noEmit -p tsconfig.ci.json
 
   links:
     name: Markdown link check
